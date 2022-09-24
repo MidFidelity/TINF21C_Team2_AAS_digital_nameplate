@@ -54,5 +54,5 @@ At the moment, there are no problems which have to be mentioned.
 |Adrian Khairi   |                             |
 |Sophie Kirschner|                             |
 |Maris Koch      |                             |
-|Mika Kuge|      |                             |
+|Mika Kuge       |                             |
 |Erika Zhang     |                             |
