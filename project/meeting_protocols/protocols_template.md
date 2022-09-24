@@ -3,11 +3,11 @@
 
 ## Type of Meeting
 <!-- fill in "Weekly", "Team Code Meeting" or "Team Documentation Meeting"-->
-This meeting was a **Weekly**.
+This meeting was a ```Weekly```.
 
 ## Protocol Writer
 <!-- fill in "Erika Zhang" or "Adrian Khairi"-->
-This protocol was written by *Adrian Khairi*.
+This protocol was written by ```Adrian Khairi```.
 
 ## Meeting Participants
 
@@ -17,6 +17,10 @@ This protocol was written by *Adrian Khairi*.
 * Maris Koch
 * Mika Kuge
 * Erika Zhang
+
+## Meeting Duration
+<!-- fill in time, if it isn't a Weekly- in hours-->
+This meeting took ```1 hour```.
 
 ## Agenda
 <!-- please use iterating numbers-->
