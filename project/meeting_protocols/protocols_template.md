@@ -41,7 +41,7 @@ This meeting took ```1 hour```.
 3. ccc
 
 ## Problems
-<!-- fill out if something happened, otherwise just let the previewn sentence stay there-->
+<!-- fill out if something happened, otherwise just let the preview sentence stay there-->
 
 At the moment, there are no problems which have to be mentioned.
 
