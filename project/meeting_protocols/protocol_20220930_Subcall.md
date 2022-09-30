@@ -7,7 +7,7 @@ This meeting was a ```Team Code Meeting```.
 
 ## Protocol Writer
 <!-- fill in "Erika Zhang" or "Adrian Khairi"-->
-This protocol was written by ```Adrian Khairi```.
+This protocol was written by ```Erika Zhang```.
 
 ## Meeting Participants
 
