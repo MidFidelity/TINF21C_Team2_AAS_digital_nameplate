@@ -1,5 +1,5 @@
 <!-- fill in date-->
-# Meeting  Protocol  of  30.09.2022
+# Meeting  Protocol  of  07.10.2022
 
 ## Type of Meeting
 <!-- fill in "Weekly", "Team Code Meeting" or "Team Documentation Meeting"-->
@@ -27,11 +27,9 @@ This meeting took ```1 hour```.
 
 1. Could everyone give an update on his/her work progress? *This will be documented in the upcoming section.* Furthermore, this will inform everyone about the current status of the project.
 
-2. Information @all: Do not forget to set every hour you worked for this project in your personal time tracking protocol.
+2. Is anybody facing a problem related to the project's success? *This will be documented in the upcoming section.*
   
-3. Do we already have an excellent Github-wiki? If not, who could write one? What should be written in this certain section? Furthermore, please set up an issue on the projects-board and choose a deadline.
-
-4. Are there any other things related to this project you want to talk about?
+3. Who will work on which section of the GitHub wiki?
 
 ## Summary
 <!-- please use iterating numbers-->
@@ -53,7 +51,7 @@ At the moment, there are no problems which have to be mentioned.
 |Name            |Task                         |
 |----------------|-----------------------------|
 |Janin Ahlemeyer |                             |
-|Adrian Khairi   |Research on Tableau for analyzing the time trackings later on in the project, documenting this protocol, writing the agenda for next week and finishing the first version of the BC      |
+|Adrian Khairi   |                             |
 |Sophie Kirschner|                             |
 |Maris Koch      |                             |
 |Mika Kuge       |                             |
