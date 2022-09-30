@@ -42,12 +42,6 @@ This meeting took ```1 hour```.
 
 2. The tasks were adjusted by adding more details for instance required function. This can be seen in the issue details of the project github. The tasks were assigned.
 
-
-QR code tested, SVG and PNG works
-Mika: QR code library, react grundstruktur gezeigt
-
-Janin: licenses in github
-
 ## Problems
 <!-- fill out if something happened, otherwise just let the preview sentence stay there-->
 
