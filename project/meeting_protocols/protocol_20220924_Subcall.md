@@ -38,7 +38,7 @@ This meeting took ```3 hours```.
 
 1. The goal for the whole project is to create a nameplate generator according to the DIN standard. As well as an UI containing a list of all the components and a search function with autocomplete. It should also be able to display all the sorted information for the asset chosen by the user. Additionally, it should contain a donwload option for PNG and SVG. The main goal is split into two subgoals for the 3rd and 4th semester. The main aspect of the 3rd semester will therefore be to programm the functional tasks such as the requests to the AAS Server through input by the user, a simple UI with the ability to select an asset and generate QR-Code for said asset. Also to generate SVG and PNG from a test canvas. The main task of the 4th semester is to create a react front end as well as fine tuning.
 
-2. To test the QR-Codes Scandit Demo and Barcode Generator can be used. The editor is Webstorm and the request art will be fetch. For the illustrations we will use https://www.softwareideas.net/. Programming languages will be JavaScript, CSS and HTML.
+2. To test the QR-Codes Scandit Demo and Barcode Generator can be used. The editor is Webstorm and the request art will be fetch. For the illustrations we will use <https://www.softwareideas.net/>. Programming languages will be JavaScript, CSS and HTML.
   
 3. A simple activity flow chart was created. Sequence, time flow, class and distribution charts as well as UI and dialog sketches have to be made.
 
@@ -48,7 +48,7 @@ This meeting took ```3 hours```.
 
 * Camel Case
 * Comments only when absolutely necessary
-* Methods and Variable names in lower case and understandable 
+* Methods and Variable names in lower case and understandable
 * Method names long (3-4 words)
 * Variable names as short as possible
 * Iteration Variables should be used in this order: i, j, k
@@ -67,4 +67,4 @@ At the moment, there are no problems which have to be mentioned.
 |Janin Ahlemeyer | Research open source license                            |
 |Maris Koch      | Research QR-Library         |
 |Mika Kuge       | Research Canvas/Image to SVG library                            |
-|Erika Zhang     | Create simple UI Concept                            |
+|Erika Zhang     | Create simple UI Concept                           |

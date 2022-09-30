@@ -45,26 +45,22 @@ This meeting took ```1 hour```.
 
 10. @Sophie: Can you create the GANTT chart? You will find some inspiriration looking in our BC and by looking up the repositories of previos classes.
 
-11. SAS should be refined - look @Mika's Chat with Adrian
+11. SAS titeling should be refined - look @Mika's chat with Adrian
 
 ## Summary
 <!-- please use iterating numbers-->
 
-1. Done, look at work progress
+1. Done, look at ```Work Progress```
 
-2. Maris: the first idea was to generate the name plates via canvas. That will not work. In the subcall meeting they will focus on this topic.
-
-   Mika: Mika also found the same problem as Maris.
-
-   Adrian and Erika: BC has to be shortened to meet the expectations of 4 pages.
+2. Done, look at ```Problems```
 
 3. Done
 
-4. Maris will primarily write the Wiki. We can inspire ourself by the Wiki's of previous classes. It is important to write the general background, the user manual, the dependencies, and the end-user-explanation. Further details will be talked about, when the general overview is created.
+4. Maris will primarily write the Wiki. We can inspire ourselves by the Wiki's of previous classes. It is important to write the general background, the user manual, the dependencies, and the end-user-explanation. Further details will be talked about, when the general overview is created.
 
-5. The tasks and topics are more of team specific things which will be mentioned in subcall meetings.
+5. The tasks and topics are more team specific things than general tasks, so they will be mentioned in subcall meetings.
 
-6. Undertiteling the protocols is the way to go to differenciate the meetings types from each other.
+6. Undertiteling the protocol's names is the way to go to differenciate the meetings types from each other.
 
 7. Done, every task is scheduled in GitHub's project
 
@@ -79,7 +75,11 @@ This meeting took ```1 hour```.
 ## Problems
 <!-- fill out if something happened, otherwise just let the previewn sentence stay there-->
 
-At the moment, there are no problems which have to be mentioned.
+* Maris: the first idea was to generate the name plates via canvas. That will not work. In the subcall meeting they will focus on this topic.
+
+* Mika: Mika also found the same problem as Maris.
+
+* Adrian and Erika: BC has to be shortened to meet the expectations of 4 pages.
 
 ## Work Progress
 <!-- please fill out the tasks-->
