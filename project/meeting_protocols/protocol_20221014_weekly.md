@@ -25,11 +25,11 @@ This meeting took ```1 hour```.
 ## Agenda
 <!-- please use iterating numbers-->
 
-1. aaa
+1. Could everyone give an update on his/her work progress? *This will be documented in the upcoming section.* Furthermore, this will inform everyone about the current status of the project.
 
-2. bbb
+2. Is anybody facing a problem related to the project's success? *This will be documented in the upcoming section.*
   
-3. ccc
+3. @Erika und Adrian: Write weekly update to customers.
 
 ## Summary
 <!-- please use iterating numbers-->
