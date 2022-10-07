@@ -14,9 +14,11 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             appState: AppStates.listView,
-            tableData: []
+            tableData: [],
+            filteredTableData:[]
         }
     }
+
 
 
     addElement = () => {
@@ -28,10 +30,18 @@ export default class App extends React.Component {
                 displayName: r
             }]
         }
-        this.setState({tableData:a})
+        this.setState({tableData:a}, ()=>{
+            this.filterTableData()
+        })
+
+    }
+
+    filterTableData=(filterString="")=>{
+        this.setState({filteredTableData: this.state.tableData.filter(item=>item.displayName.toLowerCase().includes(filterString.toLowerCase()))})
     }
 
     render() {
+
         switch (this.state.appState) {
             case AppStates.startView:
 
@@ -42,8 +52,8 @@ export default class App extends React.Component {
                         <button onClick={this.addElement}>TestText</button>
                     </header>
                     <Searchbar hintText={"HintText"} searchText={"SearchText"}
-                               predictList={this.state.tableData.map(item => item.displayName)}></Searchbar>
-                    <AssetList tableData={this.state.tableData}></AssetList>
+                                onChangeFunction={this.filterTableData}></Searchbar>
+                    <AssetList tableData={this.state.filteredTableData}></AssetList>
                 </div>);
                 
             case AppStates.assetView:
