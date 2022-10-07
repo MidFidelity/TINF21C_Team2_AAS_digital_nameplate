@@ -2,7 +2,7 @@
   "name": "application",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -12,7 +12,12 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
+  },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
