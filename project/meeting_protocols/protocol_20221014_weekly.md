@@ -1,5 +1,5 @@
 <!-- fill in date-->
-# Meeting  Protocol  of  XX.YY.ZZZZ
+# Meeting  Protocol  of  14.10.2022
 
 ## Type of Meeting
 <!-- fill in "Weekly", "Team Code Meeting" or "Team Documentation Meeting"-->
