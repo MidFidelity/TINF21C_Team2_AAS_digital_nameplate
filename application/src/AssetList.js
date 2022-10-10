@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export default class AssetList extends React.Component{
     static propTypes={
-        tableData:PropTypes.array
+        tableData:PropTypes.array,
     }
 
     render() {
@@ -20,7 +20,7 @@ export default class AssetList extends React.Component{
                 </tr>
                 </thead>
                 <tbody>
-                    {this.props.tableData.map((item, index)=>(<AssetListElement key={index} name={item.name} displayName={item.displayName} handleClick={console.log}>
+                    {this.props.tableData.map((item, index)=>(<AssetListElement key={index} name={item.name} displayName={item.displayName} handleClick={this.handleEntryClick}>
                     </AssetListElement>))}
                 </tbody>
             </table>)

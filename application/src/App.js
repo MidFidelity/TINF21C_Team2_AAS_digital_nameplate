@@ -1,11 +1,8 @@
 //import './App.css'
 import React from "react"
-import AssetList from "./AssetList";
-import Searchbar from "./Searchbar";
-
-const AppStates = {
-    startView: "startView", listView: "listView", assetView: "assetView"
-};
+import {Route, NavLink, HashRouter, Routes} from "react-router-dom"
+import AssetView from "./AssetView"
+import ListView from "./ListView"
 
 export default class App extends React.Component {
 
@@ -13,13 +10,10 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            appState: AppStates.listView,
             tableData: [],
-            filteredTableData:[]
+            searchTerm:""
         }
     }
-
-
 
     addElement = () => {
         let a = this.state.tableData
@@ -30,39 +24,28 @@ export default class App extends React.Component {
                 displayName: r
             }]
         }
-        this.setState({tableData:a}, ()=>{
-            this.filterTableData()
-        })
+        this.setState({tableData: a})
 
-    }
-
-    filterTableData=(filterString="")=>{
-        this.setState({filteredTableData: this.state.tableData.filter(item=>item.displayName.toLowerCase().includes(filterString.toLowerCase()))})
     }
 
     render() {
-
-        switch (this.state.appState) {
-            case AppStates.startView:
-
-                break;
-            case  AppStates.listView:
-                return (<div className="App">
-                    <header className="App-header">
-                        <button onClick={this.addElement}>TestText</button>
-                    </header>
-                    <Searchbar hintText={"HintText"} searchText={"SearchText"}
-                                onChangeFunction={this.filterTableData}></Searchbar>
-                    <AssetList tableData={this.state.filteredTableData}></AssetList>
-                </div>);
-                
-            case AppStates.assetView:
-
-                break;
-            default:
-                console.error("Not a valid state");
-
-
-        }
+        return (
+            <HashRouter>
+                <div className={"NavBar"}>
+                    <button onClick={this.addElement}>Add Data</button><br/>
+                    <NavLink to={"/search"}>ListView</NavLink><br/>
+                    <NavLink to={"/asset"}>AssetView</NavLink>
+                </div>
+                <div className={"Content"}>
+                    <Routes>
+                    <Route exact path={"/search"} element={<ListView tableData={this.state.tableData}></ListView>}>
+                        <Route path={":term"} element={<ListView tableData={this.state.tableData}></ListView>}></Route>
+                    </Route>
+                        <Route path={"/asset"} element={<AssetView />}>
+                            <Route path={":name"} element={<AssetView />}></Route>
+                        </Route>
+                    </Routes>
+                </div>
+            </HashRouter>)
     }
 }

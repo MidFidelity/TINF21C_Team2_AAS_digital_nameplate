@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import {NavLink} from "react-router-dom";
 import "./AssetListElement.css"
 
 export default class AssetListElement extends React.Component{
@@ -17,7 +18,7 @@ export default class AssetListElement extends React.Component{
         return(
             <tr className="AssetListElement">
                 <td>
-                    <div className={"AssetListElementName"} onClick={this.handleClick}><p>{this.props.displayName}</p></div>
+                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+this.props.name}><p>{this.props.displayName}</p></NavLink></div>
                 </td>
             </tr>
         )
