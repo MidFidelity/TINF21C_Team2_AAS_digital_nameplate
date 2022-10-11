@@ -1,0 +1,36 @@
+.AssetView{
+    display: grid;
+    grid-template-areas:
+            "title title"
+            "prodImg prodDesc"
+            "nameplate prodDesc"
+            "foot foot";
+    grid-template-rows: 2em 80% auto auto;
+    grid-template-columns: 50% 50% ;
+}
+.AssetViewTitle{
+    grid-area: title;
+    margin: 0;
+    text-align: center;
+}
+.ProductImage{
+    grid-area: prodImg;
+    width: 200px;
+    height: 200px;
+    border: black thin solid;
+}
+.ProductDesc{
+    grid-area: prodDesc;
+    width: 200px;
+    height: 50em;
+    border: black thin solid;
+}
+.Nameplate{
+    grid-area: nameplate;
+    width: 200px;
+    height: 200px;
+    border: black thin solid;
+}
+.LinkBackSearch{
+    grid-area: foot;
+}

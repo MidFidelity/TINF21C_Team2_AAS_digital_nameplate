@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 import Searchbar from "./Searchbar";
 import AssetList from "./AssetList";
@@ -7,7 +7,7 @@ import AssetList from "./AssetList";
 export function withRouter(Children){
     return(props)=>{
         const {term} = useParams()
-        return <Children {...props}  searchTerm = {term?term:""}/>
+        return <Children {...props}  filterTerm = {term?term:""} navHook={useNavigate()}/>
     }
 }
 
@@ -20,13 +20,14 @@ class ListView extends React.Component{
         super(props);
         this.state={
             filteredTableData:[],
-            filterTerm:""
+            filterTerm:this.props.filterTerm?this.props.filterTerm:""
         }
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!==this.props){
-            this.filterTableData(this.state.filterTerm)
+            this.updateFilter(this.props.filterTerm?this.props.filterTerm:"")
         }
     }
 
@@ -40,17 +41,25 @@ class ListView extends React.Component{
         })
     }
 
+    updateRoute=()=>{
+        this.props.navHook("/search/"+this.state.filterTerm)
+    }
+
     filterTableData = (filterString = this.state.filterTerm) => {
         this.setState({filteredTableData: this.props.tableData.filter(item => item.displayName.toLowerCase().includes(filterString.toLowerCase()))})
     }
 
+
+
 render(){
     return(
     <div className="ListView">
-        <Searchbar hintText={"HintText"} searchText={"SearchText"}
-                   onChangeFunction={this.updateFilter}></Searchbar>
-        <AssetList tableData={this.state.filteredTableData}
-        entryClickHandler={this.openAsset}></AssetList>
+        <Searchbar hintText={"HintText"}
+                   searchButtonText={"SearchText"}
+                   onChangeFunction={this.updateFilter}
+                    textContent={this.state.filterTerm}
+                    onSubmitFunction={this.updateRoute}></Searchbar>
+        <AssetList tableData={this.state.filteredTableData}></AssetList>
     </div>);
 }
 }
