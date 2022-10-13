@@ -83,4 +83,4 @@ At the moment, there are no problems which have to be mentioned.
 |Sophie Kirschner|Created GANTT chart, refined the CRS and created activity diagrams                             |
 |Maris Koch      |Worked on data refinement for all assets of server and for specific details of asset as well as a meeting with Janin to get to a certain understanding of coresponding aspects                             |
 |Mika Kuge       |Started off with the UI and created a first idea of the search bar                              |
-|Erika Zhang     |Read and corrected CRS as well as PSP and initialized the SRS and worked on the UI concept(Hi-Fi version)                              |
+|Erika Zhang     |Read and Rewrote CRS, read and corrected PSP and initialized the SRS and worked on the UI concept(Hi-Fi version)                              |

@@ -29,7 +29,9 @@ This meeting took ```1 hour```.
 
 2. Is anybody facing a problem related to the project's success? *This will be documented in the upcoming section.*
   
-3. @Erika und Adrian: Write weekly update to customers.
+3. Are there any topics you want to talk about based on the customer real life meeting or rather update?
+
+4. @Erika und Adrian: Write weekly update to customers.
 
 ## Summary
 <!-- please use iterating numbers-->
