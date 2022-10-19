@@ -36,25 +36,27 @@ This meeting took ```1 hour```.
 ## Summary
 <!-- please use iterating numbers-->
 
-1. aaa
+1. Done, look at ```Work Progress```
 
-2. bbb
+2. Done, look at ```Problems```
   
-3. ccc
+3. Nothing in particular.
+
+4. Done in form of the customer meeting.
 
 ## Problems
 <!-- fill out if something happened, otherwise just let the preview sentence stay there-->
 
-At the moment, there are no problems which have to be mentioned.
+On the 14.10.2022, there was a customer meeting. Certain aspects were requested differently. Those aspects will be discussed in submeeting and will be put in issues.
 
 ## Work Progress
 <!-- please fill out the tasks-->
 
 |Name            |Task                         |
 |----------------|-----------------------------|
-|Janin Ahlemeyer |                             |
-|Adrian Khairi   |                             |
-|Sophie Kirschner|                             |
-|Maris Koch      |                             |
-|Mika Kuge       |                             |
-|Erika Zhang     |                             |
+|Janin Ahlemeyer |Worked on listing of edge case                             |
+|Adrian Khairi   |Read enterprise documents to improve our documents even more, worked on Tableau design, prepared and lead the weekly and researched further details                             |
+|Sophie Kirschner|Refined CRS and created GANTT Chart for 4th semester                             |
+|Maris Koch      |research on data refinement and research on systematical request on nameplates to extract certain data                             |
+|Mika Kuge       |Worked and researched on React Router                             |
+|Erika Zhang     |Rewrote certain parts of CRS, worked on edge cases, wrote parts of SRS                            |
