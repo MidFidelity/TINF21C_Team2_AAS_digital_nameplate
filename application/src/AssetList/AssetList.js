@@ -20,7 +20,7 @@ export default class AssetList extends React.Component{
                 </tr>
                 </thead>
                 <tbody>
-                    {this.props.tableData.map((item, index)=>(<AssetListElement key={index} name={item.name} displayName={item.displayName} handleClick={this.handleEntryClick}>
+                    {this.props.tableData.map((item, index)=>(<AssetListElement key={index} name={item.name} url={item.url} handleClick={this.handleEntryClick}>
                     </AssetListElement>))}
                 </tbody>
             </table>)

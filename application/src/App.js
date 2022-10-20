@@ -6,42 +6,39 @@ import AssetView from "./AssetView/AssetView"
 import ListView from "./AssetList/ListView"
 import HomeView from "./Homescreen/HomeView";
 import ServerAddress from "./ServerAddress";
+import DataRefinery from "./DataRetrival/DataRefinery";
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            serverAddress: this.getSessionStorage("serverAddress", ""),
-            tableData: this.getSessionStorage("tableData", [])
+            serverAddress: "", tableData: []
         }
     }
 
-    getSessionStorage = (key, empty)=>{
+    getSessionStorage = (key, empty) => {
         let value = sessionStorage.getItem(key);
-        if (value){
+        if (value && value != null) {
             return JSON.parse(value)[key];
         }
         return empty
     };
 
-
-    addElement = () => {
-        let a = this.state.tableData;
-        for (let i = 0; i < 100; i++) {
-            let r = (Math.random() + 1).toString(36).substring(7);
-            a = [...a, {
-                name: r, displayName: r
-            }]
+    setServerAddress = (address) => {
+        if (/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(address)) {
+            this.setState({serverAddress: address}, () => {
+                sessionStorage.setItem("ServerAddress", this.state.serverAddress);
+            })
         }
-        this.setState({tableData: a}, ()=>{
-            sessionStorage.setItem("tableData",JSON.stringify({tableData: this.state.tableData}));
-        })
     };
 
-    setServerAddress=(address)=>{
-        this.setState({serverAddress:address}, ()=>sessionStorage.setItem("ServerAddress", this.state.serverAddress))
-    };
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.serverAddress !== this.state.serverAddress) {
+            this.refinery = new DataRefinery(this.state.serverAddress);
+            this.refinery.getFullAASList().then((content) => this.setState({tableData: content}))
+        }
+    }
 
     render() {
         return (<HashRouter>
@@ -51,9 +48,6 @@ export default class App extends React.Component {
                     <tbody>
                     <tr>
                         <td>
-                            <button onClick={this.addElement}>Add Data</button>
-                        </td>
-                        <td>
                             <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
                         </td>
                     </tr>
@@ -62,22 +56,19 @@ export default class App extends React.Component {
                             <NavLink to={"/home"}
                                      className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>Home</NavLink>
                         </td>
-                        <td>
-                            <NavLink to={"/list"}
-                                     className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>ListView</NavLink>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div className={"Content"}>
                 <Routes>
-                    <Route exact path={"/home"} element={<HomeView />}></Route>
-                    <Route exact path={"/list"} element={<ListView tableData={this.state.tableData}></ListView>}></Route>
+                    <Route exact path={"/home"} element={<HomeView/>}></Route>
+                    <Route exact path={"/list"} element={<ListView tableData={this.state.tableData}
+                                                                   serverAddress={this.state.serverAddress}></ListView>}></Route>
                     <Route exact path={"/asset"} element={<AssetView/>}>
                         <Route path={":name"} element={<AssetView/>}></Route>
                     </Route>
-                    <Route exact path={"/"} element={<Navigate to={"/home"} replace></Navigate>}></Route>
+                    <Route path={"/"} element={<Navigate to={"/home"} replace={true}></Navigate>}></Route>
                 </Routes>
             </div>
         </HashRouter>)

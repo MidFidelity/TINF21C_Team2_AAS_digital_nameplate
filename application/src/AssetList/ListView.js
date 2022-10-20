@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Searchbar from "../Searchbar";
 import AssetList from "./AssetList";
 
+
 export function withRouter(Children){
     return(props)=>{
         const [query, setQuery] = useSearchParams();
@@ -13,17 +14,19 @@ export function withRouter(Children){
 
 class ListView extends React.Component{
     static propTypes={
-        tableData: PropTypes.array
+        tableData: PropTypes.array,
+        serverAddress: PropTypes.string
     };
 
     constructor(props) {
         super(props);
-        this.state={
-            filteredTableData:[],
-            filterTerm:this.props.filterTerm?this.props.filterTerm:""
+        this.state= {
+            filteredTableData: [],
+            filterTerm: this.props.filterTerm ? this.props.filterTerm : ""
         }
-
     }
+
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps!==this.props){
@@ -46,10 +49,8 @@ class ListView extends React.Component{
     };
 
     filterTableData = (filterString = this.state.filterTerm) => {
-        this.setState({filteredTableData: this.props.tableData.filter(item => item.displayName.toLowerCase().includes(filterString.toLowerCase()))})
+        this.setState({filteredTableData: this.props.tableData.filter(item => item.name.toLowerCase().includes(filterString.toLowerCase()))})
     };
-
-
 
 render(){
     return(
@@ -57,6 +58,7 @@ render(){
         <Searchbar hint={"HintText"}
                    buttonText={"SearchText"}
                    onChange={this.updateFilter}
+                   onBlur={this.updateFilter}
                     value={this.state.filterTerm}
                     onSubmit={this.updateRoute}></Searchbar>
         <AssetList tableData={this.state.filteredTableData}></AssetList>

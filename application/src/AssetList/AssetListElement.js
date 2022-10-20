@@ -1,7 +1,7 @@
 import {NavLink} from "react-router-dom";
 import "./AssetListElement.css"
 
-function AssetListElement({displayName, name, handleClick}) {
+function AssetListElement({name, url, handleClick}) {
 
     const handleClickFunc=()=>{
         handleClick(name);
@@ -10,7 +10,7 @@ function AssetListElement({displayName, name, handleClick}) {
     return(
             <tr className="AssetListElement">
                 <td>
-                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+name}><p>{displayName}</p></NavLink></div>
+                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+name}><p>{name}</p></NavLink></div>
                 </td>
             </tr>
         )
