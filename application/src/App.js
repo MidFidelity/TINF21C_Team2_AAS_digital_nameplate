@@ -2,9 +2,9 @@
 import React from "react"
 import {Route, NavLink, HashRouter, Routes, Navigate} from "react-router-dom"
 import "./App.css"
-import AssetView from "./AssetView"
-import ListView from "./ListView"
-import HomeView from "./HomeView";
+import AssetView from "./AssetView/AssetView"
+import ListView from "./AssetList/ListView"
+import HomeView from "./Homescreen/HomeView";
 
 export default class App extends React.Component {
 

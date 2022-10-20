@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
-import Searchbar from "./Searchbar";
+import Searchbar from "../Searchbar";
 import AssetList from "./AssetList";
 
 export function withRouter(Children){
