@@ -1,26 +1,18 @@
-import React from 'react';
-import PropTypes from "prop-types";
 import {NavLink} from "react-router-dom";
 import "./AssetListElement.css"
 
-export default class AssetListElement extends React.Component{
-    static propTypes = {
-        displayName:PropTypes.string,
-        name:PropTypes.string,
-        handleClick:PropTypes.func
+function AssetListElement({displayName, name, handleClick}) {
+
+    const handleClickFunc=()=>{
+        handleClick(name);
     }
 
-    handleClick=()=>{
-        this.props.handleClick(this.props.name);
-    }
-
-    render() {
-        return(
+    return(
             <tr className="AssetListElement">
                 <td>
-                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+this.props.name}><p>{this.props.displayName}</p></NavLink></div>
+                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+name}><p>{displayName}</p></NavLink></div>
                 </td>
             </tr>
         )
-    }
 }
+export default AssetListElement;

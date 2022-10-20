@@ -1,13 +1,13 @@
 import React from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import PropTypes from "prop-types";
 import Searchbar from "../Searchbar";
 import AssetList from "./AssetList";
 
 export function withRouter(Children){
     return(props)=>{
-        const {term} = useParams()
-        return <Children {...props}  filterTerm = {term?term:""} navHook={useNavigate()}/>
+        const [query, setQuery] = useSearchParams();
+        return <Children {...props}  filterTerm={query.get("search")} setQuery={setQuery}/>
     }
 }
 
@@ -42,7 +42,7 @@ class ListView extends React.Component{
     }
 
     updateRoute=()=>{
-        this.props.navHook("/search/"+this.state.filterTerm)
+        this.props.setQuery({search:this.state.filterTerm})
     }
 
     filterTableData = (filterString = this.state.filterTerm) => {
@@ -54,11 +54,11 @@ class ListView extends React.Component{
 render(){
     return(
     <div className="ListView">
-        <Searchbar hintText={"HintText"}
-                   searchButtonText={"SearchText"}
-                   onChangeFunction={this.updateFilter}
-                    textContent={this.state.filterTerm}
-                    onSubmitFunction={this.updateRoute}></Searchbar>
+        <Searchbar hint={"HintText"}
+                   buttonText={"SearchText"}
+                   onChange={this.updateFilter}
+                    value={this.state.filterTerm}
+                    onSubmit={this.updateRoute}></Searchbar>
         <AssetList tableData={this.state.filteredTableData}></AssetList>
     </div>);
 }

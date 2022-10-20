@@ -24,7 +24,7 @@ class AssetView extends React.Component {
         return (
             <div className={"AssetView"}>
                 <h3 className={"AssetViewTitle"}>{this.props.assetName}</h3>
-                <NavLink to={"/search"} className={"LinkBackSearch"}>Back to Search</NavLink>
+                <NavLink to={"/list"} className={"LinkBackSearch"}>Back to Search</NavLink>
 
                 <div className={"ProductImage"}>
                 </div>

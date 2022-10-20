@@ -55,7 +55,7 @@ export default class App extends React.Component {
                                      className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>Home</NavLink>
                         </td>
                         <td>
-                            <NavLink to={"/search"}
+                            <NavLink to={"/list"}
                                      className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>ListView</NavLink>
                         </td>
                     </tr>
@@ -65,14 +65,11 @@ export default class App extends React.Component {
             <div className={"Content"}>
                 <Routes>
                     <Route exact path={"/home"} element={<HomeView />}></Route>
-                    <Route exact path={"/search"} element={<ListView tableData={this.state.tableData}></ListView>}>
-                        <Route path={":term"}
-                               element={<ListView tableData={this.state.tableData}></ListView>}></Route>
-                    </Route>
+                    <Route exact path={"/list"} element={<ListView tableData={this.state.tableData}></ListView>}></Route>
                     <Route exact path={"/asset"} element={<AssetView/>}>
                         <Route path={":name"} element={<AssetView/>}></Route>
                     </Route>
-                    <Route exact path={"*"} element={<Navigate to={"/home"} replace></Navigate>}></Route>
+                    <Route exact path={"/"} element={<Navigate to={"/home"} replace></Navigate>}></Route>
                 </Routes>
             </div>
         </HashRouter>)

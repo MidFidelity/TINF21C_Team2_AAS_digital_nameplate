@@ -1,36 +1,22 @@
-import React from "react"
-import PropTypes from "prop-types";
-
-export default class Searchbar extends React.Component{
-    static propTypes = {
-        onChangeFunction: PropTypes.func,
-        onSubmitFunction: PropTypes.func,
-        textContent: PropTypes.string,
-        searchButtonText: PropTypes.string,
-        hintText: PropTypes.string
+function Searchbar({onChange, onSubmit, value, buttonText, hint}) {
+    const onChangeFunc = (event) => {
+           onChange && onChange(event.target.value);
     }
 
-    onChange = (event) => {
-        if (this.props.onChangeFunction) {
-            this.props.onChangeFunction(event.target.value);
-        }
-    }
-
-    handleSubmit=(event)=>{
+    const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.props.onSubmitFunction()
+        onSubmit && onSubmit();
     }
 
-    render() {
-        return (
-            <div className={"searchBarDiv"}>
-                <form onSubmit={this.handleSubmit} onBlur={this.handleSubmit}>
-                    <input name={"filterTerm"} list={"suggestions"} className={"searchBarInput"} type={"search"} autoComplete={"on"}
-                           placeholder={this.props.hintText} onChange={this.onChange} value={this.props.textContent}/>
-                    <button className={"searchBarButton"}>{this.props.searchButtonText}</button>
-                </form>
-            </div>
-    );
-    }
-    }
+
+    return <div className={"searchBarDiv"}>
+        <form onSubmit={handleSubmit} onBlur={handleSubmit}>
+            <input name={"filterTerm"} list={"suggestions"} className={"searchBarInput"} type={"search"}
+                   autoComplete={"on"}
+                   placeholder={hint} onChange={onChangeFunc} value={value}/>
+            <button className={"searchBarButton"}>{buttonText}</button>
+        </form>
+    </div>
+}
+export default Searchbar;
