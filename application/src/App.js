@@ -5,16 +5,14 @@ import "./App.css"
 import AssetView from "./AssetView/AssetView"
 import ListView from "./AssetList/ListView"
 import HomeView from "./Homescreen/HomeView";
+import ServerAddress from "./ServerAddress";
 
 export default class App extends React.Component {
-
-
     constructor(props) {
         super(props);
 
-
         this.state = {
-            serverIp: this.getSessionStorage("serverIp", ""),
+            serverAddress: this.getSessionStorage("serverAddress", ""),
             tableData: this.getSessionStorage("tableData", [])
         }
     }
@@ -25,11 +23,11 @@ export default class App extends React.Component {
             return JSON.parse(value)[key];
         }
         return empty
-    }
+    };
 
 
     addElement = () => {
-        let a = this.state.tableData
+        let a = this.state.tableData;
         for (let i = 0; i < 100; i++) {
             let r = (Math.random() + 1).toString(36).substring(7);
             a = [...a, {
@@ -39,16 +37,26 @@ export default class App extends React.Component {
         this.setState({tableData: a}, ()=>{
             sessionStorage.setItem("tableData",JSON.stringify({tableData: this.state.tableData}));
         })
+    };
 
-    }
+    setServerAddress=(address)=>{
+        this.setState({serverAddress:address}, ()=>sessionStorage.setItem("ServerAddress", this.state.serverAddress))
+    };
 
     render() {
         return (<HashRouter>
             <div className={"NavBar"}>
-                <button onClick={this.addElement}>Add Data</button>
-                <br/>
+
                 <table>
                     <tbody>
+                    <tr>
+                        <td>
+                            <button onClick={this.addElement}>Add Data</button>
+                        </td>
+                        <td>
+                            <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <NavLink to={"/home"}

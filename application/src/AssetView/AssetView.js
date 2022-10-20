@@ -5,7 +5,7 @@ import "./AssetView.css"
 export function withRouter(Children) {
     return (props) => {
 
-        const {name} = useParams()
+        const {name} = useParams();
         return <Children {...props} assetName={name}/>
     }
 }

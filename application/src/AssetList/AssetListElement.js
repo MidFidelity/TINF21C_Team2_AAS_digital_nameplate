@@ -5,7 +5,7 @@ function AssetListElement({displayName, name, handleClick}) {
 
     const handleClickFunc=()=>{
         handleClick(name);
-    }
+    };
 
     return(
             <tr className="AssetListElement">

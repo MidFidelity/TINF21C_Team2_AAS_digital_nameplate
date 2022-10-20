@@ -7,14 +7,14 @@ import AssetList from "./AssetList";
 export function withRouter(Children){
     return(props)=>{
         const [query, setQuery] = useSearchParams();
-        return <Children {...props}  filterTerm={query.get("search")} setQuery={setQuery}/>
+        return <Children {...props}  filterTerm={query.get("search")} query={query} setQuery={setQuery}/>
     }
 }
 
 class ListView extends React.Component{
     static propTypes={
         tableData: PropTypes.array
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,15 +39,15 @@ class ListView extends React.Component{
         this.setState({filterTerm:term}, ()=>{
             this.filterTableData();
         })
-    }
+    };
 
     updateRoute=()=>{
-        this.props.setQuery({search:this.state.filterTerm})
-    }
+        this.props.setQuery(Object.fromEntries([...this.props.query.entries(), ["search", this.state.filterTerm]]))
+    };
 
     filterTableData = (filterString = this.state.filterTerm) => {
         this.setState({filteredTableData: this.props.tableData.filter(item => item.displayName.toLowerCase().includes(filterString.toLowerCase()))})
-    }
+    };
 
 
 

@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 export default class AssetList extends React.Component{
     static propTypes={
         tableData:PropTypes.array,
-    }
+    };
 
     render() {
         return (
