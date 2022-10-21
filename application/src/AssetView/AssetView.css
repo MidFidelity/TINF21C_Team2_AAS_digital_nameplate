@@ -21,7 +21,6 @@
 }
 .ProductDesc{
     grid-area: prodDesc;
-    width: 200px;
     height: 50em;
     border: black thin solid;
 }

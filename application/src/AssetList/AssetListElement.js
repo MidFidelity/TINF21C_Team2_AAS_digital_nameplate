@@ -1,16 +1,17 @@
-import {NavLink} from "react-router-dom";
 import "./AssetListElement.css"
 
-function AssetListElement({name, url, handleClick}) {
+function AssetListElement({name, url, onClick}) {
 
-    const handleClickFunc=()=>{
-        handleClick(name);
+    const handleClick=(event)=>{
+        event.stopPropagation()
+        event.preventDefault()
+        onClick(name);
     };
 
     return(
             <tr className="AssetListElement">
                 <td>
-                    <div className={"AssetListElementName"}><NavLink to={"/asset/"+name}><p>{name}</p></NavLink></div>
+                    <div onClick={handleClick} className={"AssetListElementName"}><p>{name}</p></div>
                 </td>
             </tr>
         )

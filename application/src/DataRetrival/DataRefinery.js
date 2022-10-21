@@ -97,6 +97,7 @@ export default class DataRefinery {
     }
 
     #getDataFromServer(address) {
+        console.log("Making request to "+address);
         return fetch(address)
             .then(response => {
                 if (!response.ok) {
