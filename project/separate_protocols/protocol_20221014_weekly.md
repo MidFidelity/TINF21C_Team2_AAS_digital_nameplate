@@ -47,7 +47,9 @@ This meeting took ```1 hour```.
 ## Problems
 <!-- fill out if something happened, otherwise just let the preview sentence stay there-->
 
-On the 14.10.2022, there was a customer meeting. Certain aspects were requested differently. Those aspects will be discussed in submeeting and will be put in issues.
+*On the 14.10.2022, there was a customer meeting. Certain aspects were requested differently. Those aspects will be discussed in submeeting and will be put in issues.
+
+*Maris Koch: Accidently worked on two issues (Data refinement and AAS request) and committed it. For now the code will suffice, however, in the next semester it shall be split into two modules. 
 
 ## Work Progress
 <!-- please fill out the tasks-->
