@@ -22,15 +22,6 @@ This protocol was written by ```Adrian Khairi```.
 <!-- fill in time, if it isn't a Weekly- in hours-->
 This meeting took ```1 hour```.
 
-
-<!-- please use iterating numbers-->
-
-1. aaa
-
-2. bbb
-  
-3. ccc
-
 ## Agenda and Summary
 <!-- please use iterating numbers-->
 
