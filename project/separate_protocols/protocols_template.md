@@ -22,7 +22,7 @@ This protocol was written by ```Adrian Khairi```.
 <!-- fill in time, if it isn't a Weekly- in hours-->
 This meeting took ```1 hour```.
 
-## Agenda
+
 <!-- please use iterating numbers-->
 
 1. aaa
@@ -31,14 +31,17 @@ This meeting took ```1 hour```.
   
 3. ccc
 
-## Summary
+## Agenda and Summary
 <!-- please use iterating numbers-->
 
-1. aaa
-
-2. bbb
-  
-3. ccc
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|                |                             |
+|                |                             |
+|                |                             |
+|                |                             |
+|                |                             |
+|                |                             |
 
 ## Problems
 <!-- fill out if something happened, otherwise just let the preview sentence stay there-->
