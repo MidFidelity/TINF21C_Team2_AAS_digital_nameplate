@@ -1,5 +1,5 @@
 # Protocol Overview
-This document contains all the protocols merged into one. It is separated into meetings for weeklys and submeetings for conferences in the sub team.
+This document contains all the protocols merged into one. It is separated into meetings for weeklys and submeetings for conferences in the subteams.
 
 # Table of contents
 1. [Meeting 11.09.2022](#W-11.09.2022)
@@ -40,11 +40,10 @@ This meeting took ```1 hour```.
 |Agenda          |Summary                      |
 |----------------|-----------------------------|
 |Which project do we prefer to work on?            |We decided to rank the projects. Our ranking of the projects is in this order: 2.1, 2.2, 2.3 and at the end 2.4.                           |
-|Who takes on which role/job?                |The roles or rather jobs have been taken on in the upcoming way:<ul><li>Project lead: Adrian Khairi</li><li>Product manager: Sophie Kirschner</li><li>System architect: Mika Kuge</li><li>Test manager: Janin Ahlemeyer</li><li>Technical documentation: Maris Koch</li><li>Software developer: Erika Zhang</li></ul>|
-
+|Who takes on which role/job?                |The roles or rather jobs have been taken on in the upcoming way:<ul><li>Project Lead: Adrian Khairi</li><li>Product Manager: Sophie Kirschner</li><li>System Architect: Mika Kuge</li><li>Test Manager: Janin Ahlemeyer</li><li>Technical Documentation: Maris Koch</li><li>Software Developer: Erika Zhang</li></ul>
 |Who should focus on which part of the project?                |Mika, Janin, Maris and Erika will primarily focus on coding, while Sophie and Adrian will focus on the documents or rather the documentation.                             |
 |Which platforms do we want to use? Maybe Discord and Github?                |We decided to use Discord and Github. Discord will be used for the communication, while Github will be utilized for the documentation and code. Mika will set up the platforms for usage.                             |
-|When should our weeklys (weekly meetings) take place?                |The weeklys will take place fridays after the Softwareengineering class.                             |
+|When should our weeklys (weekly meetings) take place?                |The weeklys will take place fridays after the Software Engineering class.                             |
 |Who protocols the weeklys and writes an agenda?                |Adrian will be the one in charge for protocoling the weeklys and writing an agenda.                            |
 |Do we want to set this project up in English or German?                |We decided to set the project up in English.                             |
 
