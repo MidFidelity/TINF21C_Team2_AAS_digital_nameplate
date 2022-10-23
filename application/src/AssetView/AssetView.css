@@ -6,7 +6,7 @@
             "nameplate prodDesc"
             "foot foot";
     grid-template-rows: 2em 80% auto auto;
-    grid-template-columns: 50% 50% ;
+    grid-template-columns: 30% 70% ;
 }
 .AssetViewTitle{
     grid-area: title;
@@ -21,9 +21,24 @@
 }
 .ProductDesc{
     grid-area: prodDesc;
-    height: 50em;
     border: black thin solid;
 }
+.ProductDesc table{
+    border-collapse: collapse;
+    width: available;
+    width: -moz-available;
+}
+
+.ProductDesc tr:nth-child(2n){
+    background: lightgray;
+}
+
+.ProductDesc td{
+    white-space: pre-wrap;
+    border: thin black solid;
+
+}
+
 .Nameplate{
     grid-area: nameplate;
     width: 200px;
