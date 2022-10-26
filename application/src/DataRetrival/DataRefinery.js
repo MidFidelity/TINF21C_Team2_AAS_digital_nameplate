@@ -6,22 +6,34 @@ export default class DataRefinery {
     };
 
     constructor(serverBaseAddress) {
-        this.serverBaseAddress = serverBaseAddress;
+        if (serverBaseAddress.endsWith("/")) {
+            this.serverBaseAddress = serverBaseAddress;
+        } else {
+            this.serverBaseAddress = serverBaseAddress + "/";
+        }
     }
 
     getFullAASList() {
         return this.#getDataFromServer(this.serverBaseAddress + "server/listaas").then(response => {
-            if (Object.hasOwn(response, 'success') && !response.success) return {error: "An error occurred with: " + this.serverBaseAddress + "server/listaas"};
+            if (!response || (Object.hasOwn(response, 'success') && !response.success)) {
+                throw new Error(this.serverBaseAddress + "server/listaas")
+            }
             return response.aaslist.map(aasString => this.#AASStringToObject(aasString));
+        }).catch(err => {
+            console.warn(err);
+            return []
         });
     }
 
     getNameplateDataOfAsset(assetName) {
         return this.#getDataFromServer(this.serverBaseAddress + "aas/" + assetName + "/submodels/nameplate/complete").then(nameplate => {
-            if (Object.hasOwn(nameplate, 'success') && !nameplate.success) return {error: "An error occurred with: " + this.serverBaseAddress + "aas/" + assetName + "/submodels/nameplate/complete"};
+            if (!nameplate || (Object.hasOwn(nameplate, 'success') && !nameplate.success)) throw new Error(this.serverBaseAddress + "aas/" + assetName + "/submodels/nameplate/complete");
             return this.#getIndexOfAsset(this.serverBaseAddress, assetName).then(index => {
                 return this.#extractDataFromNameplate(nameplate, index, assetName);
             });
+        }).catch(err => {
+            console.warn(err);
+            return {}
         });
     }
 
@@ -85,14 +97,20 @@ export default class DataRefinery {
     }
 
     #getDataFromServer(address) {
+        console.log("Making request to "+address);
         return fetch(address)
             .then(response => {
+                if (!response.ok) {
+                    throw new Error("Fetch not ok")
+                }
                 return response.json().then(jsonResponse => {
                     return jsonResponse;
+                }).catch(err => {
+                    console.log(response, err)
                 })
             })
             .catch(err => {
-                return {success: false};
+                console.log({success: false, text: err})
             });
     }
 

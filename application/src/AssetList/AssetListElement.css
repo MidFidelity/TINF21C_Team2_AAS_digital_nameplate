@@ -1,0 +1,15 @@
+.AssetListElement{
+    background-color: lightgray;
+
+    border-top: black thin solid;
+    border-bottom: black thin solid;
+
+    cursor: pointer;
+    height: fit-content;
+}
+
+.AssetListElement p{
+    margin: 0;
+    padding: 0.1em;
+}
+
