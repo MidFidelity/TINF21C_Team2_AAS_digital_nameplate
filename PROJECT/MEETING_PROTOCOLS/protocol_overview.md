@@ -12,6 +12,7 @@ This document contains all the protocols merged into one. It is separated into m
 8. [Meeting 08.10.2022](#SF-08.10.2022)
 9. [Meeting 14.10.2022](#W-14.10.2022)
 10. [Meeting 21.10.2022](#W-21.10.2022)
+11. [Meeting 28.10.2022](#W-28.10.2022)
 
 <!-- New Meeting -->
 
@@ -528,5 +529,53 @@ This meeting took ```1 hour```.
 |Maris Koch      |Had a look at the user manuals from the last years to get an general overview of the structure, created an agenda in the GitHub Wiki for the user manual                              |
 |Mika Kuge       |Implement data refinement into UI, website can now accept a server addrees and display the assets on the server, worked on SAS                           |
 |Erika Zhang     |Refined CRS, read and corrected SRS, SAS, BC and PSP                            |
+
+<!-- New Meeting -->
+
+# Meeting  Protocol  of  28.10.2022 <a name="W-28.10.2022"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Erika Zhang```.
+
+## Meeting Participants
+
+* Janin Ahlemeyer
+* Adrian Khairi
+* Sophie Kirschner
+* Maris Koch
+* Mika Kuge
+* Erika Zhang
+
+## Meeting Duration
+<!-- fill in time, if it isn't a Weekly- in hours-->
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+<!-- please use iterating numbers-->
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Could everyone give an update on his/her work progress? | *This will be documented in the upcoming section*|              
+
+## Problems
+<!-- fill out if something happened, otherwise just let the preview sentence stay there-->
+
+* Janin Ahlemeyer: Could not test edge cases due to the prototype not being done yet. Therefore the process must be delayed.
+* Maris Koch: He needs to discuss the Modules with Mika Kuge and Erika Zhang to figure out whether they should be seperated or not.
+
+## Work Progress
+<!-- please fill out the tasks-->
+
+|Name            |Task                         |
+|----------------|-----------------------------|
+|Janin Ahlemeyer |Edge Cases                             |
+|Adrian Khairi   |Worked on the presentation and the finalizing and publishing of the documents.                             |
+|Sophie Kirschner|-                             |
+|Maris Koch      |Wrote Module Documentations for Web Interface and Nameplate generation.                             |
+|Mika Kuge       |Worked on the presentation and the publishing of the documents in the GitHub.                             |
+|Erika Zhang     |Worked on finalizing and publishing the documents as well as transforming the SAS and SRS into md files.                             |
 
 <!-- New Meeting -->
