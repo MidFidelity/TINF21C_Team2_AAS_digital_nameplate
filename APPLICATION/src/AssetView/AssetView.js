@@ -4,8 +4,8 @@ import "./AssetView.css"
 import DataRefinery from "../DataRetrival/DataRefinery";
 import AssetData from "./AssetData";
 
-const AssetView = () => {
-    const {name} = useParams();
+const AssetView = ({assetList}) => {
+    const {idShort} = useParams();
     const [query] = useSearchParams();
     const [assetData, setAssetData] = useState();
     const refinery = new DataRefinery(query.get("server"));
@@ -13,16 +13,33 @@ const AssetView = () => {
 
     useEffect(()=>{
         console.log("Loading AssetView")
-        refinery.getNameplateDataOfAsset(name).then(result=>setAssetData(result))
-    },[])
+        if (!assetList || assetList.length === 0){
+            console.log("AssetList not loaded (yet)")
+            return
+        }
+        let assetData = findAssetDataByIdShort();
+        if (assetData.nameplateIdEncoded) {
+            refinery.getNameplateDataOfAsset(assetData).then(result => setAssetData(result))
+        }
+    },[assetList])
+
+
+    const findAssetDataByIdShort = ()=>{
+        for (const assetListElement of assetList) {
+            if(assetListElement.idShort === idShort){
+                return assetListElement;
+            }
+        }
+    }
+
 
     return (
         <div className={"AssetView"}>
-            <h3 className={"AssetViewTitle"}>{name}</h3>
+            <h3 className={"AssetViewTitle"}>{idShort}</h3>
             <div  className={"ProductImage"}>
             </div>
             <div className={"ProductDesc"}>
-                <AssetData data={assetData?assetData:{}}></AssetData>
+                <AssetData data={assetData?assetData:[]}></AssetData>
             </div>
             <div className={"Nameplate"}>
 

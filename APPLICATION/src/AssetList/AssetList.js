@@ -8,8 +8,8 @@ const AssetList = ({tableData}) => {
     const navigate = useNavigate();
     const [query, setQuery] = useSearchParams();
 
-    const navToItem=(name)=>{
-        navigate(`/asset/${name}?${query.toString()}`);
+    const navToItem=(idShort, idEncoded)=>{
+        navigate(`/asset/${idShort}?${query.toString()}`);
     }
 
     return (<table className={"AssetList"}>
@@ -22,7 +22,7 @@ const AssetList = ({tableData}) => {
         </thead>
         <tbody>
         {tableData.map((item, index) => (
-            <AssetListElement key={index} name={item.name} onClick={navToItem}></AssetListElement>))}
+            <AssetListElement key={index} assetData={item} onClick={navToItem}></AssetListElement>))}
         </tbody>
     </table>)
 }

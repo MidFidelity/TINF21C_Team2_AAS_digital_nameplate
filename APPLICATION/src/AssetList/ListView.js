@@ -49,7 +49,7 @@ class ListView extends React.Component{
     };
 
     filterTableData = (filterString = this.state.filterTerm) => {
-        this.setState({filteredTableData: this.props.tableData.filter(item => item.name.toLowerCase().includes(filterString.toLowerCase()))})
+        this.setState({filteredTableData: this.props.tableData.filter(item => item.idShort.toLowerCase().includes(filterString.toLowerCase()))})
     };
 
 render(){
