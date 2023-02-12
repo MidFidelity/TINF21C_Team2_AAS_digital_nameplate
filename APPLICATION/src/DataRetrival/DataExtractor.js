@@ -6,7 +6,7 @@ export default class DataExtractor {
         this.nameplate = nameplate;
     }
 
-    extractAllData(nameplate = this.nameplate){
+    extractAllData(baseUrl, nameplate = this.nameplate , path = "", ){
         let returnObject = {}
         console.log("loading data for submodelElementCollection")
         console.log(nameplate)
@@ -14,11 +14,12 @@ export default class DataExtractor {
                 if(nameplateElement.modelType === "MultiLanguageProperty"){
                     returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
                 }else if(nameplateElement.modelType === "SubmodelElementCollection"){
-                    returnObject[nameplateElement.idShort] = this.extractAllData(nameplateElement.value)
+
+                    returnObject[nameplateElement.idShort] = this.extractAllData(baseUrl, nameplateElement.value, path+(path.length>0?".":"") + nameplateElement.idShort)
                 }else if(nameplateElement.modelType === "Property"){
                     returnObject[nameplateElement.idShort] = nameplateElement.value
                 }else if(nameplateElement.modelType === "File"){
-                    //TODO load file here
+                    returnObject["FilePath"] = baseUrl+"/"+ path +"."+nameplateElement.idShort+"/attachment"
                     returnObject[nameplateElement.idShort] = nameplateElement.value
                 }
         }

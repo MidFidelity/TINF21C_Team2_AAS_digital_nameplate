@@ -1,5 +1,5 @@
 import DataExtractor from "./DataExtractor.js";
-import {addressNameplateOfAsset, addressShellList, addressSubmodelList} from "./API";
+import {addressNameplateOfAsset, addressShellList, addressSubmodelList, imageAddress} from "./API";
 
 export default class DataRefinery {
 
@@ -47,7 +47,7 @@ export default class DataRefinery {
         return this.#getDataFromServer(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded)).then(result => {
             if (!result || (Object.hasOwn(result, 'success') && !result.success)) throw new Error(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded));
             let de = new DataExtractor(result)
-            return de.extractAllData()
+            return de.extractAllData(this.serverBaseAddress + imageAddress(assetData.idEncoded, assetData.nameplateIdEncoded))
 
         }).catch(err => {
             console.warn(err);

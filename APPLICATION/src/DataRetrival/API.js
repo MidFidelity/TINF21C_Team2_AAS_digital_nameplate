@@ -14,8 +14,12 @@ function addressNameplateOfAsset(idEncoded, nameplateIdEncoded) {
     return `submodels/${nameplateIdEncoded}/submodelelements`
 }
 
+function imageAddress(idEncoded, nameplateIdEncoded){
+   return `shells/${idEncoded}/submodels/${nameplateIdEncoded}/submodel/submodelelements`
+}
+
 export {
-    addressSubmodelList, addressShellList, addressAsset, addressNameplateOfAsset
+    addressSubmodelList, addressShellList, addressAsset, addressNameplateOfAsset, imageAddress
 }
 
 
