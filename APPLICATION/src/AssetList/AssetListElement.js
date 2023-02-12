@@ -1,17 +1,17 @@
 import "./AssetListElement.css"
 
-function AssetListElement({name, url, onClick}) {
+function AssetListElement({assetData, onClick}) {
 
     const handleClick=(event)=>{
         event.stopPropagation()
         event.preventDefault()
-        onClick(name);
+        onClick(assetData.idShort, assetData.idEncoded);
     };
 
     return(
             <tr className="AssetListElement">
                 <td>
-                    <div onClick={handleClick} className={"AssetListElementName"}><p>{name}</p></div>
+                    <div onClick={handleClick} className={"AssetListElementName"}><p>{assetData.idShort}</p></div>
                 </td>
             </tr>
         )
