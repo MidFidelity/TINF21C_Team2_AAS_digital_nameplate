@@ -6,12 +6,13 @@ const AssetData = ({data}) => {
 
     return (<table>
             <tbody>
-            {data.map((item, index) => {
+            {Object.entries(data).map(([key, value], index) => {
                 return (<tr key={index}>
-                    <td>{item.idShort.toString()}</td>
-                    <td>{JSON.stringify(item.value, null, 2)}</td>
+                    <td>{key}</td>
+                    <td>{JSON.stringify(value, null, 2)}</td>
                 </tr>)
-            })}
+            })
+            }
             </tbody>
         </table>)
 }

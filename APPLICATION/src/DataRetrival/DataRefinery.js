@@ -2,9 +2,6 @@ import DataExtractor from "./DataExtractor.js";
 import {addressNameplateOfAsset, addressShellList, addressSubmodelList} from "./API";
 
 export default class DataRefinery {
-    #errorObj = {
-        error: "The nameplate can not be generated because there are missing information in the asset."
-    };
 
     constructor(serverBaseAddress) {
         if (serverBaseAddress.endsWith("/")) {
@@ -49,15 +46,17 @@ export default class DataRefinery {
     getNameplateDataOfAsset(assetData) {
         return this.#getDataFromServer(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded)).then(result => {
             if (!result || (Object.hasOwn(result, 'success') && !result.success)) throw new Error(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded));
-            return result;
+            let de = new DataExtractor(result)
+            return de.extractAllData()
+
         }).catch(err => {
             console.warn(err);
             return {}
         });
     }
 
-    async #findAllNameplateSubmodels(address) {
-        let submodels = this.#getDataFromServer(this.serverBaseAddress + addressSubmodelList()).then(result => {
+    async #findAllNameplateSubmodels() {
+        return this.#getDataFromServer(this.serverBaseAddress + addressSubmodelList()).then(result => {
             console.log("Submodels:")
             console.log(result);
             let filteredResult = result.filter((item) => {
@@ -71,7 +70,6 @@ export default class DataRefinery {
             console.log(filteredResult);
             return filteredResult;
         });
-        return submodels;
     }
 
     #getDataFromServer(address) {
