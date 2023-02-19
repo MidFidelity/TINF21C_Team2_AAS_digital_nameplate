@@ -13,11 +13,16 @@
     margin: 0;
     text-align: center;
 }
-.ProductImage{
+.AssetView .ProductImageContainer{
+    display: flex;
     grid-area: prodImg;
-    width: 200px;
-    height: 200px;
+    max-width: inherit;
     border: black thin solid;
+}
+
+.AssetView .ProductImage{
+    width: 100%;
+    height: fit-content;
 }
 .ProductDesc{
     grid-area: prodDesc;

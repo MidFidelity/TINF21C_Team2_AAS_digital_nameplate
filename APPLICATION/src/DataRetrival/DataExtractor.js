@@ -8,13 +8,12 @@ export default class DataExtractor {
 
     extractAllData(baseUrl, nameplate = this.nameplate , path = "", ){
         let returnObject = {}
-        console.log("loading data for submodelElementCollection")
-        console.log(nameplate)
+        //console.log("loading data for submodelElementCollection")
+        //console.log(nameplate)
         for (const nameplateElement of nameplate) {
                 if(nameplateElement.modelType === "MultiLanguageProperty"){
                     returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
                 }else if(nameplateElement.modelType === "SubmodelElementCollection"){
-
                     returnObject[nameplateElement.idShort] = this.extractAllData(baseUrl, nameplateElement.value, path+(path.length>0?".":"") + nameplateElement.idShort)
                 }else if(nameplateElement.modelType === "Property"){
                     returnObject[nameplateElement.idShort] = nameplateElement.value
@@ -23,7 +22,7 @@ export default class DataExtractor {
                     returnObject[nameplateElement.idShort] = nameplateElement.value
                 }
         }
-        console.log("-----")
+        //console.log("-----")
         return returnObject
     }
 
