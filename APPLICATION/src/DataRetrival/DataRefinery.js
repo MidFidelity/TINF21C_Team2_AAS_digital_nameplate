@@ -40,7 +40,7 @@ export default class DataRefinery {
                     })
                 });
 
-                let productImages = technicalData?this.searchForKey(technicalData, /[pP]roductImage\d*/):null
+                let productImages = technicalData?this.searchForKey(technicalData, /[pP]roductImage\d*/):[]
 
                 return {
                     "idShort": obj["idShort"],
