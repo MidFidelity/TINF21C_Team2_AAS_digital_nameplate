@@ -1,78 +1,42 @@
 export default class DataExtractor {
-    #failureObject = {success: false};
+
+    langPreferences = ["de", "en"]
 
     constructor(nameplate) {
         this.nameplate = nameplate;
     }
 
-    getManufacturerName() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "ManufacturerName");
+    extractAllData(baseUrl, nameplate = this.nameplate , path = "", ){
+        let returnObject = {}
+        //console.log("loading data for submodelElementCollection")
+        //console.log(nameplate)
+        for (const nameplateElement of nameplate) {
+                if(nameplateElement.modelType === "MultiLanguageProperty"){
+                    returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
+                }else if(nameplateElement.modelType === "SubmodelElementCollection"){
+                    returnObject[nameplateElement.idShort] = this.extractAllData(baseUrl, nameplateElement.value, path+(path.length>0?".":"") + nameplateElement.idShort)
+                }else if(nameplateElement.modelType === "Property"){
+                    returnObject[nameplateElement.idShort] = nameplateElement.value
+                }else if(nameplateElement.modelType === "File"){
+                    returnObject["FilePath"] = baseUrl+"/"+ path +"."+nameplateElement.idShort+"/attachment"
+                    returnObject[nameplateElement.idShort] = nameplateElement.value
+                }
+        }
+        //console.log("-----")
+        return returnObject
     }
 
-    getAddressObject() {
-        let addressObject = this.getIDShortValue(this.nameplate.submodelElements, "PhysicalAddress");
-        if (!addressObject.success) return {
-            success: true, value: {
-                countryCode: "", cityTown: "", zipCode: "", street: ""
-            }
-        };
-
-        let countryCode = this.getIDShortValue(addressObject.value, "CountryCode");
-        if (!countryCode.success) {
-            countryCode = "";
-        }
-
-        let cityTown = this.getIDShortValue(addressObject.value, "CityTown");
-        if (!cityTown.success) {
-            cityTown = "";
-        }
-
-        let zipCode = this.getIDShortValue(addressObject.value, "Zip");
-        if (!zipCode.success) {
-            zipCode = "";
-        }
-
-        let street = this.getIDShortValue(addressObject.value, "Street");
-        if (!street.success) {
-            street = "";
-        }
-
-
-        return {
-            success: true, value: {
-                countryCode: countryCode.value, cityTown: cityTown.value, zipCode: zipCode.value, street: street.value
+    getLangStringValue(json){
+        if ("langStrings" in json){
+            let langStrings = json.langStrings
+            for (let langPref of this.langPreferences){
+                for (let langString of langStrings) {
+                    if(langString.language === langPref){
+                        return langString.text
+                    }
+                }
             }
         }
-    }
-
-    getSerialNumber() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "SerialNumber");
-    }
-
-    getBatchNumber() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "BatchNumber");
-    }
-
-    getManufacturerProductDesignation() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "ManufacturerProductDesignation");
-    }
-
-    getProductCountryOfOrigin() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "ProductCountryOfOrigin");
-    }
-
-    getYearOfConstruction() {
-        return this.getIDShortValue(this.nameplate.submodelElements, "YearOfConstruction");
-    }
-
-    getIDShortValue(searchObject, idShort) {
-        let foundObjects = searchObject
-            .filter(obj => {
-                return obj.idShort === idShort;
-            })
-            .map(obj => obj.value);
-        if (foundObjects.length !== 1 || !foundObjects[0] || (typeof foundObjects[0] === "string" && foundObjects[0].toLowerCase() === "n/a")) return this.#failureObject; else return {
-            success: true, value: foundObjects[0]
-        }
+        return ""
     }
 }

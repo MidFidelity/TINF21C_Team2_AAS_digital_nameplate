@@ -4,15 +4,35 @@ const AssetData = ({data}) => {
         return <p>No Nameplate data found</p>;
     }
 
+    const recursiveTable = (json)=>{
+        return(
+            <table>
+                {
+                Object.entries(json).map(([key, value], index) => {
+                    if (typeof value === "object"){
+                      return <tr key={index}>
+                          <td><p>{key}</p></td>
+                          <td>{recursiveTable(value)}</td>
+                      </tr>
+                    }else if(key === "FilePath"){
+                        return <tr key={index}>
+                            <td><p>{key}</p></td>
+                            <td><img className={"ProductImage"} src={value} alt={"Marking Image"}></img></td>
+                        </tr>
+                    } else{
+                        return <tr key={index}>
+                            <td><p>{key}</p></td>
+                            <td><p>{value}</p></td>
+                        </tr>
+                    }
+                })
+                }
+            </table>
+        )
+    }
+
     return (<table>
-            <tbody>
-            {data.map((item, index) => {
-                return (<tr key={index}>
-                    <td>{item.idShort.toString()}</td>
-                    <td>{JSON.stringify(item.value, null, 2)}</td>
-                </tr>)
-            })}
-            </tbody>
+            {recursiveTable(data)}
         </table>)
 }
 export default AssetData;

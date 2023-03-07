@@ -13,3 +13,8 @@
     padding: 0.1em;
 }
 
+.AssetListElement .ProductImage{
+    max-width: 50px;
+    max-height: 50px;
+}
+

@@ -1,21 +1,17 @@
-function addressSubmodelList() {
-    return "submodels"
+function submodelListPath() {
+    return "submodels?level=Deep"
 }
 
 function addressShellList() {
     return "shells";
 }
 
-function addressAsset(aasIdentifier) {
-    return `shells/${aasIdentifier}`
-}
-
-function addressNameplateOfAsset(idEncoded, nameplateIdEncoded) {
-    return `submodels/${nameplateIdEncoded}/submodelelements`
+function imageBasePath(submodelIdEncoded){
+    return `submodels/${submodelIdEncoded}/submodelelements`
 }
 
 export {
-    addressSubmodelList, addressShellList, addressAsset, addressNameplateOfAsset
+    submodelListPath, addressShellList, imageBasePath
 }
 
 

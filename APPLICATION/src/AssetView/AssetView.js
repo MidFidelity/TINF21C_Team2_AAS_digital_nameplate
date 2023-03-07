@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import "./AssetView.css"
-import DataRefinery from "../DataRetrival/DataRefinery";
 import AssetData from "./AssetData";
 
 const AssetView = ({assetList}) => {
     const {idShort} = useParams();
-    const [query] = useSearchParams();
     const [assetData, setAssetData] = useState();
-    const refinery = new DataRefinery(query.get("server"));
     
 
     useEffect(()=>{
@@ -17,29 +14,21 @@ const AssetView = ({assetList}) => {
             console.log("AssetList not loaded (yet)")
             return
         }
-        let assetData = findAssetDataByIdShort();
-        if (assetData.nameplateIdEncoded) {
-            refinery.getNameplateDataOfAsset(assetData).then(result => setAssetData(result))
-        }
+        setAssetData(assetList.find(item=>item["idShort"]===idShort))
     },[assetList])
-
-
-    const findAssetDataByIdShort = ()=>{
-        for (const assetListElement of assetList) {
-            if(assetListElement.idShort === idShort){
-                return assetListElement;
-            }
-        }
-    }
 
 
     return (
         <div className={"AssetView"}>
             <h3 className={"AssetViewTitle"}>{idShort}</h3>
-            <div  className={"ProductImage"}>
+            <div  className={"ProductImageContainer"}>
+                {assetData?
+                    <img src={assetData["productImages"].length>0?assetData["productImages"][0]:""} alt={"Product Image"} className={"ProductImage"}/>:
+                    <p>No Product Image found</p>
+                }
             </div>
             <div className={"ProductDesc"}>
-                <AssetData data={assetData?assetData:[]}></AssetData>
+                <AssetData data={assetData?assetData["nameplate"]:[]}></AssetData>
             </div>
             <div className={"Nameplate"}>
 

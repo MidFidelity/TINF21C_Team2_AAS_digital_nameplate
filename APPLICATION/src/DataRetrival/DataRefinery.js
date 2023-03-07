@@ -1,10 +1,10 @@
 import DataExtractor from "./DataExtractor.js";
-import {addressNameplateOfAsset, addressShellList, addressSubmodelList} from "./API";
+import {
+    addressShellList,
+    submodelListPath, imageBasePath
+} from "./API";
 
 export default class DataRefinery {
-    #errorObj = {
-        error: "The nameplate can not be generated because there are missing information in the asset."
-    };
 
     constructor(serverBaseAddress) {
         if (serverBaseAddress.endsWith("/")) {
@@ -16,65 +16,82 @@ export default class DataRefinery {
 
     async getFullAASList() {
         if (!this.nameplateSubmodels) {
-            await this.#findAllNameplateSubmodels(this.serverBaseAddress).then((result) => this.nameplateSubmodels = result)
+            await this.#findAllSubmodels("Nameplate").then((result) => this.nameplateSubmodels = result)
+        }
+        if (!this.technicalDataSubmodels){
+            await this.#findAllSubmodels("TechnicalData").then((result) => this.technicalDataSubmodels = result)
         }
         return this.#getDataFromServer(this.serverBaseAddress + addressShellList()).then(response => {
             if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
                 throw new Error(this.serverBaseAddress + addressShellList())
             }
             console.log(response);
-            let res = response.map((obj, index) => {
-                let nameplateId = this.nameplateSubmodels.find((item) => {
-                    return obj.submodels.find((sub) => {
+            let returnData = response.map((obj, index) => {
+                let id = obj["identification"] ? obj["identification"]["id"] : obj["id"]
+
+                let nameplateData = this.nameplateSubmodels.find((item) => {
+                    return obj["submodels"].find((sub) => {
                         return item.id === sub.keys[0].value
                     })
                 });
+                let technicalData = this.technicalDataSubmodels.find((item) => {
+                    return obj["submodels"].find((sub) => {
+                        return item.id === sub.keys[0].value
+                    })
+                });
+
+                let productImages = technicalData?this.searchForKey(technicalData, /[pP]roductImage\d*/):[]
+
                 return {
-                    idShort: obj["idShort"],
-                    id: obj["identification"] ? obj["identification"]["id"] : obj["id"],
-                    idEncoded: window.btoa(obj["identification"] ? obj["identification"]["id"] : obj["id"]),
-                    nameplateId: nameplateId ? nameplateId.id : null,
-                    nameplateIdEncoded: nameplateId ? nameplateId.idEncoded : null,
-                    num: index
+                    "idShort": obj["idShort"],
+                    "id": id,
+                    "idEncoded": window.btoa(id),
+                    "nameplateId": nameplateData ? nameplateData.id : null,
+                    "nameplateIdEncoded": nameplateData ? nameplateData.idEncoded : null,
+                    "num": index,
+                    "productImages": productImages,
+                    "nameplate":nameplateData?nameplateData:null
                 }
             });
-            console.log(res)
-            return res
+            console.log(returnData)
+            return returnData
         }).catch(err => {
             console.warn(err);
             return [];
         });
     }
 
-    getNameplateDataOfAsset(assetData) {
-        return this.#getDataFromServer(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded)).then(result => {
-            if (!result || (Object.hasOwn(result, 'success') && !result.success)) throw new Error(this.serverBaseAddress + addressNameplateOfAsset(assetData.idEncoded, assetData.nameplateIdEncoded));
-            return result;
-        }).catch(err => {
-            console.warn(err);
-            return {}
-        });
-    }
-
-    async #findAllNameplateSubmodels(address) {
-        let submodels = this.#getDataFromServer(this.serverBaseAddress + addressSubmodelList()).then(result => {
+    async #findAllSubmodels(name) {
+        return this.#getDataFromServer(this.serverBaseAddress + submodelListPath()).then(result => {
             console.log("Submodels:")
             console.log(result);
             let filteredResult = result.filter((item) => {
-                return item.idShort ? item.idShort === "Nameplate" : false
+                return item.idShort ? item.idShort === name : false
             }).map((item) => {
                 return {
-                    idShort: item.idShort, id: item.id, idEncoded: window.btoa(item.id)
+                    idShort:item.idShort ,id:item.id, idEncoded: window.btoa(item.id), ...new DataExtractor(item["submodelElements"]).extractAllData(this.serverBaseAddress + imageBasePath(window.btoa(item.id)))
                 }
             })
             console.log("Filtered Submodels:")
             console.log(filteredResult);
             return filteredResult;
         });
-        return submodels;
     }
 
-    #getDataFromServer(address) {
+    searchForKey(json, regex){
+        let returnList = []
+        if(typeof json === "object") {
+            for (let key in json) {
+                if (regex.test(key) && json["FilePath"]) {
+                    returnList.push(json["FilePath"]);
+                }
+                returnList = returnList.concat(this.searchForKey(json[key], regex));
+            }
+        }
+        return returnList;
+    }
+
+    async #getDataFromServer(address) {
         console.log("Making request to " + address);
         return fetch(address)
             .then(response => {

@@ -11,6 +11,9 @@ function AssetListElement({assetData, onClick}) {
     return(
             <tr className="AssetListElement">
                 <td>
+                    <img src={assetData.productImages?assetData.productImages[0]:""} alt={"Product Image"} className={"ProductImage"}/>
+                </td>
+                <td>
                     <div onClick={handleClick} className={"AssetListElementName"}><p>{assetData.idShort}</p></div>
                 </td>
             </tr>
