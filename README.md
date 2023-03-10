@@ -2,7 +2,7 @@
 
 The Digital Nameplate Generator is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). 
 
-Server Addresse: [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/)
+EIn Server zum Testen der Anwendung kann unter [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/) gefunden werden.
 
 ## Goals
 The main objective of this project is to create a nameplate generator for an Asset Administration Shell, also known as “AAS”. The application shall be able to create graphical illustrations based on the properties provided by the AAS as well as the ability to generate QR codes according to the DIN standard.  
