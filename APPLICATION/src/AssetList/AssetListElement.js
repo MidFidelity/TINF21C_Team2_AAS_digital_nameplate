@@ -1,4 +1,4 @@
-import "./AssetListElement.css"
+import "./AssetListElement.scss"
 
 function AssetListElement({assetData, onClick}) {
 

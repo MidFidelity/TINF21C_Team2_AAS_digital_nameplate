@@ -1,5 +1,5 @@
 import React from 'react';
-import "./AssetList.css"
+import "./AssetList.scss"
 import "./AssetListElement"
 import AssetListElement from "./AssetListElement";
 import {Navigate, useNavigate, useSearchParams} from "react-router-dom";

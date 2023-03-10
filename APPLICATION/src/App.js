@@ -1,7 +1,7 @@
-//import './App.css'
+
 import React from "react"
 import {Route, NavLink, HashRouter, Routes, Navigate} from "react-router-dom"
-import "./App.css"
+import "./App.scss"
 import AssetView from "./AssetView/AssetView"
 import ListView from "./AssetList/ListView"
 import HomeView from "./Homescreen/HomeView";
