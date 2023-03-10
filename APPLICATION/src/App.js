@@ -42,24 +42,10 @@ export default class App extends React.Component {
 
     render() {
         return (<HashRouter>
-            <div className={"NavBar"}>
+            <span>Nameplate Generator</span>
+            <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
+            <NavLink to={"/home"} className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>Home</NavLink>
 
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <NavLink to={"/home"}
-                                     className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>Home</NavLink>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
             <div className={"Content"}>
                 <Routes>
                     <Route exact path={"/home"} element={<HomeView/>}></Route>
