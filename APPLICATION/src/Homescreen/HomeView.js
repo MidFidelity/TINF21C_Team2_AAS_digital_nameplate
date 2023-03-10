@@ -25,7 +25,7 @@ export function HomeView() {
     return (
         <div className={"Home"}>
             <h1>Home-screen</h1>
-            <Searchbar hint={"Server address"} buttonText={"Open"} previewOptions={loadServerList()} onSubmit={addToServerList}></Searchbar>
+            <Searchbar hint={"Server address"} buttonText={"Open"} previewOptions={loadServerList()} onSubmit={addToServerList} value={"https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/"}></Searchbar>
         </div>
     );
 }
