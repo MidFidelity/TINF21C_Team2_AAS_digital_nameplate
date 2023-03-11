@@ -2,7 +2,8 @@ import React from 'react';
 import "./AssetList.scss"
 import "./AssetListElement"
 import AssetListElement from "./AssetListElement";
-import {Navigate, useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {ListGroup} from "react-bootstrap";
 
 const AssetList = ({tableData}) => {
     const navigate = useNavigate();
@@ -12,18 +13,10 @@ const AssetList = ({tableData}) => {
         navigate(`/asset/${idShort}?${query.toString()}`);
     }
 
-    return (<table className={"AssetList"}>
-        <thead>
-        <tr>
-            <td>
-                <div>Asset Name</div>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
+    return (
+        <ListGroup>
         {tableData.map((item, index) => (
             <AssetListElement key={index} assetData={item} onClick={navToItem}></AssetListElement>))}
-        </tbody>
-    </table>)
+        </ListGroup>)
 }
 export default AssetList;
