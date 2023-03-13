@@ -1,4 +1,5 @@
-import "./AssetListElement.css"
+import "./AssetListElement.scss"
+import {Col, ListGroup, Row} from "react-bootstrap";
 
 function AssetListElement({assetData, onClick}) {
 
@@ -9,14 +10,17 @@ function AssetListElement({assetData, onClick}) {
     };
 
     return(
-            <tr className="AssetListElement">
-                <td>
-                    <img src={assetData.productImages?assetData.productImages[0]:""} alt={"Product Image"} className={"ProductImage"}/>
-                </td>
-                <td>
-                    <div onClick={handleClick} className={"AssetListElementName"}><p>{assetData.idShort}</p></div>
-                </td>
-            </tr>
+        <ListGroup.Item onClick={handleClick} action variant={"dark"}>
+
+            <Row>
+                <Col md={2} className={"text-center"}>
+                    <img src={assetData.productImages?assetData.productImages[0]:""} alt={"Product Image"} className={"img-preview"}/>
+                </Col>
+                <Col className={"d-flex align-items-center"}>
+                    <span className={"d-flex align-items-center"}>{assetData.idShort}</span>
+                </Col>
+            </Row>
+        </ListGroup.Item>
         )
 }
 export default AssetListElement;

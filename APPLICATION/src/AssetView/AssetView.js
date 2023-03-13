@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import "./AssetView.css"
+import "./AssetView.scss"
 import AssetData from "./AssetData";
 
 const AssetView = ({assetList}) => {
