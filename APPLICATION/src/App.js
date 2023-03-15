@@ -7,6 +7,9 @@ import ListView from "./AssetList/ListView"
 import HomeView from "./Homescreen/HomeView";
 import ServerAddress from "./ServerAddress";
 import DataRefinery from "./DataRetrival/DataRefinery";
+import Navbar from "./Navigation/Navbar";
+import AboutView from "./AboutPage/AboutView";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -42,10 +45,10 @@ export default class App extends React.Component {
 
     render() {
         return (<HashRouter>
-            <span>Nameplate Generator</span>
-            <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
-            <NavLink to={"/home"} className={({isActive}) => isActive ? "NavLink NLActive" : "NavLink"}>Home</NavLink>
-
+            <div className="h-100">
+            <div className={"NavBar sticky-top"}>
+                <Navbar setServerAddress={this.setServerAddress}/>
+            </div>
             <div className={"Content"}>
                 <Routes>
                     <Route exact path={"/home"} element={<HomeView/>}></Route>
@@ -55,8 +58,11 @@ export default class App extends React.Component {
                         <Route path={":idShort"} element={<AssetView assetList={this.state.tableData}/>}></Route>
                     </Route>
                     <Route path={"/"} element={<Navigate to={"/home"} replace={true}></Navigate>}></Route>
+                    <Route exact path={"/about"} element={<AboutView/>}></Route>
                 </Routes>
+            </div>
             </div>
         </HashRouter>)
     }
 }
+

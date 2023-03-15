@@ -8,6 +8,6 @@ const ServerAddress = ({onLoad}) => {
         onLoad&&onLoad(query.get("server"))
     }, [onLoad, query]);
 
-  return <p>{query.get("server")}</p>
+  return <p className="m-auto">{query.get("server")}</p>
 };
 export default ServerAddress;
