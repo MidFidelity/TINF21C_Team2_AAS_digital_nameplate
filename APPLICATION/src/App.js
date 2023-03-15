@@ -45,19 +45,9 @@ export default class App extends React.Component {
 
     render() {
         return (<HashRouter>
-            <div className={"NavBar"}>
-
-                <Navbar />
-
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <ServerAddress onLoad={this.setServerAddress}></ServerAddress>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div className="h-100">
+            <div className={"NavBar sticky-top"}>
+                <Navbar setServerAddress={this.setServerAddress}/>
             </div>
             <div className={"Content"}>
                 <Routes>
@@ -71,6 +61,8 @@ export default class App extends React.Component {
                     <Route exact path={"/about"} element={<AboutView/>}></Route>
                 </Routes>
             </div>
+            </div>
         </HashRouter>)
     }
 }
+
