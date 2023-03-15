@@ -21,7 +21,7 @@ jobs:
         run: cd application
 
       - name: print filesystem
-          run: ls
+        run: ls
 
       - name: Install dependencies
         run: npm install
