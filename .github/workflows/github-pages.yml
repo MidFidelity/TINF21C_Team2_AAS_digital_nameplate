@@ -20,6 +20,9 @@ jobs:
       - name: Change into application directory
         run: cd application
 
+      - name: print filesystem
+          run: ls
+
       - name: Install dependencies
         run: npm install
 
