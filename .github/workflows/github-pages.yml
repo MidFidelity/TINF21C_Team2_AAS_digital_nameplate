@@ -14,6 +14,12 @@ jobs:
         with:
           path: application
 
+      - name: print filesystem
+        run: ls
+
+      - name: Change into APPLICATION directory
+        run: cd APPLICATION
+
       - name: Install dependencies
         run: npm install
 
