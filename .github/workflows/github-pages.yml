@@ -21,7 +21,7 @@ jobs:
         working-directory: APPLICATION
         run: npm install
 
-      - Give Permissions to shell script
+      - name: Give Permissions to shell script
         run: chmod +x ./version-info.sh
 
       - name: Run deploy script
