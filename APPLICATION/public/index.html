@@ -28,7 +28,8 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <p id= "build-information" class="text-center">Build created on: %REACTBUILDVERSION%<br>Commit Hash: %GITCOMMITHASH%</p>
+
+
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -40,5 +41,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <p id= "build-information" class="text-center text-muted">Build created on: %REACTBUILDVERSION%<br>Commit Hash: %GITCOMMITHASH%</p>
+      </div>
+    </footer>
   </body>
+
 </html>
