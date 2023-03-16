@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Searchbar from "../Searchbar";
 import AssetList from "./AssetList";
 
-
 export function withRouter(Children){
     return(props)=>{
         const [query, setQuery] = useSearchParams();

@@ -10,10 +10,9 @@ function AssetListElement({assetData, onClick}) {
     };
 
     return(
-        <ListGroup.Item onClick={handleClick} action variant={"dark"}>
-
-            <Row>
-                <Col md={2} className={"text-center"}>
+        <ListGroup.Item onClick={handleClick} action className="border-top mt-2 shadow-sm">
+            <Row className={"assetListElementRow"}>
+                <Col md={2} className={"text-center m-auto"}>
                     <img src={assetData.productImages?assetData.productImages[0]:""} alt={"Product Image"} className={"img-preview"}/>
                 </Col>
                 <Col className={"d-flex align-items-center"}>

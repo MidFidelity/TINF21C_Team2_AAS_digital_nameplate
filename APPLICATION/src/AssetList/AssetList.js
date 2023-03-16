@@ -3,7 +3,7 @@ import "./AssetList.scss"
 import "./AssetListElement"
 import AssetListElement from "./AssetListElement";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {ListGroup} from "react-bootstrap";
+import {Col, ListGroup, Row} from "react-bootstrap";
 
 const AssetList = ({tableData}) => {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ const AssetList = ({tableData}) => {
     }
 
     return (
-        <ListGroup>
+        <ListGroup className="d-flex p-5">
         {tableData.map((item, index) => (
             <AssetListElement key={index} assetData={item} onClick={navToItem}></AssetListElement>))}
         </ListGroup>)
