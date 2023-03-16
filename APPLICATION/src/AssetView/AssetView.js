@@ -23,7 +23,7 @@ const AssetView = ({assetList}) => {
             <h3 className={"AssetViewTitle"}>{idShort}</h3>
             <div  className={"ProductImageContainer"}>
                 {assetData?
-                    <img src={assetData["productImages"].length>0?assetData["productImages"][0]:""} alt={"Product Image"} className={"ProductImage"}/>:
+                    <img src={assetData["productImages"].length>0?assetData["productImages"][0]:""} alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/>:
                     <p>No Product Image found</p>
                 }
             </div>

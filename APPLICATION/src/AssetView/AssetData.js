@@ -11,7 +11,7 @@ const AssetData = ({data}) => {
                 Object.entries(json).map(([key, value], index) => {
                     if (typeof value === "object"){
                       return <tr key={index}>
-                          <td><p>{key}</p></td>
+                          <td><p class="categories">{key}</p></td>
                           <td>{recursiveTable(value)}</td>
                       </tr>
                     }else if(key === "FilePath"){
@@ -21,7 +21,7 @@ const AssetData = ({data}) => {
                         </tr>
                     } else{
                         return <tr key={index}>
-                            <td><p>{key}</p></td>
+                            <td><p class="categories">{key}</p></td>
                             <td><p>{value}</p></td>
                         </tr>
                     }
