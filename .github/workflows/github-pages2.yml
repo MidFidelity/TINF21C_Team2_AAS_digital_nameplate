@@ -26,7 +26,6 @@ jobs:
           npm run build
 
       - name: Deploy 🚀
-        working-directory: APPLICATION
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build # The folder the action should deploy.
+          folder: APPLICATION/build # The folder the action should deploy.
