@@ -1,8 +1,5 @@
 name: Build and Deploy to GitHub Pages
-on:
-  push:
-    branches:
-      - feature/versionnumber
+on: workflow_dispatch
 permissions:
   contents: write
 jobs:
