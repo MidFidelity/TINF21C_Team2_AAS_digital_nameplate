@@ -13,6 +13,8 @@ This document contains all the protocols merged into one. It is separated into m
 9. [Meeting 14.10.2022](#W-14.10.2022)
 10. [Meeting 21.10.2022](#W-21.10.2022)
 11. [Meeting 28.10.2022](#W-28.10.2022)
+12. [Meeting 10.03.2023](#W-10.03.2023)
+
 
 <!-- New Meeting -->
 
@@ -577,5 +579,52 @@ This meeting took ```1 hour```.
 |Maris Koch      |Wrote Module Documentations for Web Interface and Nameplate generation.                             |
 |Mika Kuge       |Worked on the presentation and the publishing of the documents in the GitHub.                             |
 |Erika Zhang     |Worked on finalizing and publishing the documents as well as transforming the SAS and SRS into md files.                             |
+
+<!-- New Meeting -->
+
+# Meeting  Protocol  of  10.03.2023 <a name="W-10.03.2023"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Erika Zhang```.
+
+## Meeting Participants
+
+* Janin Ahlemeyer
+* Adrian Khairi
+* Maris Koch
+* Mika Kuge
+* Erika Zhang
+
+## Meeting Duration
+<!-- fill in time, if it isn't a Weekly- in hours-->
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+<!-- please use iterating numbers-->
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Update on the project| So far all the data can be shown including pictures and asset details|
+|What has to be done? | Milestones and issues are created for this|
+|Could everyone give an update on his/her work progress? | *This will be documented in the upcoming section*|              
+
+## Problems
+<!-- fill out if something happened, otherwise just let the preview sentence stay there-->
+At the moment, there are no problems which have to be mentioned.
+
+
+## Work Progress
+<!-- please fill out the tasks-->
+
+|Name            |Task                         |
+|----------------|-----------------------------|
+|Janin Ahlemeyer |Designed a nameplate logo                            |
+|Adrian Khairi   |Was sick                             |
+|Maris Koch      |reorganized and checked project status                           |
+|Mika Kuge       |Fixed bugs and deployed a server                              |
+|Erika Zhang     |Checked the quality of product based on prototype, talked to team members to create new milestones and issues                 |
 
 <!-- New Meeting -->
