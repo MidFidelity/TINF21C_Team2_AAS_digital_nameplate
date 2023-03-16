@@ -23,6 +23,6 @@ jobs:
         working-directory: APPLICATION
         run: chmod +x ./version-info.sh
 
-      - name: Run deploy script
-        working-directory: APPLICATION
-        run: npm run deploy
+#      - name: Run deploy script
+#        working-directory: APPLICATION
+#        run: npm run deploy
