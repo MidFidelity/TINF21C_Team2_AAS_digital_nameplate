@@ -14,6 +14,7 @@ This document contains all the protocols merged into one. It is separated into m
 10. [Meeting 21.10.2022](#W-21.10.2022)
 11. [Meeting 28.10.2022](#W-28.10.2022)
 12. [Meeting 10.03.2023](#W-10.03.2023)
+13. [Meeting 17.03.2023](#W-17.03.2023)
 
 
 <!-- New Meeting -->
@@ -626,5 +627,48 @@ At the moment, there are no problems which have to be mentioned.
 |Maris Koch      |reorganized and checked project status                           |
 |Mika Kuge       |Fixed bugs and deployed a server                              |
 |Erika Zhang     |Checked the quality of product based on prototype, talked to team members to create new milestones and issues                 |
+
+<!-- New Meeting -->
+
+# Meeting  Protocol  of  28.10.2022 <a name="W-17.03.2023"></a>
+
+## Type of Meeting
+This meeting was a ```Weekly```.
+
+## Protocol Writer
+This protocol was written by ```Erika Zhang```.
+
+## Meeting Participants
+
+* Janin Ahlemeyer
+* Adrian Khairi
+* Maris Koch
+* Mika Kuge
+* Erika Zhang
+
+## Meeting Duration
+<!-- fill in time, if it isn't a Weekly- in hours-->
+This meeting took ```1 hour```.
+
+## Agenda and Summary
+<!-- please use iterating numbers-->
+
+|Agenda          |Summary                      |
+|----------------|-----------------------------|
+|Could everyone give an update on his/her work progress? | *This will be documented in the upcoming section*|              
+
+## Problems
+<!-- fill out if something happened, otherwise just let the preview sentence stay there-->
+
+## Work Progress
+<!-- please fill out the tasks-->
+
+|Name            |Task                         |
+|----------------|-----------------------------|
+|Janin Ahlemeyer |Implemented UI design for home and asset page                            |
+|Adrian Khairi   |Final Polishment of certain Documents & Coordination                              |
+|Maris Koch      |Adding Build Number to GitHub Pages Build and creating GitHub Actions Workflow for easy deployment|
+|Mika Kuge       |Implement customer demands and added bootstrap to the project                             |
+|Erika Zhang     |Created new issues based on the meeting with the customer. Implemented a navigation bar and UI design for asset list|
 
 <!-- New Meeting -->
