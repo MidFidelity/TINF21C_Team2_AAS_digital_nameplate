@@ -22,6 +22,18 @@
     scroll-behavior: auto;
 }
 
+
+.suggestion{
+    border: none;
+    margin: 0.1em;
+    padding: 0.2em 0.4em;
+    border-radius: 1em;
+    cursor: pointer;
+    &:hover, &:focus{
+        background-color: lightgray;
+    }
+}
+
 .animate-height{
     transition: max-height 0.2s;
 }

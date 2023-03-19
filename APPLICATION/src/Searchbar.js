@@ -1,4 +1,4 @@
-import {Button, ListGroup} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
@@ -81,11 +81,14 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, va
                     </Button>
                 </div>
             </form>
-            {suggestions ? <div className={`${isFocused ? "" : "h-0"}  foreground animate-height suggestion-box`}>
-                <ListGroup>
-                    {filteredSuggestions.map((suggestion, index) => (<ListGroup.Item key={index} action
-                                                                                     onClick={handleSuggestionClick}>{suggestion}</ListGroup.Item>))}
-                </ListGroup>
+            {suggestions ?
+                <div className={`${isFocused ? "" : "h-0"}  z-1 animate-height suggestion-box`}>
+                    <hr className={"m-1"}/>
+                <div className={"d-flex flex-column"}>
+                    {filteredSuggestions.map((suggestion, index) => (
+                        <p key={index} onClick={handleSuggestionClick} className={"suggestion"}>{suggestion}</p>
+                    ))}
+                </div>
             </div> : ""}
         </div>
     </div>)
