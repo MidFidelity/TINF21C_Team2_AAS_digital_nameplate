@@ -12,7 +12,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 let suggestedServers = [
     "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/",
-    "https://v3-2.admin-shell-io.com/"
+    "https://v3-2.admin-shell-io.com/",
+    "http://aas.murrelektronik.com:4001/aas"
 ]
 
 export default class App extends React.Component {
