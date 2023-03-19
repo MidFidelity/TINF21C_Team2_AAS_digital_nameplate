@@ -1,5 +1,6 @@
 import Searchbar from "../Searchbar";
 import {useNavigate} from "react-router-dom";
+import "./HomeView.scss"
 
 export function HomeView() {
     const navigate = useNavigate();
@@ -23,11 +24,11 @@ export function HomeView() {
     };
 
     return (
-        <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div className="container min-vh-100 d-flex justify-content-center align-items-center">
         <div className={"Home"}>
-            <h1 class="text-center">Nameplate Generator</h1>
-            <Searchbar hint={"Server address"} buttonText={"Open"} previewOptions={loadServerList()} onSubmit={addToServerList} value={"https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/"}></Searchbar>
-            <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" class="rounded mx-auto d-block" width="70%"></img>
+            <h1 className="text-center">Nameplate Generator</h1>
+            <Searchbar className={"home-address-bar"} hint={"Server address"} buttonText={"Open"} suggestions={loadServerList()} onSubmit={addToServerList}></Searchbar>
+            <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" className="rounded mx-auto d-block" width="70%"></img>
         </div>
         </div>
     );
