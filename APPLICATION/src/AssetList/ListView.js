@@ -55,6 +55,7 @@ render(){
     return(
     <div className="ListView">
         <Searchbar hint={"HintText"}
+                   className={"w-50"}
                    buttonText={"SearchText"}
                    onChange={this.updateFilter}
                    onBlur={this.updateFilter}

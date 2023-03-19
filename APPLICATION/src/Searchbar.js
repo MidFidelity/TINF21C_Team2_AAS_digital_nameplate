@@ -3,19 +3,26 @@ import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
 function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, value}) {
-    const ref = useRef()
+    const containerRef = useRef()
+    const inputRef= useRef()
     const [isFocused, setFocused] = useState(false)
     const [textValue, setTextValue] = useState(value ? value : "")
-    const [filteredSuggestions, setFilteredSuggestions] = useState(suggestions)
+    const [filteredSuggestions, setFilteredSuggestions] = useState([])
 
     useEffect(() => {
         console.log(document.activeElement)
-        if (ref.current.contains(document.activeElement)) {
+        if (containerRef.current.contains(document.activeElement)) {
             setFocused(true)
         } else {
             setFocused(false)
         }
     }, [document.activeElement])
+
+    useEffect(()=>{
+        setFilteredSuggestions(suggestions?suggestions:[])
+        filterSuggestions()
+    }, [suggestions])
+
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -25,8 +32,8 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, va
         onChange && onChange(event.target.value);
     };
 
-    const handleSubmit = () => {
-        onSubmit && onSubmit(textValue);
+    const handleSubmit = (text) => {
+        onSubmit && onSubmit((typeof text === "string")?text:textValue);
     };
 
     const handleFocus = () => {
@@ -42,7 +49,7 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, va
 
     const handleSuggestionClick = (event) => {
         setTextValue(event.target.textContent)
-        handleSubmit()
+        handleSubmit(event.target.textContent)
     }
 
     const filterSuggestions = () => {
@@ -53,10 +60,11 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, va
 
     return (<div className={"search-container " + className}>
         <div id={"buttonContainer"} className={"d-flex flex-column outlineBorder bg-light foreground position-relative"}
-             ref={ref} onBlur={handleBlur} onFocus={handleFocus}>
+             ref={containerRef} onBlur={handleBlur} onFocus={handleFocus}>
             <form onSubmit={handleSubmit}>
                 <div className={"d-flex flex-row"}>
                     <input id={"searchBar"}
+                           ref={inputRef}
                            className={"w-100 border-0 bg-transparent outline-none"}
                            name={"searchTerm"}
                            type={"search"}
