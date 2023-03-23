@@ -10,7 +10,6 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
     const [filteredSuggestions, setFilteredSuggestions] = useState([])
 
     useEffect(() => {
-        console.log(document.activeElement)
         if (containerRef.current.contains(document.activeElement)) {
             setFocused(true)
         } else {
