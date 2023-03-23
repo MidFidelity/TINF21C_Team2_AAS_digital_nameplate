@@ -58,8 +58,6 @@ export default class App extends React.Component {
     }
 
     writeHistoryCookie() {
-        console.log("Writing History to Cookie")
-        console.log(this.state.serverHistory)
         let cookieContent = encodeURIComponent(JSON.stringify(this.state.serverHistory));
         let expDate = new Date()
         expDate.setFullYear(expDate.getFullYear() + 100)
@@ -67,14 +65,11 @@ export default class App extends React.Component {
     }
 
     updateServerHistory = (address) => {
-        console.log("Writing " + address + " to serverHistory")
         if (this.state.serverHistory.includes(address)) {
             let newHistory = [address, ...this.state.serverHistory.filter((item) => (item !== address))]
-            console.log(newHistory)
             this.setState({"serverHistory":newHistory})
         } else {
             let newHistory = [address, ...this.state.serverHistory]
-            console.log(newHistory)
             this.setState({"serverHistory":newHistory})
         }
     }
