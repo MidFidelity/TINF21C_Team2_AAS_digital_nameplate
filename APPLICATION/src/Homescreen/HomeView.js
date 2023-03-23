@@ -1,33 +1,25 @@
 import Searchbar from "../Searchbar";
 import {useNavigate} from "react-router-dom";
+import "./HomeView.scss"
+import {useEffect} from "react";
 
-export function HomeView() {
+export function HomeView({serverHistory}) {
     const navigate = useNavigate();
 
-    const loadServerList=()=>{
-        let storage = localStorage.getItem("serverList");
-        return storage?JSON.parse(storage):undefined
-    };
+    useEffect(()=>{
 
-    const addToServerList=(address)=> {
-        let serverList = loadServerList();
-        if (serverList) serverList = [...serverList, address];
-        else serverList = [address];
+    },[serverHistory])
 
-        localStorage.setItem("serverList", JSON.stringify(serverList));
-        toList(address);
-    };
-
-    const toList = (address) => {
+    const handleServerSelection=(address)=>{
         navigate(`/list?server=${address}`);
-    };
+    }
 
     return (
-        <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div className="container min-vh-100 d-flex justify-content-center align-items-center">
         <div className={"Home"}>
-            <h1 class="text-center">Nameplate Generator</h1>
-            <Searchbar hint={"Server address"} buttonText={"Open"} previewOptions={loadServerList()} onSubmit={addToServerList} value={"https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/"}></Searchbar>
-            <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" class="rounded mx-auto d-block" width="70%"></img>
+            <h1 className="text-center">Nameplate Generator</h1>
+            <Searchbar className={"home-address-bar"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection}></Searchbar>
+            <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" className="rounded mx-auto d-block" width="70%"></img>
         </div>
         </div>
     );
