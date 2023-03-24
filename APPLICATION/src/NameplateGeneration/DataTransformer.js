@@ -1,5 +1,4 @@
-const FILTER_KEYS = ["idEncoded", "nameplateId", "nameplateIdEncoded", "num", "nameplate.idShort", "nameplate.id",
-    "nameplate.idEncoded", "productImages.*"];
+const FILTER_KEYS = ["nameplateId", "num", "nameplate\.idShort", "nameplate\.id", "productImages\.*", ".*idEncoded"];
 
 function transformDataToArray(obj) {
     console.log('Original obj:');
@@ -14,7 +13,6 @@ function transformDataToArray(obj) {
     console.log('flattenObject():');
     console.log(obj);
 
-    //TODO: MUSS REGEX VERSTEHEN KÖNNEN!
     let unwantedKeys;
     ({data: obj, unwantedKeys} = extractUnwantedKeys(obj, FILTER_KEYS));
     console.log('unwantedKeys:');
@@ -96,15 +94,12 @@ function separateMarkings(obj) {
  */
 function flattenObject(ob) {
     let toReturn = {};
-
     for (let i in ob) {
         if (!ob.hasOwnProperty(i)) continue;
-
         if ((typeof ob[i]) == 'object' && ob[i] !== null) {
             let flatObject = flattenObject(ob[i]);
             for (let x in flatObject) {
                 if (!flatObject.hasOwnProperty(x)) continue;
-
                 toReturn[i + '_' + x] = flatObject[x];
             }
         } else {
@@ -126,6 +121,24 @@ function replaceDotsInArray(filters) {
 }
 
 /**
+ * Returns array of keys of flattened object which match regex.
+ * @param obj
+ * @param regex
+ * @returns {*[]}
+ */
+function keyMatch(obj, regex) {
+    console.log(regex)
+    regex = new RegExp(regex);
+    let result = [];
+    Object.keys(obj).forEach((key) => {
+        if (key.match(regex)) {
+            result.push(key);
+        }
+    });
+    return result;
+}
+
+/**
  * Filters all unwanted keys into a different object.
  * @param obj
  * @param filters
@@ -136,10 +149,13 @@ function extractUnwantedKeys(obj, filters) {
     let transformedFilter = replaceDotsInArray(filters);
     let unwantedKeys = {};
     transformedFilter.forEach((filter) => {
-        if (data[filter]) {
-            unwantedKeys[filter] = data[filter];
-            delete data[filter];
-        }
+        let keys = keyMatch(data, filter);
+        keys.forEach((key) => {
+            if (data[key]) {
+                unwantedKeys[key] = data[key];
+                delete data[key];
+            }
+        });
     });
     return {data, unwantedKeys};
 }
