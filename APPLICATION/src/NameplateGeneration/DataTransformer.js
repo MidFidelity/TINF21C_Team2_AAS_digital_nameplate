@@ -1,4 +1,6 @@
-const FILTER_KEYS = ["nameplateId", "num", "nameplate\.idShort", "nameplate\.id", "productImages\.*", ".*idEncoded"];
+// 'idEncoded' filters all keys that contain 'idEncoded'
+// same goes for 'productImages'
+const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded"];
 
 function transformDataToArray(obj) {
     console.log('Original obj:');
@@ -38,26 +40,6 @@ function transformDataToArray(obj) {
     console.log('filterEmptyEntries():');
     console.log(filteredKeyValues); 
 */
-}
-
-/**
- * Pulls every [key, value]-array out of an entire [key, value]-array-hierarchy to root level.
- * @param list
- * @returns {*[]}
- */
-function recursiveExtract(list) {
-    let result = [];
-    if (list.length === 0) {
-        return [];
-    }
-    list.forEach((elem) => {
-        if (typeof elem[1] == "string" || typeof elem[1] == "number" || Array.isArray(elem[1])) {
-            result.push(elem);
-            return;
-        }
-        result = result.concat(recursiveExtract(Object.entries(elem[1])));
-    })
-    return result;
 }
 
 /**
@@ -127,7 +109,6 @@ function replaceDotsInArray(filters) {
  * @returns {*[]}
  */
 function keyMatch(obj, regex) {
-    console.log(regex)
     regex = new RegExp(regex);
     let result = [];
     Object.keys(obj).forEach((key) => {
