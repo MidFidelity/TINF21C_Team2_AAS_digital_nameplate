@@ -1,5 +1,5 @@
 const FILTER_KEYS = ["idEncoded", "nameplateId", "nameplateIdEncoded", "num", "nameplate.idShort", "nameplate.id",
-    "nameplate.idEncoded"]
+    "nameplate.idEncoded", "productImages.*"];
 
 function transformDataToArray(obj) {
     console.log('Original obj:');
@@ -10,6 +10,11 @@ function transformDataToArray(obj) {
     console.log('markings:');
     console.log(markings);
 
+    obj = flattenObject(obj);
+    console.log('flattenObject():');
+    console.log(obj);
+
+    //TODO: MUSS REGEX VERSTEHEN KÖNNEN!
     let unwantedKeys;
     ({data: obj, unwantedKeys} = extractUnwantedKeys(obj, FILTER_KEYS));
     console.log('unwantedKeys:');
@@ -17,22 +22,19 @@ function transformDataToArray(obj) {
     console.log('Resulting obj:');
     console.log(obj);
 
-    /*
-    let nameplateIds;
-    ({data: obj, nameplateIds} = separateNameplateIds(obj));
+    obj = shortenFlattenedKeys(obj);
+    console.log('shortenFlattenedKeys():')
+    console.log(obj);
     
-    let idEncoded;
-    ({data: obj, idEncoded} = separateAssetEncodedIds(obj));
-    */
-
+    obj = filterEmptyValues(obj);
+    console.log('filterEmptyValues():');
+    console.log(obj);
+    // Object.entries() aufrufen
+    
     /*
     let list = Object.entries(obj);
     console.log('Object.entries():');
     console.log(list);
-
-    let keyValues = recursiveExtract(list);
-    console.log('recursiveExtract():');
-    console.log(keyValues);
 
     let filteredKeyValues = filterEmptyEntries(keyValues);
     console.log('filterEmptyEntries():');
@@ -61,12 +63,16 @@ function recursiveExtract(list) {
 }
 
 /**
- * Removes all [key, value]-arrays where value is falsy (undefined, null, ...).
- * @param list
+ * Removes all key-values pairs where value is falsy (undefined, null, ...). IMPORTANT: obj must be flattened.
+ * @param obj
  * @returns {*}
  */
-function filterEmptyEntries(list) {
-    return list.filter((elem) => elem[1]);
+function filterEmptyValues(obj) {
+    let result = {};
+    let array = Object.entries(obj);
+    let reduced = array.filter((elem) => elem[1]);
+    reduced.forEach((elem) => result[elem[0]] = elem[1]);
+    return result;
 }
 
 /**
@@ -84,21 +90,73 @@ function separateMarkings(obj) {
 }
 
 /**
- * not finished and not working
+ * Flattens Object. Hierarchies are displayed with '_'.
+ * @param ob
+ * @returns {{}}
+ */
+function flattenObject(ob) {
+    let toReturn = {};
+
+    for (let i in ob) {
+        if (!ob.hasOwnProperty(i)) continue;
+
+        if ((typeof ob[i]) == 'object' && ob[i] !== null) {
+            let flatObject = flattenObject(ob[i]);
+            for (let x in flatObject) {
+                if (!flatObject.hasOwnProperty(x)) continue;
+
+                toReturn[i + '_' + x] = flatObject[x];
+            }
+        } else {
+            toReturn[i] = ob[i];
+        }
+    }
+    return toReturn;
+}
+
+/**
+ * Replaces all '.' to '_' in array of strings.
+ * @param filters
+ * @returns {*[]}
+ */
+function replaceDotsInArray(filters) {
+    let result = [];
+    filters.forEach((filter) => result.push(filter.replace('.', '_')));
+    return result;
+}
+
+/**
+ * Filters all unwanted keys into a different object.
  * @param obj
  * @param filters
  * @returns {{}}
  */
 function extractUnwantedKeys(obj, filters) {
+    let data = structuredClone(obj);
+    let transformedFilter = replaceDotsInArray(filters);
     let unwantedKeys = {};
-    filters.forEach((filter) => {
-        let parts = filter.includes('.') ? filter.split('.') : null;
-        if (parts) {
-            //unwantedKeys[parts[0]] = extractUnwantedKeys(obj[parts[0]], );
-            return;
+    transformedFilter.forEach((filter) => {
+        if (data[filter]) {
+            unwantedKeys[filter] = data[filter];
+            delete data[filter];
         }
-        unwantedKeys[filter] = obj[filter];
-        delete obj[filter];
     });
-    return unwantedKeys;
+    return {data, unwantedKeys};
+}
+
+/**
+ * Reduces all keys of flattened object to their last part. Partition is done by '_'.
+ */
+function shortenFlattenedKeys(obj) {
+    let result = {};
+    let data = Object.entries(obj);
+    data.forEach((elem) => {
+        let key = elem[0];
+        let value = elem[1];
+        let keyParts = key.split('_');
+        let amountOfParts = keyParts.length;
+        key = keyParts[amountOfParts-1];
+        result[key] = value;
+    });
+    return result;
 }
