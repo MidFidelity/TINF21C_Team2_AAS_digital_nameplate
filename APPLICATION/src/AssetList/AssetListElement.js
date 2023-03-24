@@ -13,7 +13,10 @@ function AssetListElement({assetData, onClick}) {
         <ListGroup.Item onClick={handleClick} action className="border-top mt-2 shadow-sm">
             <Row className={"assetListElementRow"}>
                 <Col md={2} className={"text-center m-auto"}>
-                    <img src={assetData.productImages?assetData.productImages[0]:""} alt={"Product Image"} className={"img-preview"}/>
+                    {assetData.productImages&&assetData.productImages>0?
+                        <img src={assetData.productImages[0]} alt={"Product Image"} className={"img-preview"}/>:
+                        ""
+                    }
                 </Col>
                 <Col className={"d-flex align-items-center"}>
                     <span className={"d-flex align-items-center"}>{assetData.idShort}</span>
