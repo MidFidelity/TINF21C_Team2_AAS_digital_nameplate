@@ -4,7 +4,9 @@ const AssetData = ({data}) => {
         return <p>No Nameplate data found</p>;
     }
 
-    const recursiveTable = (json)=>{
+    const recursiveTable = (json, depth=0)=>{
+
+        // Bug beim Öffnen des zweiten Buttons schließt sich der erste 
         return(
             <table width={"100%"}>
                 {
@@ -14,16 +16,16 @@ const AssetData = ({data}) => {
                           {/* <td><p class="categories">{key}</p></td> */}
 
                         <td>
-                            <div class="accordion" id="accordionExample">
+                            <div class="accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#acc${index}-${depth}`} aria-expanded="true" aria-controls="collapseOne">
                                     {key}
                                 </button>
                                 </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div id={`acc${index}-${depth}`} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="null">
                                 <div class="accordion-body">
-                                    {recursiveTable(value)}
+                                    {recursiveTable(value,depth+1)}
                                 </div>
                                 </div>
                             </div>
