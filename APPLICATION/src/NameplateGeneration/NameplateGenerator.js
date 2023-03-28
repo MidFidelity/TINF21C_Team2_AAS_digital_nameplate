@@ -1,3 +1,7 @@
+function generateNameplate() {
+    console.log('Generating nameplate...');
+}
+
 function makeQR(form) {
     let formData = new FormData(form);
     let settings = {

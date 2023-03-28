@@ -3,43 +3,14 @@
 const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded"];
 
 function transformDataToArray(obj) {
-    console.log('Original obj:');
-    console.log(obj);
-
     let markings;
     ({data: obj, markings} = separateMarkings(obj));
-    console.log('markings:');
-    console.log(markings);
-
     obj = flattenObject(obj);
-    console.log('flattenObject():');
-    console.log(obj);
-
     let unwantedKeys;
     ({data: obj, unwantedKeys} = extractUnwantedKeys(obj, FILTER_KEYS));
-    console.log('unwantedKeys:');
-    console.log(unwantedKeys);
-    console.log('Resulting obj:');
-    console.log(obj);
-
     obj = shortenFlattenedKeys(obj);
-    console.log('shortenFlattenedKeys():')
-    console.log(obj);
-    
     obj = filterEmptyValues(obj);
-    console.log('filterEmptyValues():');
-    console.log(obj);
-    // Object.entries() aufrufen
-    
-    /*
-    let list = Object.entries(obj);
-    console.log('Object.entries():');
-    console.log(list);
-
-    let filteredKeyValues = filterEmptyEntries(keyValues);
-    console.log('filterEmptyEntries():');
-    console.log(filteredKeyValues); 
-*/
+    return {obj, markings};
 }
 
 /**

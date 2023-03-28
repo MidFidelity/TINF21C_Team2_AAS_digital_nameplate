@@ -68,29 +68,10 @@ function getData() {
 
 function nameplateBootstrap() {
     console.log('Starting nameplate bootstrap');
-    let data = getData();
-    transformDataToArray(data);
+    let rawData = getData();
+    let data = {}, markings = {};
+    ({obj:data, markings} = transformDataToArray(rawData));
+    let nameplate;
+    nameplate = generateNameplate();
     console.log('End of nameplate bootstrap');
 }
-
-/**
- * Pulls every [key, value]-array out of an entire [key, value]-array-hierarchy to root level.
- * @param list
- * @returns {*[]}
- */
-/*
-function recursiveExtract(list) {
-    let result = [];
-    if (list.length === 0) {
-        return [];
-    }
-    list.forEach((elem) => {
-        if (typeof elem[1] == "string" || typeof elem[1] == "number" || Array.isArray(elem[1])) {
-            result.push(elem);
-            return;
-        }
-        result = result.concat(recursiveExtract(Object.entries(elem[1])));
-    })
-    return result;
-}
-*/
