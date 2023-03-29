@@ -15,15 +15,15 @@ const AssetData = ({data}) => {
                           {/* <td><p class="categories">{key}</p></td> */}
 
                         <td>
-                            <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${idBase}-${index}`} aria-expanded="true" aria-controls="collapseOne">
+                            <div className="accordion" id="accordionExample">
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="headingOne">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${idBase}-${index}`} aria-expanded="true" aria-controls="collapseOne">
                                     {key}
                                 </button>
                                 </h2>
-                                <div id={`${idBase}-${index}`} class="accordion-collapse collapse" aria-labelledby="headingOne">
-                                <div class="accordion-body">
+                                <div id={`${idBase}-${index}`} className="accordion-collapse collapse" aria-labelledby="headingOne">
+                                <div className="accordion-body">
                                     {recursiveTable(value, idBase+"-"+index)}
                                 </div>
                                 </div>
@@ -39,7 +39,7 @@ const AssetData = ({data}) => {
                     } else{
                         return <tr key={index}>
                             <td>
-                                <p class="categories">{key}</p>
+                                <p className="categories">{key}</p>
                                 <p>{value}</p>
                                 <hr/>
                             </td>
