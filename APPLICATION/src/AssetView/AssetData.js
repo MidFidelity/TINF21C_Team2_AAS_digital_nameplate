@@ -4,9 +4,10 @@ const AssetData = ({data}) => {
         return <p>No Nameplate data found</p>;
     }
 
-    const recursiveTable = (json)=>{
+    const recursiveTable = (json, idBase="accordion")=>{
         return(
             <table width={"100%"}>
+                <tbody>
                 {
                 Object.entries(json).map(([key, value], index) => {
                     if (typeof value === "object"){
@@ -17,13 +18,13 @@ const AssetData = ({data}) => {
                             <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${idBase}-${index}`} aria-expanded="true" aria-controls="collapseOne">
                                     {key}
                                 </button>
                                 </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div id={`${idBase}-${index}`} class="accordion-collapse collapse" aria-labelledby="headingOne">
                                 <div class="accordion-body">
-                                    {recursiveTable(value)}
+                                    {recursiveTable(value, idBase+"-"+index)}
                                 </div>
                                 </div>
                             </div>
@@ -46,12 +47,13 @@ const AssetData = ({data}) => {
                     }
                 })
                 }
+                </tbody>
             </table>
         )
     }
 
-    return (<table>
-            {recursiveTable(data)}
-        </table>)
+    return (
+            recursiveTable(data)
+        )
 }
 export default AssetData;
