@@ -1,10 +1,11 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-import {Nav} from 'react-bootstrap';
+import {Nav, Form} from 'react-bootstrap';
 import ServerAddress from "../ServerAddress";
 import "./Navbar.scss";
+import Searchbar from "../Searchbar";
 
-const Navbar = ({setServerAddress}) => {
+const Navbar = ({ setServerAddress, serverHistory, handleServerSelection} ) => {
     return (
         <nav className="navbar navbar-expand-lg design-nav ">
             <a className="navbar-brand ms-3">
@@ -13,6 +14,9 @@ const Navbar = ({setServerAddress}) => {
             <div className="m-auto align-middle">
             <ServerAddress onLoad={setServerAddress}></ServerAddress>
             </div>
+            <Form inline>
+                <Searchbar className={"nav-searchbar"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection} ></Searchbar>
+            </Form>
             <Nav className='ms-auto'>
                 <ul className="navbar-nav">
                     <li className="nav-item me-2 ">

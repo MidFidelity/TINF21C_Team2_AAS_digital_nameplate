@@ -17,15 +17,14 @@ let suggestedServers = [
 ]
 
 export default class App extends React.Component {
-    const
-
     constructor(props) {
         super(props);
 
         this.state = {
             serverAddress: "",
             tableData: [],
-            serverHistory: []
+            serverHistory: [],
+            navTarget:""
         }
 
     }
@@ -79,6 +78,12 @@ export default class App extends React.Component {
         }
     }
 
+    handleServerSelection = (address)=>{
+        this.setState({navTarget:`/list?server=${address}`}, ()=>{
+            this.setState({navTarget:""});
+        });
+    }
+
 
     setServerAddress = (address) => {
         if (address) {
@@ -87,7 +92,7 @@ export default class App extends React.Component {
                 this.updateServerHistory(address)
             })
         }
-    }
+    };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.serverHistory !== this.state.serverHistory) {
@@ -97,14 +102,14 @@ export default class App extends React.Component {
             this.refinery = new DataRefinery(this.state.serverAddress);
             this.refinery.getFullAASList().then((content) => this.setState({tableData: content}))
         }
-
     }
 
     render() {
         return (<HashRouter>
+            {this.state.navTarget&&<Navigate to={this.state.navTarget}/>}
             <div className="h-100">
                 <div className={"NavBar sticky-top"}>
-                    <Navbar setServerAddress={this.setServerAddress}/>
+                    <Navbar setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
                 </div>
                 <div className={"Content"}>
                     <Routes>
