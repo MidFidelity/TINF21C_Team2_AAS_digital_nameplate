@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
-function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, value}) {
+function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value}) {
     const containerRef = useRef()
     const inputRef= useRef()
     const [isFocused, setFocused] = useState(false)
@@ -61,8 +61,8 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, className, va
         }
     }
 
-    return (<div className={"search-container " + className}>
-        <div id={"buttonContainer"} className={"d-flex flex-column outlineBorder bg-light foreground position-relative"}
+    return (<div className={"search-container " + containerClassName}>
+        <div id={"buttonContainer"} className={"d-flex flex-column outlineBorder bg-light foreground position-relative " + contentClassName}
              ref={containerRef} onBlur={handleBlur} onFocus={handleFocus}>
             <form onSubmit={handleSubmit}>
                 <div className={"d-flex flex-row"}>
