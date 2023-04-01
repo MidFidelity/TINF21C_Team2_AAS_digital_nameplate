@@ -15,28 +15,82 @@
 .nav-searchbar{
   font-size: 14px;
   color: black;
-  max-width: 300px;
-  border-color: red !important;
+  max-width: 500px;
+  border: none;
+  border-radius: 25px;
+
 }
 
-.nav-link {
-  color: #ffffff;
+.nav-search-container {
+  height: 3em;
 }
 
-.navbar-nav .nav-item a:hover {
-  color: #c8d9ed !important;
-}
-
-.navbar-nav .nav-item a {
-  color: #ffffff !important;
+.searchbar-container{
+  height: 35px;
 }
 
 .navbar-brand {
   color: #ffffff!important;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2), 0px 4px 5px rgba(0, 0, 0, 0.14);
 
   &:hover {
     color: #ffffff!important;
   }
 }
 
+.dropdown-menu .dropdown-item {
+  color: black !important;
+}
 
+.dropdown-menu a:hover {
+  background-color: #c8d9ed;
+}
+
+.nav-link.active {
+  background-color: #2f5779 !important;
+  color: #ffffff !important;
+}
+
+.nav-link:visited {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.nav-link:focus {
+  background-color: inherit;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.iconSearchNav {
+  fill: black;
+  width:20px;
+  height:20px;
+}
+
+.serverAddress {
+  max-width: 600px;
+  min-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburgerMenuIcon{
+  height: 37px;
+  width: 37px;
+}
+
+#navDropdown:hover {
+  color: #c8d9ed;
+}
+
+#navDropdown:focus {
+  color: #c8d9ed;
+}
+
+#navDropdown {
+  color: #ffffff;
+}

@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
-function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value}) {
+function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value, iconClassName, searchContainerClassName}) {
     const containerRef = useRef()
     const inputRef= useRef()
     const [isFocused, setFocused] = useState(false)
@@ -65,7 +65,7 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
         <div id={"buttonContainer"} className={"d-flex flex-column outlineBorder bg-light foreground position-relative " + contentClassName}
              ref={containerRef} onBlur={handleBlur} onFocus={handleFocus}>
             <form onSubmit={handleSubmit}>
-                <div className={"d-flex flex-row"}>
+                <div className={"d-flex flex-row " + searchContainerClassName}>
                     <input id={"searchBar"}
                            ref={inputRef}
                            className={"w-100 border-0 bg-transparent outline-none"}
@@ -76,8 +76,8 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
                            value={textValue ? textValue.toString() : ""}
                            autoComplete={"off"}/>
                     <Button variant={"flush"} type={"submit"} className={"ms-auto"}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#CCD7E4"
-                             className="bi bi-search" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             className={"bi search-icon " + iconClassName} viewBox="0 0 16 16">
                             <path
                                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
