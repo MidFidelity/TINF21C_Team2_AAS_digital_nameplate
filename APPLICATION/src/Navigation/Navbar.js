@@ -18,7 +18,7 @@ const Navbar = ({ setServerAddress, serverHistory, handleServerSelection} ) => {
             <div className="m-auto align-middle serverAddress">
             <ServerAddress onLoad={setServerAddress}></ServerAddress>
             </div>
-            <Searchbar searchContainerClassName={"searchbar-container "} iconClassName={"iconSearchNav m-auto align-middle "} contentClassName={"nav-searchbar"} containerClassName={"m-auto nav-search-container"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection} ></Searchbar>
+            <Searchbar suggestionsClassName={"suggestionElement"} searchContainerClassName={"searchbar-container "} iconClassName={"iconSearchNav m-auto align-middle "} contentClassName={"nav-searchbar"} containerClassName={"m-auto nav-search-container"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection} ></Searchbar>
             <Nav className="mr-auto">
                 <NavDropdown title={<List className={"hamburgerMenuIcon"}/>} id="navDropdown">
                     <LinkContainer to="/home">

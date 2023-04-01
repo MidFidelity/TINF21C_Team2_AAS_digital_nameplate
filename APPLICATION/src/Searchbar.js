@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
-function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value, iconClassName, searchContainerClassName}) {
+function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value, iconClassName, searchContainerClassName, suggestionsClassName}) {
     const containerRef = useRef()
     const inputRef= useRef()
     const [isFocused, setFocused] = useState(false)
@@ -85,11 +85,11 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
                 </div>
             </form>
             {suggestions ?
-                <div className={`${isFocused ? "" : "h-0"}  z-1 animate-height suggestion-box`}>
+                <div className={`${isFocused ? "" : "h-0"}  z-1 animate-height suggestion-box `}>
                     <hr className={"m-1"}/>
                 <div className={"d-flex flex-column"}>
                     {filteredSuggestions.map((suggestion, index) => (
-                        <p key={index} onClick={handleSuggestionClick} className={"suggestion"}>{suggestion}</p>
+                        <p key={index} onClick={handleSuggestionClick} className={"suggestion " + suggestionsClassName}>{suggestion}</p>
                     ))}
                 </div>
             </div> : ""}
