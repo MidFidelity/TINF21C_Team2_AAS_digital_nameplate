@@ -1,3 +1,5 @@
+window.addEventListener("load", nameplateBootstrap);
+
 function getData() {
     return {
         "idShort": "AAS_Type_CD55B20_50",
@@ -68,10 +70,16 @@ function getData() {
 
 function nameplateBootstrap() {
     console.log('Starting nameplate bootstrap');
-    let rawData = getData();
+
+    // raw data according to README.md specification
+    const rawData = getData();
+
+    // data and markings according to README.md specification
+    // data is according to "Reduced Data"
     let data = {}, markings = {};
     ({obj:data, markings} = transformDataToArray(rawData));
-    let nameplate;
-    nameplate = generateNameplate();
+
+    // generates the nameplate and injects it into 'nameplateDisplay'
+    generateNameplate(data, markings, 'nameplateDisplay');
     console.log('End of nameplate bootstrap');
 }

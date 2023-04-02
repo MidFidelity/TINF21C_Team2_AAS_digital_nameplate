@@ -1,21 +1,51 @@
-function generateNameplate() {
-    console.log('Generating nameplate...');
+/**
+ * Generates the nameplate from the given data and markings and injects the resulting SVG into the DOM element with the
+ * given ID.
+ * @param data All the key-value pairs out of the asset WITHOUT the markings.
+ * @param markings All Marking-Data as it is retrieved from the asset.
+ * @param id ID of the DOM element into which the nameplate will be injected.
+ */
+function generateNameplate(data, markings, id) {
+    // this is the root svg in which the nameplate is build
+    const nameplateSvg = initSvg('1000px', '600px', true, 'nameplateSvg');
+
+    // this transforms the data & markings into one single string with linebreaks ('\n')
+    // this is the content of the qr-code
+    const qrCodeString = nameplateContentObjectToString(data, markings);
+
+    // this svg warps around the qr-code svg
+    // it is mainly used for styling and positioning
+    // make sure, that this svg is square, otherwise positioning will be off!!!
+    const qrCodeSvg = initSvg('400px', '400px', false, 'qrCodeSvg');
+    // these two attributes manage the offset inside the 'nameplateSvg' from the top-left corner
+    qrCodeSvg.setAttribute('x', '500px');
+    qrCodeSvg.setAttribute('y', '100px');
+
+    // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
+    // the svg-elements by 'document.getElementById()'
+    appendToDocument(id, nameplateSvg);
+    appendToDocument('nameplateSvg', qrCodeSvg);
+
+    // makes the qr-code svg and injects it into the 'qrCodeSvg' element
+    // the qr-code svg will be wrapped by the 'qrCodeSvg', which is mainly used for styling
+    makeQrCode(qrCodeString, qrCodeSvg.id);
 }
 
-function makeQR(form) {
-    let formData = new FormData(form);
-    let settings = {
-        text: formData.get("text"),
-        id: "svgQR",
-        width: 200,
-        height: 200,
+/**
+ * Makes a QR-Code. The content of the QR-Code is specified in 'text'. The QR-Code SVG element is injected into the
+ * element with the given 'id'. Make sure, that the element with the chosen ID is already in the DOM.
+ * @param text Content of QR-Code
+ * @param id ID of element in DOM, in which the QR-Code SVG will be injected.
+ */
+function makeQrCode(text, id) {
+    const settings = {
+        text: text,
+        width: '100%',
+        height: '100%',
         useSVG: true,
         correctLevel: QRCode.CorrectLevel.Q
     }
-
-    console.log("qrcode", settings)
-    var code = new QRCode("qrcode", settings)
-
+    const qrCode = new QRCode(document.getElementById(id), settings)
 }
 
 function startDownload(data, name) {
