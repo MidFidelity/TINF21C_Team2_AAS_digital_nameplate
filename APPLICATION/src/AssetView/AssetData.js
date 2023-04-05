@@ -33,8 +33,8 @@ const AssetData = ({data}) => {
                       </tr>
                     }else if(key === "FilePath"){
                         return <tr key={index}>
-                            <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img></td>
-                            <td><p>{key}</p></td>
+                            <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img>
+                            <p>{key}</p></td>
                         </tr>
                     } else{
                         return <tr key={index}>
