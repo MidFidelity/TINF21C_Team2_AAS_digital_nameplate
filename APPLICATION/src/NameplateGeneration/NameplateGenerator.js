@@ -21,6 +21,12 @@ function generateNameplate(data, markings, id) {
     qrCodeSvg.setAttribute('x', '500px');
     qrCodeSvg.setAttribute('y', '100px');
 
+    console.log(markings)
+    
+    writeTextToSvg(data, nameplateSvg);
+    const markingImages = extractImagesFromMarkings(markings);
+    displayMarkingImages(markingImages, nameplateSvg);
+    
     // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
     // the svg-elements by 'document.getElementById()'
     appendToDocument(id, nameplateSvg);

@@ -58,9 +58,70 @@ function extractMarkingNames(markings) {
     let data = structuredClone(markings);
     const keys = Object.keys(data);
     keys.forEach((key) => {
-        if (data[key]['MarkingName']){
+        if (data[key]['MarkingName']) {
             data[key] = data[key]['MarkingName'];
         }
     });
     return data;
+}
+
+function writeTextToSvg(data, nameplateSvg) {
+    const maxDisplay = 16;
+    const maxCharsPerLine = 63;
+    // following values are in pixels
+    const fontSize = 17;
+    const lineHeight = 25;
+    const xSpace = 20;
+    const ySpace = 120;
+
+    const keys = Object.keys(data).filter((key) => {
+        let displayText = `${key}: ${data[key]}`;
+        return (displayText.length < maxCharsPerLine);
+    });
+    const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
+    let svgNS = "http://www.w3.org/2000/svg";
+    for (let i = 0; i < limit; i++) {
+        let newText = document.createElementNS(svgNS, 'text');
+        newText.setAttributeNS(null, 'x', xSpace + 'px');
+        newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
+        newText.setAttributeNS(null, 'font-size', fontSize + 'px');
+
+        let textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
+        newText.appendChild(textNode);
+        nameplateSvg.appendChild(newText);
+    }
+}
+
+function extractImagesFromMarkings(markings) {
+    const result = [];
+    Object.keys(markings).forEach((key) => {
+        if (markings[key]['FilePath']) {
+            result.push(markings[key]['FilePath']);
+        }
+    });
+    return result;
+}
+
+function displayMarkingImages(markingImages, nameplateSvg) {
+    console.log(markingImages);
+    const maxDisplay = 8;
+    // following values are in pixels
+    const height = 100;
+    const width = 100;
+    const xSpace = 20;
+    const ySpace = 500;
+    const space = 20;
+    
+    const limit = markingImages.length < maxDisplay ? markingImages.length : maxDisplay;
+    
+    for (let i = 0; i  < limit; i++) {
+        let svgImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        svgImg.setAttributeNS(null, 'height', height + 'px');
+        svgImg.setAttributeNS(null, 'width', width + 'px');
+        svgImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', markingImages[i]);
+        svgImg.setAttributeNS(null, 'x', xSpace + (width + space) * i + 'px');
+        svgImg.setAttributeNS(null, 'y', ySpace + 'px');
+        svgImg.setAttributeNS(null, 'visibility', 'visible');
+        nameplateSvg.appendChild(svgImg);
+    }
 }
