@@ -6,8 +6,15 @@
  * @param id ID of the DOM element into which the nameplate will be injected.
  */
 function generateNameplate(data, markings, id) {
+    // following values are in pixels
+    const nameplateWidth = 1000;
+    const nameplateHeight = 600;
+    const qrCodeSize = 400;
+    const qrCodeOffsetX = 500;
+    const qrCodeOffsetY = 100;
+    
     // this is the root svg in which the nameplate is build
-    const nameplateSvg = initSvg('1000px', '600px', true, 'nameplateSvg');
+    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', true, 'nameplateSvg');
 
     // this transforms the data & markings into one single string with linebreaks ('\n')
     // this is the content of the qr-code
@@ -16,15 +23,18 @@ function generateNameplate(data, markings, id) {
     // this svg warps around the qr-code svg
     // it is mainly used for styling and positioning
     // make sure, that this svg is square, otherwise positioning will be off!!!
-    const qrCodeSvg = initSvg('400px', '400px', false, 'qrCodeSvg');
+    const qrCodeSvg = initSvg(qrCodeSize + 'px', qrCodeSize + 'px', false, 'qrCodeSvg');
     // these two attributes manage the offset inside the 'nameplateSvg' from the top-left corner
-    qrCodeSvg.setAttribute('x', '500px');
-    qrCodeSvg.setAttribute('y', '100px');
-
-    console.log(markings)
+    qrCodeSvg.setAttribute('x', qrCodeOffsetX + 'px');
+    qrCodeSvg.setAttribute('y', qrCodeOffsetY + 'px');
     
+    // takes all key-value pairs from data and writes them into the given svg
     writeTextToSvg(data, nameplateSvg);
+    
+    // extracts the FilePaths from the markings
+    // this is where the images are stored
     const markingImages = extractImagesFromMarkings(markings);
+    // displays the markings on the nameplate (svg)
     displayMarkingImages(markingImages, nameplateSvg);
     
     // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find

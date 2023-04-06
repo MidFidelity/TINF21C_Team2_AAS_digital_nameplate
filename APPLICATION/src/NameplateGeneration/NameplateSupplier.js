@@ -65,6 +65,11 @@ function extractMarkingNames(markings) {
     return data;
 }
 
+/**
+ * Writes key-value pairs onto the nameplateSvg. Can be configured through constants in function.
+ * @param data data according to README.md specification
+ * @param nameplateSvg the nameplate svg element
+ */
 function writeTextToSvg(data, nameplateSvg) {
     const maxDisplay = 16;
     const maxCharsPerLine = 63;
@@ -92,6 +97,13 @@ function writeTextToSvg(data, nameplateSvg) {
     }
 }
 
+/**
+ * Extracts the FilePath out of the concrete marking model, if it exists. The image is stored at that
+ * given path. If the marking does not have a 'FilePath' attribute, then no image is displayed for the
+ * marking. Only the name of the marking will be stored either written on the nameplate or in the qr Code.
+ * @param markings markings according to README.md specification
+ * @returns {*[]}
+ */
 function extractImagesFromMarkings(markings) {
     const result = [];
     Object.keys(markings).forEach((key) => {
@@ -102,8 +114,12 @@ function extractImagesFromMarkings(markings) {
     return result;
 }
 
+/**
+ * Displays the markings on the nameplate SVG.
+ * @param markingImages extracted FilePath values according to function extractImagesFromMarkings()
+ * @param nameplateSvg the nameplate svg - markings are displayed on here
+ */
 function displayMarkingImages(markingImages, nameplateSvg) {
-    console.log(markingImages);
     const maxDisplay = 8;
     // following values are in pixels
     const height = 100;
