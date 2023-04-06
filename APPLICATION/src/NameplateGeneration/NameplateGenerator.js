@@ -7,14 +7,14 @@
  */
 function generateNameplate(data, markings, id) {
     // following values are in pixels
-    const nameplateWidth = 1000;
+    const nameplateWidth = 920;
     const nameplateHeight = 600;
     const qrCodeSize = 400;
     const qrCodeOffsetX = 500;
     const qrCodeOffsetY = 100;
-    
+
     // this is the root svg in which the nameplate is build
-    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', true, 'nameplateSvg');
+    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', false, 'nameplateSvg');
 
     // this transforms the data & markings into one single string with linebreaks ('\n')
     // this is the content of the qr-code
@@ -27,16 +27,17 @@ function generateNameplate(data, markings, id) {
     // these two attributes manage the offset inside the 'nameplateSvg' from the top-left corner
     qrCodeSvg.setAttribute('x', qrCodeOffsetX + 'px');
     qrCodeSvg.setAttribute('y', qrCodeOffsetY + 'px');
-    
+
     // takes all key-value pairs from data and writes them into the given svg
+    writeHeadingToSvg(data, nameplateSvg);
     writeTextToSvg(data, nameplateSvg);
-    
+
     // extracts the FilePaths from the markings
     // this is where the images are stored
     const markingImages = extractImagesFromMarkings(markings);
     // displays the markings on the nameplate (svg)
     displayMarkingImages(markingImages, nameplateSvg);
-    
+
     // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
     // the svg-elements by 'document.getElementById()'
     appendToDocument(id, nameplateSvg);
@@ -64,55 +65,85 @@ function makeQrCode(text, id) {
     const qrCode = new QRCode(document.getElementById(id), settings)
 }
 
+/**
+ * Starts the download of the nameplate with svg file format
+ */
+function downloadSvg() {
+    const nameplateSvg = document.getElementById('nameplateSvg');
+    downloadPlate('svg', CURRENT_IDSHORT, nameplateSvg, null, null);
+}
+
+/**
+ * Starts the download of the nameplate with png file format
+ */
+function downloadPng() {
+    const nameplateSvg = document.getElementById('nameplateSvg');
+    const height = nameplateSvg.getAttribute('height');
+    const width = nameplateSvg.getAttribute('width');
+    downloadPlate('png', CURRENT_IDSHORT, nameplateSvg, width, height);
+}
+
+/**
+ * Initializes download with 'a' tag
+ * @param data DataURL to download
+ * @param name Name of download file
+ */
 function startDownload(data, name) {
-    console.log("Starting download")
-    var a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = data;
     a.download = name
     a.click();
 }
 
-function downloadPlate(type) {
-    let svg = document.getElementById("svgQR");
-
+/**
+ * Download interface
+ * @param type 'svg'|'png'
+ * @param name Name of download file
+ * @param nameplateSvg SVG element of nameplate which is downloaded
+ * @param PNG_width Width of final PNG
+ * @param PNG_height Height of final PNG
+ */
+function downloadPlate(type, name, nameplateSvg, PNG_width, PNG_height) {
     switch (type) {
-        case "svg":
-            let svgDataUrl = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
-            startDownload(svgDataUrl, "code.svg")
+        case 'svg':
+            let svgDataUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(new XMLSerializer().serializeToString(nameplateSvg));
+            startDownload(svgDataUrl, name + '.svg');
             break;
-        case "png":
-            createPNG(200, 200, svg, startDownload);
+        case 'png':
+            createPNG(PNG_width, PNG_height, nameplateSvg, name, startDownload);
             break;
         default:
             console.error(`Type ${type} not supported.`);
     }
 }
 
-function createPNG(width, height, contents, callback) {
-    var src = "data:image/svg+xml;base64," + btoa(new XMLSerializer().serializeToString(contents));
+/**
+ * Converts SVG to PNG DataURL
+ * @param width Width of final PNG
+ * @param height Height of final PNG
+ * @param contents SVG element to transform
+ * @param name Name of download file
+ * @param callback Reference to the actual downloading function startDownload()
+ */
+function createPNG(width, height, contents, name, callback) {
+    const src = "data:image/svg+xml;base64," + btoa(new XMLSerializer().serializeToString(contents));
 
-    var canvas = document.querySelector("canvas")
-    var context = canvas.getContext("2d");
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
 
-    canvas.width = width
-    canvas.height = height
+    canvas.setAttribute('width', width);
+    canvas.setAttribute('height', height);
 
-    let htmlImg = document.getElementById("img");
-    htmlImg.src = src;
+    context.fillStyle = 'rgb(255,255,255)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
-    var image = new Image();
+    const img = new Image();
 
-    image.onload = function () {
-        console.log("image loaded")
-        context.drawImage(image, 0, 0, width, height);
-        /*var a = document.createElement("a");
-        a.download = filename;
-        a.href = canvas.toDataURL("image/png");
-        a.click();*/
-        console.log("Calling callback")
-        callback(canvas.toDataURL("image/png"), "code.png");
-
-        canvas.remove()
+    img.onload = function () {
+        context.drawImage(img, 0, 0);
+        callback(canvas.toDataURL('image/png'), name + '.png');
+        //canvas.remove();
+        document.getElementById('TEST').appendChild(canvas);
     };
-    image.src = src;
+    img.setAttribute('src', src);
 }

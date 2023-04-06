@@ -1,3 +1,5 @@
+let CURRENT_IDSHORT = 'Nameplate';
+
 /**
  * Creates and returns an SVG element.
  * @param xSize is the width of the SVG element.
@@ -66,6 +68,53 @@ function extractMarkingNames(markings) {
 }
 
 /**
+ * Writes the heading of the nameplate with idShort and ManufacturerProductDesignation. It removes those two key-value pairs
+ * from data in the process.
+ * @param data data according to README.md specification
+ * @param nameplateSvg
+ */
+function writeHeadingToSvg(data, nameplateSvg) {
+    const idShort_xSpace = 20;
+    const idShort_ySpace = 50;
+    const idShort_fontSize = 35;
+    const MPD_xSpace = 20;
+    const MPD_ySpace = 80;
+    const MPD_fontSize = 20;
+
+    const header = {};
+    if (data['idShort']) {
+        header['idShort'] = data['idShort'];
+        // this variable is used to name the download file
+        CURRENT_IDSHORT = data['idShort'];
+        delete data['idShort'];
+
+        let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        newText.setAttributeNS(null, 'x', idShort_xSpace + 'px');
+        newText.setAttributeNS(null, 'y', idShort_ySpace + 'px');
+        newText.setAttributeNS(null, 'font-size', idShort_fontSize + 'px');
+        newText.setAttributeNS(null, 'font-weight', 'bold');
+
+        let textNode = document.createTextNode(`${header['idShort']}`);
+        newText.appendChild(textNode);
+        nameplateSvg.appendChild(newText);
+    }
+    if (data['ManufacturerProductDesignation']) {
+        header['ManufacturerProductDesignation'] = data['ManufacturerProductDesignation'];
+        delete data['ManufacturerProductDesignation'];
+
+        let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        newText.setAttributeNS(null, 'x', MPD_xSpace + 'px');
+        newText.setAttributeNS(null, 'y', MPD_ySpace + 'px');
+        newText.setAttributeNS(null, 'font-size', MPD_fontSize + 'px');
+        newText.setAttributeNS(null, 'font-style', 'italic');
+
+        let textNode = document.createTextNode(`${header['ManufacturerProductDesignation']}`);
+        newText.appendChild(textNode);
+        nameplateSvg.appendChild(newText);
+    }
+}
+
+/**
  * Writes key-value pairs onto the nameplateSvg. Can be configured through constants in function.
  * @param data data according to README.md specification
  * @param nameplateSvg the nameplate svg element
@@ -84,7 +133,7 @@ function writeTextToSvg(data, nameplateSvg) {
         return (displayText.length < maxCharsPerLine);
     });
     const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
-    let svgNS = "http://www.w3.org/2000/svg";
+    let svgNS = 'http://www.w3.org/2000/svg';
     for (let i = 0; i < limit; i++) {
         let newText = document.createElementNS(svgNS, 'text');
         newText.setAttributeNS(null, 'x', xSpace + 'px');
@@ -108,9 +157,29 @@ function extractImagesFromMarkings(markings) {
     const result = [];
     Object.keys(markings).forEach((key) => {
         if (markings[key]['FilePath']) {
-            result.push(markings[key]['FilePath']);
+
+            const img = new Image();
+            //TODO: funktioniert das überall so?
+            // this avoids cors problems
+            img.crossOrigin = "anonymous";
+            img.onload = function () {
+                const height = img.height;
+                const width = img.width;
+
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.setAttribute('width', width + 'px');
+                canvas.setAttribute('height', height + 'px');
+                context.drawImage(img, 0, 0);
+                const dataUrl = canvas.toDataURL();
+                result.push(dataUrl);
+            }
+            img.setAttribute('src', markings[key]['FilePath']);
+            //TODO: wo muss das push hin?
+            //result.push(markings[key]['FilePath']);
         }
     });
+    //TODO: das muss irgendwie asynchron geregelt werden
     return result;
 }
 
@@ -120,7 +189,7 @@ function extractImagesFromMarkings(markings) {
  * @param nameplateSvg the nameplate svg - markings are displayed on here
  */
 function displayMarkingImages(markingImages, nameplateSvg) {
-    const maxDisplay = 8;
+    const maxDisplay = 7;
     // following values are in pixels
     const height = 100;
     const width = 100;
@@ -129,11 +198,12 @@ function displayMarkingImages(markingImages, nameplateSvg) {
     const space = 20;
     
     const limit = markingImages.length < maxDisplay ? markingImages.length : maxDisplay;
-    
+
     for (let i = 0; i  < limit; i++) {
         let svgImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
         svgImg.setAttributeNS(null, 'height', height + 'px');
         svgImg.setAttributeNS(null, 'width', width + 'px');
+        //TODO: Muss hier href oder src hin?
         svgImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', markingImages[i]);
         svgImg.setAttributeNS(null, 'x', xSpace + (width + space) * i + 'px');
         svgImg.setAttributeNS(null, 'y', ySpace + 'px');
