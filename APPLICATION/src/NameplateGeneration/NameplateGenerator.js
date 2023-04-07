@@ -34,9 +34,11 @@ function generateNameplate(data, markings, id) {
 
     // extracts the FilePaths from the markings
     // this is where the images are stored
-    const markingImages = extractImagesFromMarkings(markings);
-    // displays the markings on the nameplate (svg)
-    displayMarkingImages(markingImages, nameplateSvg);
+//    const markingImages = extractFilePathsFromMarkings(markings);
+    extractAllImagesFromMarkings(markings).then((markingImages) => {
+        // displays the markings on the nameplate (svg)
+        displayMarkingImages(markingImages, nameplateSvg);
+    });
 
     // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
     // the svg-elements by 'document.getElementById()'
@@ -142,8 +144,7 @@ function createPNG(width, height, contents, name, callback) {
     img.onload = function () {
         context.drawImage(img, 0, 0);
         callback(canvas.toDataURL('image/png'), name + '.png');
-        //canvas.remove();
-        document.getElementById('TEST').appendChild(canvas);
+        canvas.remove();
     };
     img.setAttribute('src', src);
 }

@@ -149,38 +149,64 @@ function writeTextToSvg(data, nameplateSvg) {
 /**
  * Extracts the FilePath out of the concrete marking model, if it exists. The image is stored at that
  * given path. If the marking does not have a 'FilePath' attribute, then no image is displayed for the
- * marking. Only the name of the marking will be stored either written on the nameplate or in the qr Code.
+ * marking and no entry in the results array will be made. Only the name of the marking will be stored
+ * either written on the nameplate or in the qr Code.
  * @param markings markings according to README.md specification
  * @returns {*[]}
  */
-function extractImagesFromMarkings(markings) {
+function extractFilePathsFromMarkings(markings) {
     const result = [];
     Object.keys(markings).forEach((key) => {
         if (markings[key]['FilePath']) {
-
-            const img = new Image();
-            //TODO: funktioniert das überall so?
-            // this avoids cors problems
-            img.crossOrigin = "anonymous";
-            img.onload = function () {
-                const height = img.height;
-                const width = img.width;
-
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.setAttribute('width', width + 'px');
-                canvas.setAttribute('height', height + 'px');
-                context.drawImage(img, 0, 0);
-                const dataUrl = canvas.toDataURL();
-                result.push(dataUrl);
-            }
-            img.setAttribute('src', markings[key]['FilePath']);
-            //TODO: wo muss das push hin?
-            //result.push(markings[key]['FilePath']);
+            result.push(markings[key]['FilePath']);
         }
     });
-    //TODO: das muss irgendwie asynchron geregelt werden
     return result;
+}
+
+/**
+ * Transforms an array of links referring to images into their corresponding dataUrls. This function returns a Promise
+ * since loading images is asynchronous.
+ * @param links Array of links to all the marking images that shall be displayed on the nameplate
+ * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
+ */
+function convertFilePathsToDataUrls(links) {
+    return new Promise((resolve) => {
+        const promises = links.map((link) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    resolve(canvas.toDataURL());
+                };
+                img.onerror = () => {
+                    resolve(null); // Resolves with null instead of rejecting.
+                };
+                img.src = link;
+            });
+        });
+
+        Promise.all(promises).then((dataURLs) => {
+            // Filter out any null values (failed images).
+            const filteredDataURLs = dataURLs.filter((dataURL) => dataURL !== null);
+            resolve(filteredDataURLs);
+        });
+    });
+}
+
+/**
+ * Interface for extracting all images from the markings
+ * @param markings markings according to README.md specification
+ * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
+ */
+function extractAllImagesFromMarkings(markings) {
+    const filePaths = extractFilePathsFromMarkings(markings);
+    return convertFilePathsToDataUrls(filePaths);
 }
 
 /**
@@ -203,7 +229,6 @@ function displayMarkingImages(markingImages, nameplateSvg) {
         let svgImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
         svgImg.setAttributeNS(null, 'height', height + 'px');
         svgImg.setAttributeNS(null, 'width', width + 'px');
-        //TODO: Muss hier href oder src hin?
         svgImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', markingImages[i]);
         svgImg.setAttributeNS(null, 'x', xSpace + (width + space) * i + 'px');
         svgImg.setAttributeNS(null, 'y', ySpace + 'px');
