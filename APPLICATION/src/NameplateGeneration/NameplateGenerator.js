@@ -11,10 +11,11 @@ function generateNameplate(data, markings, id) {
     const nameplateHeight = 600;
     const qrCodeSize = 400;
     const qrCodeOffsetX = 500;
-    const qrCodeOffsetY = 100;
+    const qrCodeOffsetY = 85;
 
     // this is the root svg in which the nameplate is build
-    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', false, 'nameplateSvg');
+    // TODO: Disable border again
+    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', true, 'nameplateSvg');
 
     // this transforms the data & markings into one single string with linebreaks ('\n')
     // this is the content of the qr-code
@@ -62,7 +63,8 @@ function makeQrCode(text, id) {
         width: '100%',
         height: '100%',
         useSVG: true,
-        correctLevel: QRCode.CorrectLevel.Q
+        //TODO: level M oder Q?
+        correctLevel: QRCode.CorrectLevel.M
     }
     const qrCode = new QRCode(document.getElementById(id), settings)
 }

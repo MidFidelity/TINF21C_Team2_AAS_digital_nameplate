@@ -48,6 +48,9 @@ function nameplateContentObjectToString(data, markings) {
         entryString = entry[0] + ': ' + entry[1] + lineSeparator;
         result += entryString;
     });
+    //TODO: remove logs
+    // console.log(result);
+    // console.log(result.length);
     return result;
 }
 
@@ -75,14 +78,18 @@ function extractMarkingNames(markings) {
  */
 function writeHeadingToSvg(data, nameplateSvg) {
     const idShort_xSpace = 20;
-    const idShort_ySpace = 50;
-    const idShort_fontSize = 35;
+    const idShort_ySpace = 35;
+    const idShort_fontSize = 30;
+    // TODO: find best maxChars for idShort
+    const idShort_maxChars = 52;
     const MPD_xSpace = 20;
-    const MPD_ySpace = 80;
+    const MPD_ySpace = 65;
     const MPD_fontSize = 20;
+    // TODO: find best maxChars for MPD
+    const MPD_maxChars = 100;
 
     const header = {};
-    if (data['idShort']) {
+    if (data['idShort'] && data['idShort'].length < idShort_maxChars) {
         header['idShort'] = data['idShort'];
         // this variable is used to name the download file
         CURRENT_IDSHORT = data['idShort'];
@@ -98,7 +105,7 @@ function writeHeadingToSvg(data, nameplateSvg) {
         newText.appendChild(textNode);
         nameplateSvg.appendChild(newText);
     }
-    if (data['ManufacturerProductDesignation']) {
+    if (data['ManufacturerProductDesignation'] && data['ManufacturerProductDesignation'].length < MPD_maxChars) {
         header['ManufacturerProductDesignation'] = data['ManufacturerProductDesignation'];
         delete data['ManufacturerProductDesignation'];
 
@@ -121,12 +128,13 @@ function writeHeadingToSvg(data, nameplateSvg) {
  */
 function writeTextToSvg(data, nameplateSvg) {
     const maxDisplay = 16;
+    // TODO: richtige maximale anzahl an chars per line finden für Darstellung
     const maxCharsPerLine = 63;
     // following values are in pixels
     const fontSize = 17;
     const lineHeight = 25;
     const xSpace = 20;
-    const ySpace = 120;
+    const ySpace = 105;
 
     const keys = Object.keys(data).filter((key) => {
         let displayText = `${key}: ${data[key]}`;
@@ -171,7 +179,7 @@ function extractFilePathsFromMarkings(markings) {
  * @returns {Promise<string[]>} Promise resolving to array of dataUrls of images
  */
 function convertFilePathsToDataUrls(links) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const promises = links.map((link) => {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -220,12 +228,12 @@ function displayMarkingImages(markingImages, nameplateSvg) {
     const height = 100;
     const width = 100;
     const xSpace = 20;
-    const ySpace = 500;
+    const ySpace = 485;
     const space = 20;
-    
+
     const limit = markingImages.length < maxDisplay ? markingImages.length : maxDisplay;
 
-    for (let i = 0; i  < limit; i++) {
+    for (let i = 0; i < limit; i++) {
         let svgImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
         svgImg.setAttributeNS(null, 'height', height + 'px');
         svgImg.setAttributeNS(null, 'width', width + 'px');
