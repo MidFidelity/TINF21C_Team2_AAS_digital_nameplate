@@ -6,7 +6,7 @@ export default class DataExtractor {
         this.nameplate = nameplate;
     }
 
-    extractAllDataV1(baseUrl, nameplate = this.nameplate , path = "", ){
+    extractAllDataV1(baseUrl, nameplate = this.nameplate, path = "",currentCollection=null) {
         let returnObject = {}
         //console.log("loading data for submodelElementCollection")
         //console.log(nameplate)
@@ -16,12 +16,19 @@ export default class DataExtractor {
                     returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
                     break;
                 case "SubmodelElementCollection":
-                    if(nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)){
-                        if(!("Markings" in returnObject))returnObject["Markings"]={};
-                        returnObject["Markings"][nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort)
-                        if(!"MarkingName" in returnObject["Markings"][nameplateElement.idShort])returnObject["Markings"][nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
-                    }else{
-                        returnObject[nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort)
+                    if (nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)) {
+                        let markings
+                        if(currentCollection==="Markings"){
+                            markings = returnObject;
+                        }else if(!returnObject.Markings){
+                            markings = returnObject["Markings"] = {};
+                        }else{
+                            markings = returnObject.Markings
+                        }
+                        markings[nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
+                        if (!("MarkingName" in markings[nameplateElement.idShort])) markings[nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
+                    } else {
+                        returnObject[nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
                     }
                     break;
                 case "Property":
@@ -37,7 +44,7 @@ export default class DataExtractor {
         return returnObject
     }
 
-    extractAllDataV3(baseUrl, nameplate = this.nameplate , path = "", ){
+    extractAllDataV3(baseUrl, nameplate = this.nameplate, path = "",currentCollection=null) {
         let returnObject = {}
         //console.log("loading data for submodelElementCollection")
         //console.log(nameplate)
@@ -47,12 +54,19 @@ export default class DataExtractor {
                     returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
                     break;
                 case "SubmodelElementCollection":
-                    if(nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)){
-                        if(!("Markings" in returnObject))returnObject["Markings"]={};
-                        returnObject["Markings"][nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort)
-                        if(!"MarkingName" in returnObject["Markings"][nameplateElement.idShort])returnObject["Markings"][nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
-                    }else{
-                        returnObject[nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort)
+                    if (nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)) {
+                        let markings
+                        if(currentCollection==="Markings"){
+                            markings = returnObject;
+                        }else if(!returnObject.Markings){
+                            markings = returnObject["Markings"] = {};
+                        }else{
+                            markings = returnObject.Markings
+                        }
+                        markings[nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
+                        if (!("MarkingName" in markings[nameplateElement.idShort])) markings[nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
+                    } else {
+                        returnObject[nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
                     }
                     break;
                 case "Property":
@@ -68,17 +82,19 @@ export default class DataExtractor {
         return returnObject
     }
 
-    getLangStringValue(json){
-        if ("langStrings" in json){
-            let langStrings = json.langStrings
-            for (let langPref of this.langPreferences){
-                for (let langString of langStrings) {
-                    if(langString.language === langPref){
-                        return langString.text
-                    }
+    getLangStringValue(json) {
+        let langStrings
+        if ("langStrings" in json) {
+            langStrings = json.langStrings
+        } else if ("langString" in json) { //Not to spec but seen in some assets
+            langStrings = json.langString
+        } else return ""
+        for (let langPref of this.langPreferences) {
+            for (let langString of langStrings) {
+                if (langString.language === langPref) {
+                    return langString.text
                 }
             }
         }
-        return ""
     }
 }
