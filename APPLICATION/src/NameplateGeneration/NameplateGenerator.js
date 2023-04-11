@@ -15,7 +15,7 @@ function generateNameplate(data, markings, id) {
 
     // this is the root svg in which the nameplate is build
     // TODO: Disable border again
-    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', true, 'nameplateSvg');
+    const nameplateSvg = initSvg(nameplateWidth + 'px', nameplateHeight + 'px', false, 'nameplateSvg');
 
     // this transforms the data & markings into one single string with linebreaks ('\n')
     // this is the content of the qr-code

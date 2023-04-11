@@ -431,9 +431,9 @@ function getData(i) {
             },
             "AssetSpecificProperties": {
                 "GuidelineSpecificProperties{00}": {
-                    "GuidelineForConformityDeclaration": ""
+                    "GuidelineForConformityDeclaration": "asdafasfasdfas"
                 },
-                "{arbitrary}": ""
+                "{arbitrary}": "Test123"
             }
         }
     });
