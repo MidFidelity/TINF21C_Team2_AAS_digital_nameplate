@@ -1,6 +1,6 @@
 // 'idEncoded' filters all keys that contain 'idEncoded'
 // same goes for 'productImages'
-const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded"];
+const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded", "TypeOf"];
 
 function transformDataToArray(obj) {
     let markings;
