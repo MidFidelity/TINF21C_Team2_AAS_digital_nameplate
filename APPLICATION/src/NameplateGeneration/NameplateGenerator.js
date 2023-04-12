@@ -20,6 +20,8 @@ function generateNameplate(data, markings, id) {
     // this transforms the data & markings into one single string with linebreaks ('\n')
     // this is the content of the qr-code
     const qrCodeString = nameplateContentObjectToString(data, markings);
+    console.log(qrCodeString);
+    console.log('qrCodeString length: ' + qrCodeString.length);
 
     // this svg warps around the qr-code svg
     // it is mainly used for styling and positioning

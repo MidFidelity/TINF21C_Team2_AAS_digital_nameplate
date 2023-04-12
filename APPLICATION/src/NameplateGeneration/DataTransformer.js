@@ -1,13 +1,21 @@
 // 'idEncoded' filters all keys that contain 'idEncoded'
 // same goes for 'productImages'
-const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded", "TypeOf"];
+const FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File"];
 
 function transformDataToArray(obj) {
     let markings;
     ({data: obj, markings} = separateMarkings(obj));
+    //TODO: remove logs
+    console.log('data (before flattened, but with extracted marking data):');
+    console.log(obj);
+    console.log('markings:');
+    console.log(markings)
     obj = flattenObject(obj);
     let unwantedKeys;
     ({data: obj, unwantedKeys} = extractUnwantedKeys(obj, FILTER_KEYS));
+    //TODO: remove logs
+    console.log('unwantedKeys:');
+    console.log(unwantedKeys);
     obj = shortenFlattenedKeys(obj);
     obj = filterEmptyValues(obj);
     return {obj, markings};
@@ -33,8 +41,24 @@ function filterEmptyValues(obj) {
 function separateMarkings(obj) {
     let data = structuredClone(obj);
     if (data.nameplate.Markings) {
-        let markings = data.nameplate.Markings;
-        delete data.nameplate.Markings;
+        let markings = {};
+        Object.keys(data.nameplate.Markings).forEach((key) => {
+            markings[key] = {};
+            if (data['nameplate']['Markings'][key]['MarkingName']) {
+                markings[key]['MarkingName'] = data['nameplate']['Markings'][key]['MarkingName'];
+                delete data['nameplate']['Markings'][key]['MarkingName'];
+            }
+            if (data['nameplate']['Markings'][key]['FilePath']) {
+                markings[key]['FilePath'] = data['nameplate']['Markings'][key]['FilePath'];
+                delete data['nameplate']['Markings'][key]['FilePath'];
+            }
+            if (Object.keys(markings[key]).length === 0 && markings[key].constructor === Object) {
+                delete markings[key];
+            }
+        });
+        //TODO: remove logging for markings and data on marking extraction
+        // console.log(markings);
+        // console.log(data);
         return {data, markings};
     }
     return {data, undefined};
@@ -123,7 +147,13 @@ function shortenFlattenedKeys(obj) {
         let value = elem[1];
         let keyParts = key.split('_');
         let amountOfParts = keyParts.length;
-        key = keyParts[amountOfParts-1];
+        if (key.includes('Markings') && amountOfParts > 3) {
+            const splitter = keyParts[0] + '_' + keyParts[1] + '_';
+            const split = key.split(splitter);
+            result[split[1]] = value;
+            return;
+        }
+        key = keyParts[amountOfParts - 1];
         result[key] = value;
     });
     return result;

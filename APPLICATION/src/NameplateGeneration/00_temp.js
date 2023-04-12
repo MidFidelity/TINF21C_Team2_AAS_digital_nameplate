@@ -361,10 +361,10 @@ function getData(i) {
                 "Marking": {
                     "MarkingName": "CE Marking",
                     "DesignationOfCertificateOrApproval": "",
-                    "IssueDate": "",
-                    "ExpiryDate": "",
+                    "IssueDate": "2023-03-12",
+                    "ExpiryDate": "2023-12-31",
                     "MarkingFile": "/aasx/Documentation/CE.png",
-                    "MarkingAdditionalText": "",
+                    "MarkingAdditionalText": "Das hier das CE Marking mit weiteren Daten",
                     "ExplosionSafety": {
                         "DesignationOfCertificateOrApproval": "KEMA99IECEX1105/128",
                         "ApprovalAgencyTestingAgency": "PTB",
@@ -373,14 +373,14 @@ function getData(i) {
                         "SpecificConditionsForUse": "",
                         "IncompleteDevice": "",
                         "AmbientConditions": {
-                            "DeviceCategory": "",
+                            "DeviceCategory": "Explosion Proof Device",
                             "RegionalSpecificMarking": "",
                             "TypeOfProtection": "",
-                            "ExplosionGroup": "",
-                            "MinimumAmbientTemperature": "",
-                            "MaxAmbientTemperature": "",
-                            "MaxSurfaceTemperatureForDustProof": "",
-                            "TemperatureClass": ""
+                            "ExplosionGroup": "A",
+                            "MinimumAmbientTemperature": "-5C",
+                            "MaxAmbientTemperature": "+40C",
+                            "MaxSurfaceTemperatureForDustProof": "+38.7C",
+                            "TemperatureClass": "HIGH"
                         },
                         "ProcessConditions": {
                             "DeviceCategory": "",
@@ -395,7 +395,7 @@ function getData(i) {
                         "ExternalElectricalCircuit": {
                             "DesignationOfElectricalTerminal": "",
                             "TypeOfProtection": "",
-                            "ExplosionGroup": "",
+                            "ExplosionGroup": "Protects from explosions",
                             "Characteristics": "",
                             "Fisco": "",
                             "TwoWISE": "",
