@@ -18,7 +18,6 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
     }, [document.activeElement])
 
     useEffect(()=>{
-        console.log(suggestions)
         setFilteredSuggestions(suggestions?suggestions:[])
         filterSuggestions()
     }, [suggestions])
@@ -33,7 +32,6 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
     };
 
     const handleSubmit = (text) => {
-        console.log("Submit value")
         onSubmit && onSubmit((typeof text === "string")?text:textValue);
         setTextValue("")
     };
