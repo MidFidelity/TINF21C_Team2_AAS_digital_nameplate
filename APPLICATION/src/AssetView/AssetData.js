@@ -40,7 +40,7 @@ const AssetData = ({data}) => {
                         return <tr key={index}>
                             <td>
                                 <p className="categories">{key}</p>
-                                <p>{value}</p>
+                                <p className={"field-value"}>{value}</p>
                                 <hr/>
                             </td>
                         </tr>

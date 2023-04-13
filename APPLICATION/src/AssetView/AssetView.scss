@@ -56,3 +56,7 @@ hr {
 .expand-button:focus + .expand-content {
   display: block;
 }
+
+.field-value{
+  max-width: 100ch;
+}
