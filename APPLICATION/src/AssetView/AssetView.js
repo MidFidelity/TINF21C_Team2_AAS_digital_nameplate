@@ -21,7 +21,7 @@ const AssetView = ({assetList}) => {
     return (
         <div className={"AssetView"}>
             <h3 className={"AssetViewTitle"}>{idShort}</h3>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex flex-wrap justify-content-center">
                 <div  className={"ProductImageContainer"}>
                     {assetData?
                         <img src={assetData["productImages"].length>0?assetData["productImages"][0]:""} alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/>:
