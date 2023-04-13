@@ -54,9 +54,12 @@ class ListView extends React.Component{
 render(){
     return(
     <div className="ListView">
-        <Searchbar hint={"HintText"}
-                   className={"w-50"}
+        <Searchbar hint={"Asset Name"}
                    buttonText={"SearchText"}
+                   contentClassName={"list-searchbar"}
+                   searchContainerClassName={"list-search-container"}
+                   containerClassName={"list-searchbar-container mt-3"}
+                   iconClassName={"list-searchbar-icon"}
                    onChange={this.updateFilter}
                    onBlur={this.updateFilter}
                     value={this.state.filterTerm}
