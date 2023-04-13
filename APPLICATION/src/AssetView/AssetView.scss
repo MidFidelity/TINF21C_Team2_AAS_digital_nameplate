@@ -6,7 +6,25 @@
 #assetimg{
   max-height: auto;
   width: 25em;
-  float: left;
+}
+
+.ProductImage {
+  background-color: rgb(255, 255, 255);
+  color: rgba(4, 20, 22, 0.87);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 0.7em;
+  box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+  margin-right: 3em;
+  padding: 2em;
+}
+
+.ProductDesc {
+  background-color: rgb(255, 255, 255);
+  color: rgba(4, 20, 22, 0.87);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 0.7em;
+  box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+  padding: 2em;
 }
 
 .AssetViewTitle {
@@ -17,4 +35,24 @@
 
 .categories {
   font-weight: bolder;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#markings {
+  max-height: auto;
+  width: 25em;
+}
+
+.expand-content {
+  display: none;
+}
+
+.expand-button:focus + .expand-content {
+  display: block;
 }
