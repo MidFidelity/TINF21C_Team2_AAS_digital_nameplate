@@ -1,20 +1,41 @@
-$base-color: #283044;
+
+
+@import "shared";
+
+.search-container{
+    height: 6em;
+}
 
 .btn-light {
     object-fit: cover;
-    padding: auto;
 }
 
-#searchBar {
-    background:  none;
-    border-style: none;
-    width: 500px;
-  } 
+.search-icon{
+    width:25px;
+    height:25px;
+    fill:black;
+}
 
-.bi-search {
-    width: 25px;
-    height: 25px;
-    fill: $base-color;
+.suggestion-box{
+    max-height: 30em;
+    overflow: auto;
+    scroll-behavior: auto;
+}
+
+
+.suggestion{
+    border: none;
+    margin: 0.1em;
+    padding: 0.2em 0.4em;
+    border-radius: 1em;
+    cursor: pointer;
+    &:hover, &:focus{
+        background-color: lightgray;
+    }
+}
+
+.animate-height{
+    transition: max-height 0.2s;
 }
 
 .outlineBorder {
@@ -24,3 +45,4 @@ $base-color: #283044;
     margin-top: 3em;
     margin-bottom: 2em;
 }
+
