@@ -29,6 +29,15 @@ export default class DataRefinery {
         }
     }
 
+    async getAPIVersion(){
+        return new Promise((resolve)=>{
+            if (this.apiVersion)resolve(this.apiVersion)
+            window.addEventListener("apiVersionSet", function mylistener(event){
+                window.removeEventListener("apiVerionSet", mylistener)
+                resolve(event.detail.apiVersion)
+            })
+        })
+    }
 
     async getFullAASList() {
         await this.#loadDependencies();
@@ -140,6 +149,7 @@ export default class DataRefinery {
             this.apiVersion = -1
         }
         console.log("API-Version: " + this.apiVersion)
+        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
     }
 
 
@@ -151,7 +161,6 @@ export default class DataRefinery {
                     throw new Error("Fetch not ok")
                 }
                 return response.json().then(jsonResponse => {
-
                     return jsonResponse;
                 }).catch(err => {
                     console.log(response, err)
@@ -159,6 +168,8 @@ export default class DataRefinery {
             })
             .catch(err => {
                 console.log({success: false, text: err})
+                this.apiVersion=-1
+                window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
             });
     }
 }
