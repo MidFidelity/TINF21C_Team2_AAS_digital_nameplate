@@ -464,15 +464,4 @@ function nameplateInterface(direction) {
     nameplateBootstrap(TEMP_COUNTER);
 }
 
-function nameplateBootstrap(rawData, id) {
-    // raw data according to README.md specification
-    // const rawData = getData(i);
 
-    // data and markings according to README.md specification
-    // data is according to "Reduced Data"
-    let data = {}, markings = {};
-    ({obj: data, markings} = transformDataToArray(rawData));
-
-    // generates the nameplate and injects it into 'id'
-    generateNameplate(data, markings, id);
-}

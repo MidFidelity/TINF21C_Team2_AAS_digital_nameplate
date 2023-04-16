@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import "./AssetView.scss"
 import AssetData from "./AssetData";
+import NameplateGenerator from "../NameplateGeneration/NameplateGenerator";
 
 const AssetView = ({assetList}) => {
     const {idShort} = useParams();
@@ -17,6 +18,11 @@ const AssetView = ({assetList}) => {
         setAssetData(assetList.find(item=>item["idShort"]===idShort))
     },[assetList])
 
+    useEffect(() => {
+        if (assetData) {
+            NameplateGenerator.nameplateBootstrap(assetData, 'nameplateDisplay');
+        }
+    }, [assetData])
 
     return (
         <div className={"AssetView"}>
@@ -33,7 +39,6 @@ const AssetView = ({assetList}) => {
                 </div>
                 <div className={"Nameplate"}>
                     <div id={"nameplateDisplay"}></div>
-                    {assetData? nameplateBootstrap(assetData, 'nameplateDisplay') : null}
                 </div>
             </div>
 
