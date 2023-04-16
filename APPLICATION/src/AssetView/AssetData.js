@@ -3,35 +3,56 @@ const AssetData = ({data}) => {
         return <p>No Nameplate data found</p>;
     }
 
-    const recursiveTable = (json)=>{
+    const recursiveTable = (json, idBase="accordion")=>{
         return(
-            <table>
+            <table width={"100%"}>
+                <tbody>
                 {
                 Object.entries(json).map(([key, value], index) => {
                     if (typeof value === "object"){
                       return <tr key={index}>
-                          <td><p className="categories">{key}</p></td>
-                          <td>{recursiveTable(value)}</td>
+                          {/* <td><p class="categories">{key}</p></td> */}
+
+                        <td>
+                            <div className="accordion" id="accordionExample">
+                            <div className="accordion-item">
+                                <h2 className="accordion-header" id="headingOne">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${idBase}-${index}`} aria-expanded="true" aria-controls="collapseOne">
+                                    {key}
+                                </button>
+                                </h2>
+                                <div id={`${idBase}-${index}`} className="accordion-collapse collapse" aria-labelledby="headingOne">
+                                <div className="accordion-body">
+                                    {recursiveTable(value, idBase+"-"+index)}
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </td>
                       </tr>
                     }else if(key === "FilePath"){
                         return <tr key={index}>
-                            <td><p>{key}</p></td>
-                            <td><img className={"ProductImage"} src={value} alt={"Marking Image"}></img></td>
+                            <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img>
+                            <p>{key}</p></td>
                         </tr>
                     } else{
                         return <tr key={index}>
-                            <td><p className="categories">{key}</p></td>
-                            <td><p>{value}</p></td>
+                            <td>
+                                <p className="categories">{key}</p>
+                                <p className={"field-value"}>{value}</p>
+                                <hr/>
+                            </td>
                         </tr>
                     }
                 })
                 }
+                </tbody>
             </table>
         )
     }
 
-    return (<table>
-            {recursiveTable(data)}
-        </table>)
+    return (
+            recursiveTable(data)
+        )
 }
 export default AssetData;
