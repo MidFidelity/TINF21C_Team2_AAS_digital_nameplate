@@ -1,7 +1,6 @@
-
-
 export default class NameplateSupplier {
     static CURRENT_IDSHORT = 'Nameplate';
+
     /**
      * Creates and returns an SVG element.
      * @param xSize is the width of the SVG element.
@@ -10,10 +9,19 @@ export default class NameplateSupplier {
      * @param id (optional) id of the SVG element
      * @returns {SVGSVGElement} SVG element of given specifications
      */
-    static initSvg(xSize, ySize, border, id) {
+    static initSvg(xSize, ySize, border, id, isQR) {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', xSize);
-        svg.setAttribute('height', ySize);
+
+        if (isQR) {
+            svg.setAttribute('width', xSize);
+            svg.setAttribute('height', ySize);
+        } else {
+            svg.setAttribute('viewBox', `0 0 ${xSize} ${ySize}`);
+        }
+
+
+
+
         if (id) {
             svg.id = id;
         }
@@ -60,7 +68,7 @@ export default class NameplateSupplier {
      */
     static extractMarkingNames(markings) {
         let data = structuredClone(markings);
-        const keys = data? Object.keys(data): [];
+        const keys = data ? Object.keys(data) : [];
         keys.forEach((key) => {
             if (data[key]['MarkingName']) {
                 data[key] = data[key]['MarkingName'];

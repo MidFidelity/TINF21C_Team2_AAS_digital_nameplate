@@ -24,16 +24,16 @@ export default class NameplateGenerator {
      * @param id ID of the DOM element into which the nameplate will be injected.
      */
     static generateNameplate(data, markings, id) {
-        // following values are in pixels
         const nameplateWidth = 920;
         const nameplateHeight = 600;
+        // following values are in pixels
         const qrCodeSize = 400;
         const qrCodeOffsetX = 500;
         const qrCodeOffsetY = 85;
 
         // this is the root svg in which the nameplate is build
         // TODO: Disable border again
-        const nameplateSvg = NameplateSupplier.initSvg(nameplateWidth + 'px', nameplateHeight + 'px', true, 'nameplateSvg');
+        const nameplateSvg = NameplateSupplier.initSvg(nameplateWidth, nameplateHeight, true, 'nameplateSvg', false);
 
         // this transforms the data & markings into one single string with linebreaks ('\n')
         // this is the content of the qr-code
@@ -42,7 +42,7 @@ export default class NameplateGenerator {
         // this svg warps around the qr-code svg
         // it is mainly used for styling and positioning
         // make sure, that this svg is square, otherwise positioning will be off!!!
-        const qrCodeSvg = NameplateSupplier.initSvg(qrCodeSize + 'px', qrCodeSize + 'px', false, 'qrCodeSvg');
+        const qrCodeSvg = NameplateSupplier.initSvg(qrCodeSize + 'px', qrCodeSize + 'px', false, 'qrCodeSvg', true);
         // these two attributes manage the offset inside the 'nameplateSvg' from the top-left corner
         qrCodeSvg.setAttribute('x', qrCodeOffsetX + 'px');
         qrCodeSvg.setAttribute('y', qrCodeOffsetY + 'px');

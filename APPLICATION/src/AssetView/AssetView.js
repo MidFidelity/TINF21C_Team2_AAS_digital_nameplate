@@ -34,13 +34,24 @@ const AssetView = ({assetList}) => {
                         <p>No Product Image found</p>
                     }
                 </div>
+                <div className={"Nameplate"}>
+                    <div className={"accordion"}>
+                        <div className={"accordion-item"} id={"nameplateAccordionItem"}>
+                            <h2 className={"accordion-header"} id={"nameplateAccordion"}>
+                                <button className={"accordion-button collapsed"} data-bs-toggle={"collapse"} data-bs-target={"#nameplateAccordionContent"}>Nameplate</button>
+                            </h2>
+                            <div className={"accordion-collapse collapse show"} id={"nameplateAccordionContent"}>
+                                <div className={"accordion-body"}>
+                                    <div id={"nameplateDisplay"}></div>
+                                    <button onClick={NameplateGenerator.downloadSvg} className={"btn"}>Download SVG</button>
+                                    <button onClick={NameplateGenerator.downloadPng} className={"btn"}>Download PNG</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className={"ProductDesc"}>
                     <AssetData data={assetData?assetData["nameplate"]:[]}></AssetData>
-                </div>
-                <div className={"Nameplate"}>
-                    <div id={"nameplateDisplay"}></div>
-                    <button onClick={NameplateGenerator.downloadSvg}>SVG</button>
-                    <button onClick={NameplateGenerator.downloadPng}>PNG</button>
                 </div>
             </div>
 
