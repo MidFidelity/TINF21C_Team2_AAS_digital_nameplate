@@ -4,11 +4,11 @@ import "./App.scss"
 import AssetView from "./AssetView/AssetView"
 import ListView from "./AssetList/ListView"
 import HomeView from "./Homescreen/HomeView";
-import ServerAddress from "./ServerAddress";
 import DataRefinery from "./DataRetrival/DataRefinery";
 import Navbar from "./Navigation/Navbar";
 import AboutView from "./AboutPage/AboutView";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Warning from "./Warnings/Warning";
 
 let suggestedServers = [
     "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/",
@@ -25,7 +25,8 @@ export default class App extends React.Component {
             serverAddress: "",
             tableData: [],
             serverHistory: [],
-            navTarget:""
+            navTarget:"",
+            warnings:[]
         }
 
     }
@@ -58,8 +59,6 @@ export default class App extends React.Component {
     }
 
     writeHistoryCookie() {
-        console.log("Writing History to Cookie")
-        console.log(this.state.serverHistory)
         let cookieContent = encodeURIComponent(JSON.stringify(this.state.serverHistory));
         let expDate = new Date()
         expDate.setFullYear(expDate.getFullYear() + 100)
@@ -67,14 +66,11 @@ export default class App extends React.Component {
     }
 
     updateServerHistory = (address) => {
-        console.log("Writing " + address + " to serverHistory")
         if (this.state.serverHistory.includes(address)) {
             let newHistory = [address, ...this.state.serverHistory.filter((item) => (item !== address))]
-            console.log(newHistory)
             this.setState({"serverHistory":newHistory})
         } else {
             let newHistory = [address, ...this.state.serverHistory]
-            console.log(newHistory)
             this.setState({"serverHistory":newHistory})
         }
     }
@@ -95,13 +91,34 @@ export default class App extends React.Component {
         }
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    clearState(){
+        this.setState({
+            tableData: [],
+            warnings:[]
+        })
+    }
+
+   async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.serverHistory !== this.state.serverHistory) {
             this.writeHistoryCookie()
         }
         if (prevState.serverAddress !== this.state.serverAddress) {
+            this.clearState()
             this.refinery = new DataRefinery(this.state.serverAddress);
-            this.refinery.getFullAASList().then((content) => this.setState({tableData: content}))
+            this.refinery.getFullAASList()
+                .then((content) => this.setState({tableData: content}))
+            this.refinery.getAPIVersion().then((apiVersion)=>{
+                switch (apiVersion) {
+                    case 1:
+                        this.setState({warnings:[...this.state.warnings, {message:"The Server uses the V1 API. It does not support images.", color:"#ffff00"}]})
+                        break
+                    case 3:
+                        break
+                    default:
+                        this.setState({warnings:[...this.state.warnings, {message:"An error occurred while loading data from the server", color:"#ff0000"}]})
+                        break
+                }
+            })
         }
     }
 
@@ -113,6 +130,9 @@ export default class App extends React.Component {
                     <Navbar setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
                 </div>
                 <div className={"Content"}>
+                    <div className={"d-flex flex-column"}>
+                        {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
+                    </div>
                     <Routes>
                         <Route exact path={"/home"} element={<HomeView serverHistory={this.state.serverHistory}/>}></Route>
                         <Route exact path={"/list"} element={<ListView tableData={this.state.tableData}

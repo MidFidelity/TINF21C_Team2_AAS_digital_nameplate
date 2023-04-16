@@ -1,5 +1,4 @@
 const AssetData = ({data}) => {
-    console.log(data);
     if (!data || data.length === 0 || (data.constructor === Object && Object.keys(data).length === 0)) {
         return <p>No Nameplate data found</p>;
     }
