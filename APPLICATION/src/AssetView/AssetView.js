@@ -39,6 +39,8 @@ const AssetView = ({assetList}) => {
                 </div>
                 <div className={"Nameplate"}>
                     <div id={"nameplateDisplay"}></div>
+                    <button onClick={NameplateGenerator.downloadSvg}>SVG</button>
+                    <button onClick={NameplateGenerator.downloadPng}>PNG</button>
                 </div>
             </div>
 

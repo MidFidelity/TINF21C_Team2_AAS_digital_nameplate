@@ -93,7 +93,7 @@ export default class NameplateGenerator {
      */
     static downloadSvg() {
         const nameplateSvg = document.getElementById('nameplateSvg');
-        this.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, null, null);
+        NameplateGenerator.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, null, null);
     }
 
     /**
@@ -103,7 +103,7 @@ export default class NameplateGenerator {
         const nameplateSvg = document.getElementById('nameplateSvg');
         const height = nameplateSvg.getAttribute('height');
         const width = nameplateSvg.getAttribute('width');
-        this.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, width, height);
+        NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, width, height);
     }
 
     /**
