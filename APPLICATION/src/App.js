@@ -13,6 +13,7 @@ import Warning from "./Warnings/Warning";
 let suggestedServers = [
     "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/",
     "https://v3-2.admin-shell-io.com/",
+    "https://v3.admin-shell-io.com/",
     "https://admin-shell-io.com/5001",
     "http://aas.murrelektronik.com:4001/aas"
 ]
@@ -129,7 +130,7 @@ export default class App extends React.Component {
                 <div className={"NavBar sticky-top"}>
                     <Navbar setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
                 </div>
-                <div className={"Content"}>
+                <div className={"Content p-1 border"}>
                     <div className={"d-flex flex-column"}>
                         {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
                     </div>
