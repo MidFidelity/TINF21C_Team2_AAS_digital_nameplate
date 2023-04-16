@@ -19,9 +19,6 @@ export default class NameplateSupplier {
             svg.setAttribute('viewBox', `0 0 ${xSize} ${ySize}`);
         }
 
-
-
-
         if (id) {
             svg.id = id;
         }

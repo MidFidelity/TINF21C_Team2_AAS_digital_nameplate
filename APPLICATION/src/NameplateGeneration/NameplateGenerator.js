@@ -78,7 +78,8 @@ export default class NameplateGenerator {
      */
     static makeQrCode(text, id) {
         const settings = {
-            type: "svg"
+            type: "svg",
+            errorCorrectionLevel: 'M'
         }
         QRCode.toString(text, settings, (error, string) => {
             if (error) {
