@@ -50,9 +50,6 @@ export default class NameplateSupplier {
             entryString = entry[0] + ': ' + entry[1] + lineSeparator;
             result += entryString;
         });
-        //TODO: remove logs
-        // console.log(result);
-        // console.log(result.length);
         return result;
     }
 

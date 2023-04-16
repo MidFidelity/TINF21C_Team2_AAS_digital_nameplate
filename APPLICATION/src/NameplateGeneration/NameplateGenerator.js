@@ -38,8 +38,6 @@ export default class NameplateGenerator {
         // this transforms the data & markings into one single string with linebreaks ('\n')
         // this is the content of the qr-code
         const qrCodeString = NameplateSupplier.nameplateContentObjectToString(data, markings);
-        console.log(qrCodeString);
-        console.log('qrCodeString length: ' + qrCodeString.length);
 
         // this svg warps around the qr-code svg
         // it is mainly used for styling and positioning
@@ -82,14 +80,10 @@ export default class NameplateGenerator {
         const settings = {
             type: "svg"
         }
-        console.log('FINDING DOM ELEMENT:')
-        console.log(document.getElementById(id));
         QRCode.toString(text, settings, (error, string) => {
             if (error) {
                 throw error;
             }
-            console.log('QRCODE STRING:')
-            console.log(string);
             document.getElementById(id).innerHTML = string;
         })
     }

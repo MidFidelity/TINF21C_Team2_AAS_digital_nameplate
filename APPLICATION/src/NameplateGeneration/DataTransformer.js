@@ -8,17 +8,9 @@ export default class DataTransformer {
     static transformDataToArray(obj) {
         let markings;
         ({data: obj, markings} = this.separateMarkings(obj));
-        //TODO: remove logs
-        console.log('data (before flattened, but with extracted marking data):');
-        console.log(obj);
-        console.log('markings:');
-        console.log(markings)
         obj = this.flattenObject(obj);
         let unwantedKeys;
         ({data: obj, unwantedKeys} = this.extractUnwantedKeys(obj, this.FILTER_KEYS));
-        //TODO: remove logs
-        console.log('unwantedKeys:');
-        console.log(unwantedKeys);
         obj = this.shortenFlattenedKeys(obj);
         obj = this.filterEmptyValues(obj);
         return {obj, markings};
