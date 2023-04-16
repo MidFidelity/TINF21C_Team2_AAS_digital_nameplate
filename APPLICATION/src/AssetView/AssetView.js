@@ -32,6 +32,8 @@ const AssetView = ({assetList}) => {
                     <AssetData data={assetData?assetData["nameplate"]:[]}></AssetData>
                 </div>
                 <div className={"Nameplate"}>
+                    <div id={"nameplateDisplay"}></div>
+                    {assetData? nameplateBootstrap(assetData, 'nameplateDisplay') : null}
                 </div>
             </div>
 
