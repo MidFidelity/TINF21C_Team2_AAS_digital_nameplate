@@ -6,37 +6,95 @@ export default class DataExtractor {
         this.nameplate = nameplate;
     }
 
-    extractAllData(baseUrl, nameplate = this.nameplate , path = "", ){
+    extractAllDataV1(baseUrl, nameplate = this.nameplate, path = "",currentCollection=null) {
         let returnObject = {}
         //console.log("loading data for submodelElementCollection")
         //console.log(nameplate)
         for (const nameplateElement of nameplate) {
-                if(nameplateElement.modelType === "MultiLanguageProperty"){
+            switch (nameplateElement.modelType.name) {
+                case "MultiLanguageProperty":
                     returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
-                }else if(nameplateElement.modelType === "SubmodelElementCollection"){
-                    returnObject[nameplateElement.idShort] = this.extractAllData(baseUrl, nameplateElement.value, path+(path.length>0?".":"") + nameplateElement.idShort)
-                }else if(nameplateElement.modelType === "Property"){
+                    break;
+                case "SubmodelElementCollection":
+                    if (nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)) {
+                        let markings
+                        if(currentCollection==="Markings"){
+                            markings = returnObject;
+                        }else if(!returnObject.Markings){
+                            markings = returnObject["Markings"] = {};
+                        }else{
+                            markings = returnObject.Markings
+                        }
+                        markings[nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
+                        if (!("MarkingName" in markings[nameplateElement.idShort])) markings[nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
+                    } else {
+                        returnObject[nameplateElement.idShort] = this.extractAllDataV1(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
+                    }
+                    break;
+                case "Property":
                     returnObject[nameplateElement.idShort] = nameplateElement.value
-                }else if(nameplateElement.modelType === "File"){
-                    returnObject["FilePath"] = baseUrl+"/"+ path +"."+nameplateElement.idShort+"/attachment"
+                    break;
+                case "File":
+                    //returnObject["FilePath"] = baseUrl + "/" + path + "." + nameplateElement.idShort + "/attachment"
                     returnObject[nameplateElement.idShort] = nameplateElement.value
-                }
+                    break;
+            }
         }
         //console.log("-----")
         return returnObject
     }
 
-    getLangStringValue(json){
-        if ("langStrings" in json){
-            let langStrings = json.langStrings
-            for (let langPref of this.langPreferences){
-                for (let langString of langStrings) {
-                    if(langString.language === langPref){
-                        return langString.text
+    extractAllDataV3(baseUrl, nameplate = this.nameplate, path = "",currentCollection=null) {
+        let returnObject = {}
+        //console.log("loading data for submodelElementCollection")
+        //console.log(nameplate)
+        for (const nameplateElement of nameplate) {
+            switch (nameplateElement.modelType) {
+                case "MultiLanguageProperty":
+                    returnObject[nameplateElement.idShort] = this.getLangStringValue(nameplateElement.value)
+                    break;
+                case "SubmodelElementCollection":
+                    if (nameplateElement.idShort.match(/(?!Markings)[Mm]arking[\-\w]*/ug)) {
+                        let markings
+                        if(currentCollection==="Markings"){
+                            markings = returnObject;
+                        }else if(!returnObject.Markings){
+                            markings = returnObject["Markings"] = {};
+                        }else{
+                            markings = returnObject.Markings
+                        }
+                        markings[nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
+                        if (!("MarkingName" in markings[nameplateElement.idShort])) markings[nameplateElement.idShort]["MarkingName"] = nameplateElement.idShort
+                    } else {
+                        returnObject[nameplateElement.idShort] = this.extractAllDataV3(baseUrl, nameplateElement.value, path + (path.length > 0 ? "." : "") + nameplateElement.idShort, nameplateElement.idShort)
                     }
+                    break;
+                case "Property":
+                    returnObject[nameplateElement.idShort] = nameplateElement.value
+                    break;
+                case "File":
+                    returnObject["FilePath"] = baseUrl + "/" + path + "." + nameplateElement.idShort + "/attachment"
+                    returnObject[nameplateElement.idShort] = nameplateElement.value
+                    break;
+            }
+        }
+        //console.log("-----")
+        return returnObject
+    }
+
+    getLangStringValue(json) {
+        let langStrings
+        if ("langStrings" in json) {
+            langStrings = json.langStrings
+        } else if ("langString" in json) { //Not to spec but seen in some assets
+            langStrings = json.langString
+        } else return ""
+        for (let langPref of this.langPreferences) {
+            for (let langString of langStrings) {
+                if (langString.language === langPref) {
+                    return langString.text
                 }
             }
         }
-        return ""
     }
 }
