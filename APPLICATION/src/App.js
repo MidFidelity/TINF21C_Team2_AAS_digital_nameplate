@@ -33,6 +33,9 @@ export default class App extends React.Component {
 
     componentDidMount() {
         this.loadHistoryCookie()
+        window.addEventListener("forceUpdate", ()=>{
+            this.forceUpdate()
+        })
     }
 
     loadHistoryCookie() {
@@ -97,6 +100,7 @@ export default class App extends React.Component {
             warnings:[]
         })
     }
+
 
    async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.serverHistory !== this.state.serverHistory) {

@@ -114,6 +114,7 @@ export default class DataRefinery {
                             if (Object.keys(submodel)[0] === "TechnicalData") {
                                 assetObject.productImages = this.searchForKey(submodel[Object.keys(submodel)[0]], /[pP]roductImage\d*/)
                             }
+                            window.dispatchEvent(new Event("forceUpdate"))
                         })
                     }).catch()
 
