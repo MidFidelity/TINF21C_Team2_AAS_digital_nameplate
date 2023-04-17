@@ -8,6 +8,8 @@ import {object} from "prop-types";
 
 export default class DataRefinery {
 
+    requestCount = {}
+
     constructor(serverBaseAddress) {
         if (serverBaseAddress.endsWith("/")) {
             this.serverBaseAddress = serverBaseAddress;
@@ -15,6 +17,7 @@ export default class DataRefinery {
             this.serverBaseAddress = serverBaseAddress + "/";
         }
         this.apiVersion = undefined;
+        console.log(this.requestCount)
     }
 
     async getAPIVersion() {
@@ -35,88 +38,84 @@ export default class DataRefinery {
                 }
                 return response.map((obj, index) => {
                     let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
-                    let assetIdEncoded = window.btoa(assetId)
                     let submodels
                     if (obj["submodels"]) {
                         submodels = obj["submodels"].map((submodel) => {
                             return new Promise(async (resolve, reject) => {
-                                try {
-                                    let submodelId = submodel["keys"][0]["value"]
-                                    let submodelIdEncoded = window.btoa(submodelId)
-                                    let apiVersion = this.analyzeApiVersion(submodel)
+                                let submodelId = submodel["keys"][0]["value"]
 
-                                    let submodelPaths
-                                    if (apiVersion === 3) {
-                                        submodelPaths = submodelPathsV3(assetIdEncoded, submodelIdEncoded)
-                                    } else {
-                                        submodelPaths = submodelPathsV1(assetIdEncoded, submodelIdEncoded)
-                                    }
-                                    let submodelData
-                                    for (const submodelPath of submodelPaths) {
-                                        submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath.submodel, true)
-                                            .then((result) => {
-                                                let submodelDataArray
-                                                let i = 0
-                                                if (!result) return undefined
-                                                if (Array.isArray(result)) {
-                                                    submodelDataArray = result
-                                                }else {
-                                                    submodelDataArray = [result]
-                                                }
-                                                let returnData = {}
-                                                do {
-                                                    let submodelName = submodelDataArray[i].idShort
+                                let apiVersion = this.analyzeApiVersion(submodel)
 
-                                                    let extractedSubmodelData
-                                                    let de = new DataExtractor(submodelDataArray[i]["submodelElements"])
-                                                    if (apiVersion === 3) {
-                                                        extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath.submodelElements)
-                                                    } else {
-                                                        extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath.submodelElements)
-                                                    }
-
-
-                                                    returnData = {
-                                                        ...returnData,
-                                                        [submodelName]: {
-                                                            idShort: submodelName,
-                                                            id: submodelId,
-                                                            idEncoded: submodelIdEncoded,
-                                                            ...extractedSubmodelData
-                                                        }
-                                                    }
-                                                    i++
-                                                }while (i<submodelDataArray.length)
-                                                return returnData
-                                            })
-                                        if (submodelData) {
-                                            break;
-                                        }
-                                        console.warn("Using fallback")
-                                    }
-                                    resolve(submodelData)
-                                } catch (e) {
-                                    console.error(e)
+                                let submodelPaths
+                                if (apiVersion === 3) {
+                                    submodelPaths = submodelPathsV3(assetId, submodelId)
+                                } else {
+                                    submodelPaths = submodelPathsV1(assetId, submodelId)
                                 }
+                                let submodelData = {}
+                                let tryCount = 1
+                                for (const submodelPath of submodelPaths) {
+                                    submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath.submodel, true)
+                                        .then((result) => {
+                                            let submodelDataArray
+                                            let i = 0
+                                            if (!result) return undefined
+                                            if (Array.isArray(result)) {
+                                                submodelDataArray = result
+                                            } else {
+                                                submodelDataArray = [result]
+                                            }
+                                            let returnData = {}
+                                            do {
+                                                let submodelName = submodelDataArray[i].idShort
+
+                                                let extractedSubmodelData
+                                                let de = new DataExtractor(submodelDataArray[i]["submodelElements"])
+                                                if (apiVersion === 3) {
+                                                    extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath.submodelElements)
+                                                } else {
+                                                    extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath.submodelElements)
+                                                }
+
+
+                                                returnData = {
+                                                    ...returnData,
+                                                    [submodelName]: {
+                                                        idShort: submodelName,
+                                                        id: submodelId,
+                                                        ...extractedSubmodelData
+                                                    }
+                                                }
+                                                i++
+                                            } while (i < submodelDataArray.length)
+                                            return returnData
+                                        })
+                                    if (submodelData) {
+                                        break;
+                                    }
+                                    console.warn("Using fallback for asset ", assetId, "in try", tryCount)
+                                    tryCount++
+                                }
+                                resolve(submodelData)
                             })
                         })
                     }
                     let assetObject = {
                         "idShort": obj["idShort"],
                         "id": assetId,
-                        "idEncoded": assetIdEncoded,
                         "num": index,
                         "productImages": []
                     }
 
                     Promise.all(submodels).then((result) => {
                         result.forEach((submodel) => {
+                            if (!submodel) console.log(assetId)
                             assetObject[Object.keys(submodel)[0]] = submodel[Object.keys(submodel)[0]]
-                            if (Object.keys(submodel)[0]==="TechnicalData"){
-                                assetObject.productImages =  this.searchForKey(submodel[Object.keys(submodel)[0]], /[pP]roductImage\d*/)
+                            if (Object.keys(submodel)[0] === "TechnicalData") {
+                                assetObject.productImages = this.searchForKey(submodel[Object.keys(submodel)[0]], /[pP]roductImage\d*/)
                             }
                         })
-                    })
+                    }).catch()
 
                     return assetObject
                 })
@@ -146,8 +145,10 @@ export default class DataRefinery {
         return apiVersion
     }
 
+
     async #getDataFromServer(address, silent = false) {
         console.log("Making request to " + address);
+        this.requestCount[address] ? this.requestCount[address]++ : this.requestCount[address] = 1
         return fetch(address)
             .then(response => {
                 if (!response.ok) {

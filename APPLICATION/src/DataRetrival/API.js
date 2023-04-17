@@ -1,30 +1,40 @@
 function submodelPathsV1(aasIdentifier, submodelIdentifier) {
     return [
         {
-            submodel: `shells/${aasIdentifier}/aas/submodels/${submodelIdentifier}/submodel`,
-            submodelElements: `shells/${aasIdentifier}/aas/submodels/${submodelIdentifier}/submodel/submodel-elements`
+            submodel: `shells/${base64UrlEncode(aasIdentifier)}/aas/submodels/${base64UrlEncode(submodelIdentifier)}/submodel`,
+            submodelElements: `shells/${base64UrlEncode(aasIdentifier)}/aas/submodels/${base64UrlEncode(submodelIdentifier)}/submodel/submodel-elements`
         },
         {
-            submodel: `submodels/${submodelIdentifier}`,
-            submodelElements: `submodels/${submodelIdentifier}/submodel/submodel-elements`
+            submodel: `submodels/${base64UrlEncode(submodelIdentifier)}`,
+            submodelElements: `submodels/${base64UrlEncode(submodelIdentifier)}/submodel/submodel-elements`
         },
         {
-            submodel: `shells/${encodeURIComponent(window.atob(aasIdentifier))}/aas/submodels`,
-            submodelElements: `shells/${encodeURIComponent(window.atob(aasIdentifier))}/aas/submodels`
+            submodel: `shells/${encodeURIComponent(aasIdentifier)}/aas/submodels`,
+            submodelElements: `shells/${encodeURIComponent(aasIdentifier)}/aas/submodels`
         }
     ]
 }
 function submodelPathsV3(aasIdentifier, submodelIdentifier) {
     return [
         {
-            submodel: `shells/${aasIdentifier}/submodels/${submodelIdentifier}/submodel`,
-            submodelElements: `shells/${aasIdentifier}/submodels/${submodelIdentifier}/submodel/submodelelements`
+            submodel: `shells/${base64UrlEncode(aasIdentifier)}/submodels/${base64UrlEncode(submodelIdentifier)}/submodel`,
+            submodelElements: `shells/${base64UrlEncode(aasIdentifier)}/submodels/${base64UrlEncode(submodelIdentifier)}/submodel/submodelelements`
         },
         {
-            submodel: `submodels/${submodelIdentifier}`,
-            submodelElements: `submodels/${submodelIdentifier}/submodelelements`
+            submodel: `submodels/${base64UrlEncode(submodelIdentifier)}`,
+            submodelElements: `submodels/${base64UrlEncode(submodelIdentifier)}/submodelelements`
         }
     ]
+}
+
+function base64UrlEncode(str) {
+    // Encode the string to Base64
+    let base64 = window.btoa(str);
+
+    // Replace characters incompatible with URL encoding
+    base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+
+    return base64;
 }
 
 function addressShellList() {
