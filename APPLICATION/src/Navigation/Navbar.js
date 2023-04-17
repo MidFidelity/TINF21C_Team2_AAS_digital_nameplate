@@ -11,7 +11,7 @@ import { List } from 'react-bootstrap-icons';
 const Navbar = ({ setServerAddress, serverHistory, handleServerSelection} ) => {
     return (
         <nav className="navbar navbar-expand-lg design-nav">
-            <a className="navbar-brand ms-3">
+            <a className="navbar-brand ms-3" href="/home">
                 <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogoNav" className="rounded" ></img>
                 Nameplate Generator
             </a>
