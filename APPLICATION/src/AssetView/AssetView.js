@@ -17,6 +17,9 @@ const AssetView = ({assetList}) => {
         setAssetData(assetList.find(item=>item["idShort"]===idShort))
     },[assetList])
 
+    useEffect(()=>{
+        console.log(assetData)
+    }, [assetData])
 
     return (
         <div className={"AssetView"}>
@@ -29,7 +32,7 @@ const AssetView = ({assetList}) => {
                     }
                 </div>
                 <div className={"ProductDesc"}>
-                    <AssetData data={assetData?assetData["nameplate"]:[]}></AssetData>
+                    <AssetData data={assetData?assetData["Nameplate"]:[]}></AssetData>
                 </div>
                 <div className={"Nameplate"}>
                 </div>

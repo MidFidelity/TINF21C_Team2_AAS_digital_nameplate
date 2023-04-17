@@ -1,12 +1,20 @@
-function submodelListPath() {
-    return "submodels?level=Deep"
+function submodelDataPathV1(aasIdentifier, submodelIdentifier) {
+    return `shells/${aasIdentifier}/aas/submodels/${submodelIdentifier}/submodel`
 }
 
-function submodelSpecificPathV1(aasIdentifier, submodelIdentifier){
+function submodelDataPathV3(aasIdentifier, submodelIdentifier) {
+    return `shells/${aasIdentifier}/submodels/${submodelIdentifier}/submodel`
+}
+
+function submodelFallbackPathV1_1(aasIdentifier, submodelIdentifier) {
+    return `shells/${aasIdentifier}/aas/submodels/${submodelIdentifier}/submodel`
+}
+
+function submodelElementsPathV1(aasIdentifier, submodelIdentifier){
     return `shells/${aasIdentifier}/aas/submodels/${submodelIdentifier}/submodel/submodel-elements`
 }
 
-function submodelSpecificPathV3(aasIdentifier, submodelIdentifier){
+function submodelElementsPathV3(aasIdentifier, submodelIdentifier){
     return `shells/${aasIdentifier}/submodels/${submodelIdentifier}/submodel/submodelelements`
 }
 
@@ -23,7 +31,7 @@ function imageBasePathV3(submodelIdEncoded){
 }
 
 export {
-    submodelListPath, addressShellList, imageBasePathV1, imageBasePathV3, submodelSpecificPathV1, submodelSpecificPathV3
+    addressShellList, imageBasePathV1, imageBasePathV3, submodelElementsPathV1, submodelElementsPathV3, submodelDataPathV1, submodelDataPathV3
 }
 
 

@@ -3,10 +3,12 @@ import {
     addressShellList,
     imageBasePathV1,
     imageBasePathV3,
-    submodelListPath,
-    submodelSpecificPathV1,
-    submodelSpecificPathV3,
+    submodelDataPathV1,
+    submodelDataPathV3,
+    submodelElementsPathV1,
+    submodelElementsPathV3,
 } from "./API";
+import {object} from "prop-types";
 
 export default class DataRefinery {
 
@@ -21,7 +23,7 @@ export default class DataRefinery {
 
     async #loadDependencies_old() {
         if (!this.fullSubmodelList) {
-            await this.#getDataFromServer(this.serverBaseAddress + submodelListPath()).then(result => this.fullSubmodelList = result)
+            await this.#getDataFromServer(this.serverBaseAddress).then(result => this.fullSubmodelList = result)
         }
         if (!this.apiVersion) {
             this.analyzeApiVersion()
@@ -50,8 +52,7 @@ export default class DataRefinery {
                 if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
                     throw new Error(this.serverBaseAddress + addressShellList())
                 }
-                response = [response[1]]
-                let returndata = response.map((obj, index) => {
+                return response.map((obj, index) => {
                     let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
                     let assetIdEncoded = window.btoa(assetId)
                     let submodels
@@ -63,54 +64,60 @@ export default class DataRefinery {
                                     let submodelIdEncoded = window.btoa(submodelId)
                                     let apiVersion = this.analyzeApiVersion(submodel)
 
-                                    let submodelPath
+                                    let submodelElementsPath
+                                    let submodelDataPath
                                     if (apiVersion === 3) {
-                                        submodelPath = submodelSpecificPathV3(assetIdEncoded, submodelIdEncoded)
+                                        submodelElementsPath = submodelElementsPathV3(assetIdEncoded, submodelIdEncoded)
+                                        submodelDataPath = submodelDataPathV3(assetIdEncoded, submodelIdEncoded)
                                     } else {
-                                        submodelPath = submodelSpecificPathV1(assetIdEncoded, submodelIdEncoded)
+                                        submodelElementsPath = submodelElementsPathV1(assetIdEncoded, submodelIdEncoded)
+                                        submodelDataPath = submodelDataPathV1(assetIdEncoded, submodelIdEncoded)
                                     }
 
-                                    let submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath)
+                                    let submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelDataPath)
                                         .then((result) => {
-                                            let extractedSubmodelData
+                                            let submodelName = result.idShort
 
-                                            let de = new DataExtractor(result)
-                                            if(apiVersion===3){
-                                                extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath)
-                                            }else {
-                                                extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath)
+                                            let extractedSubmodelData
+                                            let de = new DataExtractor(result["submodelElements"])
+                                            if (apiVersion === 3) {
+                                                extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelElementsPath)
+                                            } else {
+                                                extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelElementsPath)
                                             }
 
-                                            console.table({
-                                                assetId,
-                                                submodelId,
-                                                apiVersion,
-                                            })
-
-                                            return extractedSubmodelData
+                                            return {
+                                                [submodelName]: {
+                                                    idShort: submodelName,
+                                                    id: submodelId,
+                                                    idEncoded: submodelIdEncoded,
+                                                    ...extractedSubmodelData
+                                                }
+                                            }
                                         })
-                                    console.log(submodelData)
                                     resolve(submodelData)
                                 } catch (e) {
                                     console.error(e)
                                 }
                             })
                         })
-                        Promise.all(submodels)
                     }
                     let assetObject = {
                         "idShort": obj["idShort"],
                         "id": assetId,
                         "idEncoded": assetIdEncoded,
                         "num": index,
-                        "productImages": [],
-                        "submodels":[]
+                        "productImages": []
                     }
 
-                    Promise.all(submodels).then((result)=>assetObject.submodels = result)
+                    Promise.all(submodels).then((result) => {
+                        result.forEach((submodel) => {
+                            assetObject[Object.keys(submodel)[0]]=submodel[Object.keys(submodel)[0]]
+                        })
+                    })
+
                     return assetObject
                 })
-                console.log(returndata)
             })
     }
 

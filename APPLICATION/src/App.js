@@ -106,7 +106,7 @@ export default class App extends React.Component {
             this.clearState()
             this.refinery = new DataRefinery(this.state.serverAddress);
             this.refinery.getFullAASList()
-                .then((content) => this.setState({tableData: content}))
+                .then((content) => this.setState({tableData: content}, ()=>{console.log("New Table Data", this.state.tableData)}))
             this.refinery.getAPIVersion().then((apiVersion)=>{
                 switch (apiVersion) {
                     case 1:
