@@ -25,12 +25,11 @@ const AssetView = ({assetList}) => {
         <div className={"AssetView"}>
             <h3 className={"AssetViewTitle"}>{idShort}</h3>
             <div className="d-flex flex-wrap justify-content-center">
+                {assetData&&assetData.productImages.length>0?
                 <div  className={"ProductImageContainer"}>
-                    {assetData?
-                        <img src={assetData["productImages"].length>0?assetData["productImages"][0]:""} alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/>:
-                        <p>No Product Image found</p>
-                    }
-                </div>
+                        <img src={assetData["productImages"][0]} alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/>
+                </div>:<></>
+                }
                 <div className={"ProductDesc"}>
                     <AssetData data={assetData?assetData["Nameplate"]:[]}></AssetData>
                 </div>
