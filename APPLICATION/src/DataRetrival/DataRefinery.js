@@ -4,7 +4,6 @@ import {
     submodelPathsV1,
     submodelPathsV3
 } from "./API";
-import {object} from "prop-types";
 
 export default class DataRefinery {
 
@@ -143,6 +142,8 @@ export default class DataRefinery {
         } else {
             apiVersion = 1
         }
+        this.apiVersion = apiVersion
+        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
         return apiVersion
     }
 
