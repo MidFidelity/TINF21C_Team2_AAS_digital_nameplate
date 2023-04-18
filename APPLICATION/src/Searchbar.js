@@ -22,6 +22,13 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
         filterSuggestions()
     }, [suggestions])
 
+    useEffect(() => {
+        setTextValue(value? value : "");
+    }, [value])
+
+    useEffect(() => {
+        filterSuggestions();
+    }, [textValue])
 
     const handleChange = (event) => {
         event.preventDefault();
