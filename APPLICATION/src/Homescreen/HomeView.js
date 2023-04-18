@@ -15,9 +15,9 @@ export function HomeView({serverHistory}) {
     }
 
     return (
-        <div className="container min-vh-100 d-flex justify-content-center align-items-center mt-5">
+        <div className="container min-vh-100 d-flex justify-content-center align-items-center mt-3">
         <div className={"Home"}>
-            <h1 className="text-center headline mt-4">Nameplate Generator</h1>
+            <h1 className="text-center headline">Nameplate Generator</h1>
             <Searchbar contentClassName={"home-searchbar"}
                        containerClassName={"home-address-bar"}
                        hint={"Server address"}
