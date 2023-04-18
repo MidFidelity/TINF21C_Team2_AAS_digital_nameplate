@@ -61,7 +61,7 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
     return (<div className={"search-container " + containerClassName}>
         <div id={"buttonContainer"} className={"d-flex flex-column outlineBorder bg-light foreground position-relative " + contentClassName}
              ref={containerRef} onBlur={handleBlur} onFocus={handleFocus}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete={"off"}>
                 <div className={"d-flex flex-row " + searchContainerClassName}>
                     <input id={"searchBar"}
                            ref={inputRef}
