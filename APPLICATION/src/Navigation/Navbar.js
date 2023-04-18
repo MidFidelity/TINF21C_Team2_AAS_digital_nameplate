@@ -1,14 +1,18 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
-import {Nav, NavDropdown, NavItem} from 'react-bootstrap';
+import {Nav, NavDropdown} from 'react-bootstrap';
 import ServerAddress from "../ServerAddress";
 import "./Navbar.scss";
 import Searchbar from "../Searchbar";
 import { LinkContainer } from 'react-router-bootstrap';
 import { List } from 'react-bootstrap-icons';
+import { useLocation } from 'react-router-dom';
 
 
-const Navbar = ({ setServerAddress, serverHistory, handleServerSelection} ) => {
+const Navbar = ({setServerAddress, serverHistory, handleServerSelection} ) => {
+
+    const location = useLocation();
+    const homePath = location.pathname === '/home';
+
     return (
         <nav className="navbar navbar-expand-lg design-nav">
             <a className="navbar-brand ms-3" href="/home">
@@ -18,7 +22,10 @@ const Navbar = ({ setServerAddress, serverHistory, handleServerSelection} ) => {
             <div className="m-auto align-middle serverAddress">
             <ServerAddress onLoad={setServerAddress}></ServerAddress>
             </div>
-            <Searchbar suggestionsClassName={"suggestionElement"} searchContainerClassName={"searchbar-container "} iconClassName={"iconSearchNav m-auto align-middle "} contentClassName={"nav-searchbar"} containerClassName={"m-auto nav-search-container"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection} ></Searchbar>
+            {homePath ? null : (
+                <Searchbar suggestionsClassName={"suggestionElement"} searchContainerClassName={"searchbar-container "} iconClassName={"iconSearchNav m-auto align-middle "} contentClassName={"nav-searchbar"} containerClassName={"m-auto nav-search-container"} hint={"Server address"} buttonText={"Open"} suggestions={serverHistory} onSubmit={handleServerSelection} ></Searchbar>
+            )}
+
             <Nav className="mr-auto">
                 <NavDropdown title={<List className={"hamburgerMenuIcon"}/>} id="navDropdown">
                     <LinkContainer to="/home">
