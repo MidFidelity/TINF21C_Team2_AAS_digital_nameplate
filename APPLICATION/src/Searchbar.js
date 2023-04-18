@@ -99,8 +99,6 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
             </div> : ""}
         </div>
     </div>)
-
-
 }
 
 export default Searchbar;
