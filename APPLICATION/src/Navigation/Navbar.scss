@@ -16,6 +16,7 @@
   font-size: 14px;
   color: black;
   max-width: 450px;
+  min-width: 450px;
   border: none;
   border-radius: 25px;
 }
@@ -74,11 +75,7 @@
 }
 
 .serverAddress {
-  max-width: 600px;
-  min-width: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  Display: none;
 }
 
 .hamburgerMenuIcon{

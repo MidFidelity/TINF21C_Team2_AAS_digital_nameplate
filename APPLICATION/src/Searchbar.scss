@@ -1,6 +1,9 @@
 
 
 @import "shared";
+#buttonContainer {
+    background-color: white !important;
+}
 
 .search-container{
     height: 6em;
@@ -14,6 +17,7 @@
     width:25px;
     height:25px;
     fill:black;
+    opacity: 0.65;
 }
 
 .suggestion-box{
@@ -21,7 +25,6 @@
     overflow: auto;
     scroll-behavior: auto;
 }
-
 
 .suggestion{
     border: none;
