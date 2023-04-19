@@ -13,6 +13,7 @@ import Warning from "./Warnings/Warning";
 let suggestedServers = [
     "https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/",
     "https://v3-2.admin-shell-io.com/",
+    "https://v3.admin-shell-io.com/",
     "https://admin-shell-io.com/5001",
     "http://aas.murrelektronik.com:4001/aas"
 ]
@@ -101,7 +102,6 @@ export default class App extends React.Component {
         })
     }
 
-
    async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.serverHistory !== this.state.serverHistory) {
             this.writeHistoryCookie()
@@ -110,7 +110,7 @@ export default class App extends React.Component {
             this.clearState()
             this.refinery = new DataRefinery(this.state.serverAddress);
             this.refinery.getFullAASList()
-                .then((content) => this.setState({tableData: content}, ()=>{console.log("New Table Data", this.state.tableData)}))
+                .then((content) => this.setState({tableData: content}))
             this.refinery.getAPIVersion().then((apiVersion)=>{
                 switch (apiVersion) {
                     case 1:
