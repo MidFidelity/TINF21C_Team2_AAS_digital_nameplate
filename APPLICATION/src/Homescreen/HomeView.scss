@@ -1,4 +1,17 @@
 .home-address-bar{
   margin-top: 3em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
+}
+
+.home-searchbar {
+  border: none;
+  box-shadow:  0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.headline {
+  font-family: Circular, Helvetica, sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  color: #363e55;
+  font-size: 300%;
 }

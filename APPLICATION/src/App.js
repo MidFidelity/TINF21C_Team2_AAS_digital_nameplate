@@ -128,7 +128,7 @@ export default class App extends React.Component {
             {this.state.navTarget&&<Navigate to={this.state.navTarget}/>}
             <div className="h-100">
                 <div className={"NavBar sticky-top"}>
-                    <Navbar setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
+                    <Navbar serverAddress={this.state.serverAddress} setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
                 </div>
                 <div className={"Content p-1 border"}>
                     <div className={"d-flex flex-column"}>

@@ -11,7 +11,7 @@ function AssetListElement({assetData, onClick}) {
 
     return(
         <ListGroup.Item onClick={handleClick} action className="border-top mt-2 shadow-sm">
-            <Row className={""}>
+            <Row className={"assetListElementRow "}>
                 <Col md={2} className={"text-center m-auto"}>
                     {assetData.productImages.length>0?<img src={assetData.productImages[0]} alt={"Product Image"} className={"img-preview"}/>:<></>}
                 </Col>
