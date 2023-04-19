@@ -3,6 +3,9 @@ import NameplateSupplier from "./NameplateSupplier";
 const QRCode = require('qrcode');
 
 export default class NameplateGenerator {
+    static nameplateWidth = 920;
+    static nameplateHeight = 600;
+
     static nameplateBootstrap(rawData, id) {
         // raw data according to README.md specification
         // const rawData = getData(i);
@@ -24,8 +27,6 @@ export default class NameplateGenerator {
      * @param id ID of the DOM element into which the nameplate will be injected.
      */
     static generateNameplate(data, markings, id) {
-        const nameplateWidth = 920;
-        const nameplateHeight = 600;
         // following values are in pixels
         const qrCodeSize = 400;
         const qrCodeOffsetX = 500;
@@ -33,7 +34,7 @@ export default class NameplateGenerator {
 
         // this is the root svg in which the nameplate is build
         // TODO: Disable border again
-        const nameplateSvg = NameplateSupplier.initSvg(nameplateWidth, nameplateHeight, true, 'nameplateSvg', false);
+        const nameplateSvg = NameplateSupplier.initSvg(this.nameplateWidth, this.nameplateHeight, true, 'nameplateSvg', false);
 
         // this transforms the data & markings into one single string with linebreaks ('\n')
         // this is the content of the qr-code
@@ -94,17 +95,32 @@ export default class NameplateGenerator {
      */
     static downloadSvg() {
         const nameplateSvg = document.getElementById('nameplateSvg');
-        NameplateGenerator.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, null, null);
+        const nameplateCopy = nameplateSvg.cloneNode(true);
+        NameplateGenerator.prepareNameplateForDownload(nameplateCopy)
+        NameplateGenerator.downloadPlate('svg', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, null, null);
     }
 
     /**
      * Starts the download of the nameplate with png file format
      */
     static downloadPng() {
+        console.log('DOWNLOADING PNG');
         const nameplateSvg = document.getElementById('nameplateSvg');
-        const height = nameplateSvg.getAttribute('height');
-        const width = nameplateSvg.getAttribute('width');
-        NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateSvg, width, height);
+        const nameplateCopy = nameplateSvg.cloneNode(true);
+        NameplateGenerator.prepareNameplateForDownload(nameplateCopy)
+        const height = nameplateCopy.getAttribute('height');
+        const width = nameplateCopy.getAttribute('width');
+        console.log(height)
+        console.log(width)
+        console.log(nameplateCopy);
+        NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, width, height);
+    }
+
+    static prepareNameplateForDownload(svg) {
+        console.log('PREPARING FOR DOWNLOAD');
+        svg.removeAttribute('viewBox');
+        svg.setAttribute('width', this.nameplateWidth);
+        svg.setAttribute('height', this.nameplateHeight);
     }
 
     /**
@@ -131,10 +147,10 @@ export default class NameplateGenerator {
         switch (type) {
             case 'svg':
                 let svgDataUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(new XMLSerializer().serializeToString(nameplateSvg));
-                this.startDownload(svgDataUrl, name + '.svg');
+                NameplateGenerator.startDownload(svgDataUrl, name + '.svg');
                 break;
             case 'png':
-                this.createPNG(PNG_width, PNG_height, nameplateSvg, name, this.startDownload);
+                this.createPNG(PNG_width, PNG_height, nameplateSvg, name, NameplateGenerator.startDownload);
                 break;
             default:
                 console.error(`Type ${type} not supported.`);
