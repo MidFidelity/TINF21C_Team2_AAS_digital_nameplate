@@ -1,5 +1,6 @@
 import DataTransformer from "./DataTransformer";
 import NameplateSupplier from "./NameplateSupplier";
+import {string} from "prop-types";
 const QRCode = require('qrcode');
 
 export default class NameplateGenerator {
@@ -104,23 +105,23 @@ export default class NameplateGenerator {
      * Starts the download of the nameplate with png file format
      */
     static downloadPng() {
-        console.log('DOWNLOADING PNG');
         const nameplateSvg = document.getElementById('nameplateSvg');
         const nameplateCopy = nameplateSvg.cloneNode(true);
         NameplateGenerator.prepareNameplateForDownload(nameplateCopy)
-        const height = nameplateCopy.getAttribute('height');
-        const width = nameplateCopy.getAttribute('width');
-        console.log(height)
-        console.log(width)
-        console.log(nameplateCopy);
+        const height = parseInt(nameplateCopy.getAttribute('height'));
+        const width = parseInt(nameplateCopy.getAttribute('width'));
         NameplateGenerator.downloadPlate('png', NameplateSupplier.CURRENT_IDSHORT, nameplateCopy, width, height);
     }
 
+    /**
+     * Prepares the given SVG for download; removes some attributes and styles which were used for display in the UI
+     * @param svg svg to prepare
+     */
     static prepareNameplateForDownload(svg) {
-        console.log('PREPARING FOR DOWNLOAD');
         svg.removeAttribute('viewBox');
         svg.setAttribute('width', this.nameplateWidth);
         svg.setAttribute('height', this.nameplateHeight);
+        svg.style.borderStyle = 'none';
     }
 
     /**
@@ -166,7 +167,7 @@ export default class NameplateGenerator {
      * @param callback Reference to the actual downloading function startDownload()
      */
     static createPNG(width, height, contents, name, callback) {
-        const src = "data:image/svg+xml;base64," + btoa(new XMLSerializer().serializeToString(contents));
+        const src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(new XMLSerializer().serializeToString(contents));
 
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
