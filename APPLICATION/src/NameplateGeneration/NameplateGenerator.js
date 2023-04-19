@@ -1,6 +1,5 @@
 import DataTransformer from "./DataTransformer";
 import NameplateSupplier from "./NameplateSupplier";
-import {string} from "prop-types";
 const QRCode = require('qrcode');
 
 export default class NameplateGenerator {
