@@ -3,7 +3,7 @@
 
 
 export default class DataTransformer {
-    static FILTER_KEYS = ["nameplateId", "num", "nameplate.idShort", "nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File"];
+    static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File"];
 
     static transformDataToArray(obj) {
         let markings;
@@ -35,17 +35,17 @@ export default class DataTransformer {
      */
     static separateMarkings(obj) {
         let data = structuredClone(obj);
-        if (data.nameplate.Markings) {
+        if (data["Nameplate"].Markings) {
             let markings = {};
-            Object.keys(data.nameplate.Markings).forEach((key) => {
+            Object.keys(data["Nameplate"].Markings).forEach((key) => {
                 markings[key] = {};
-                if (data['nameplate']['Markings'][key]['MarkingName']) {
-                    markings[key]['MarkingName'] = data['nameplate']['Markings'][key]['MarkingName'];
-                    delete data['nameplate']['Markings'][key]['MarkingName'];
+                if (data['Nameplate']['Markings'][key]['MarkingName']) {
+                    markings[key]['MarkingName'] = data['Nameplate']['Markings'][key]['MarkingName'];
+                    delete data['Nameplate']['Markings'][key]['MarkingName'];
                 }
-                if (data['nameplate']['Markings'][key]['FilePath']) {
-                    markings[key]['FilePath'] = data['nameplate']['Markings'][key]['FilePath'];
-                    delete data['nameplate']['Markings'][key]['FilePath'];
+                if (data['Nameplate']['Markings'][key]['FilePath']) {
+                    markings[key]['FilePath'] = data['Nameplate']['Markings'][key]['FilePath'];
+                    delete data['Nameplate']['Markings'][key]['FilePath'];
                 }
                 if (Object.keys(markings[key]).length === 0 && markings[key].constructor === Object) {
                     delete markings[key];

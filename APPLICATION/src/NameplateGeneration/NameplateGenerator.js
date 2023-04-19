@@ -9,7 +9,7 @@ export default class NameplateGenerator {
     static nameplateBootstrap(rawData, id) {
         // raw data according to README.md specification
         // const rawData = getData(i);
-
+        rawData = this.filterObject(rawData)
         // data and markings according to README.md specification
         // data is according to "Reduced Data"
         let data = {}, markings = {};
@@ -62,6 +62,8 @@ export default class NameplateGenerator {
 
         // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
         // the svg-elements by 'document.getElementById()'
+        let domElement = document.getElementById(id);
+        domElement.innerHTML = '';
         NameplateSupplier.appendToDocument(id, nameplateSvg);
         NameplateSupplier.appendToDocument('nameplateSvg', qrCodeSvg);
 
@@ -80,7 +82,8 @@ export default class NameplateGenerator {
     static makeQrCode(text, id) {
         const settings = {
             type: "svg",
-            errorCorrectionLevel: 'M'
+            errorCorrectionLevel: 'M',
+            margin:1
         }
         QRCode.toString(text, settings, (error, string) => {
             if (error) {
@@ -185,6 +188,22 @@ export default class NameplateGenerator {
             canvas.remove();
         };
         img.setAttribute('src', src);
+    }
+
+    static filterObject(obj) {
+        const filteredObj = {};
+        for (const key in obj) {
+            if (!obj.hasOwnProperty(key) || typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                if (key === 'Nameplate') {
+                    filteredObj[key] = obj[key];
+                }
+                continue;
+            }
+            if (typeof obj[key] !== 'object') {
+                filteredObj[key] = obj[key];
+            }
+        }
+        return filteredObj;
     }
 
 }
