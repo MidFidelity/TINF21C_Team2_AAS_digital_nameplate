@@ -34,6 +34,9 @@ export default class App extends React.Component {
 
     componentDidMount() {
         this.loadHistoryCookie()
+        window.addEventListener("forceUpdate", ()=>{
+            this.forceUpdate()
+        })
     }
 
     loadHistoryCookie() {
@@ -130,16 +133,28 @@ export default class App extends React.Component {
                 <div className={"NavBar sticky-top"}>
                     <Navbar serverAddress={this.state.serverAddress} setServerAddress={this.setServerAddress} serverHistory={this.state.serverHistory} handleServerSelection={this.handleServerSelection}/>
                 </div>
-                <div className={"Content p-1 border"}>
-                    <div className={"d-flex flex-column"}>
-                        {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
-                    </div>
+                <div className={"Content"}>
+
                     <Routes>
                         <Route exact path={"/home"} element={<HomeView serverHistory={this.state.serverHistory}/>}></Route>
-                        <Route exact path={"/list"} element={<ListView tableData={this.state.tableData}
-                                                                       serverAddress={this.state.serverAddress}></ListView>}></Route>
-                        <Route exact path={"/asset"} element={<AssetView assetList={this.state.tableData}/>}>
-                            <Route path={":idShort"} element={<AssetView assetList={this.state.tableData}/>}></Route>
+                        <Route exact path={"/list"} element={
+                            <><div className={"d-flex flex-column"}>
+                                {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
+                            </div>
+                            <ListView tableData={this.state.tableData} serverAddress={this.state.serverAddress}></ListView></>
+                        }></Route>
+                        <Route exact path={"/asset"} element={
+                            <><div className={"d-flex flex-column"}>
+                                {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
+                            </div>
+                            <AssetView assetList={this.state.tableData}/></>
+                        }>
+                            <Route path={":idShort"} element={
+                                <><div className={"d-flex flex-column"}>
+                                    {this.state.warnings.map((item, index)=>(<Warning key={index} text={item.message} color={item.color}/>))}
+                                </div>
+                                <AssetView assetList={this.state.tableData}/></>
+                            }></Route>
                         </Route>
                         <Route path={"/"} element={<Navigate to={"/home"} replace={true}></Navigate>}></Route>
                         <Route exact path={"/about"} element={<AboutView/>}></Route>

@@ -1,9 +1,13 @@
 import DataExtractor from "./DataExtractor.js";
 import {
-    addressShellList, imageBasePathV1, imageBasePathV3, submodelListPath,
+    addressShellList,
+    submodelPathsV1,
+    submodelPathsV3
 } from "./API";
 
 export default class DataRefinery {
+
+    requestCount = {}
 
     constructor(serverBaseAddress) {
         if (serverBaseAddress.endsWith("/")) {
@@ -12,27 +16,13 @@ export default class DataRefinery {
             this.serverBaseAddress = serverBaseAddress + "/";
         }
         this.apiVersion = undefined;
+        console.log(this.requestCount)
     }
 
-    async #loadDependencies() {
-        if (!this.fullSubmodelList) {
-            await this.#getDataFromServer(this.serverBaseAddress + submodelListPath()).then(result => this.fullSubmodelList = result)
-        }
-        if (!this.apiVersion) {
-            this.analyzeApiVersion()
-        }
-        if (!this.nameplateSubmodels) {
-            this.nameplateSubmodels = this.#findAllSubmodels("Nameplate")
-        }
-        if (!this.technicalDataSubmodels) {
-            this.technicalDataSubmodels = this.#findAllSubmodels("TechnicalData")
-        }
-    }
-
-    async getAPIVersion(){
-        return new Promise((resolve)=>{
-            if (this.apiVersion)resolve(this.apiVersion)
-            window.addEventListener("apiVersionSet", function mylistener(event){
+    async getAPIVersion() {
+        return new Promise((resolve) => {
+            if (this.apiVersion) resolve(this.apiVersion)
+            window.addEventListener("apiVersionSet", function mylistener(event) {
                 window.removeEventListener("apiVerionSet", mylistener)
                 resolve(event.detail.apiVersion)
             })
@@ -40,88 +30,96 @@ export default class DataRefinery {
     }
 
     async getFullAASList() {
-        await this.#loadDependencies();
-        return this.#getDataFromServer(this.serverBaseAddress + addressShellList()).then(response => {
-            if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
-                throw new Error(this.serverBaseAddress + addressShellList())
-            }
-            console.log(response);
-            let returnData = response.map((obj, index) => {
-                let id = obj["identification"] ? obj["identification"]["id"] : obj["id"]
-                let nameplateData
-                let technicalData
-                if (obj["submodels"]) {
-                    nameplateData = this.nameplateSubmodels.find((item) => {
-                        return obj["submodels"].find((sub) => {
-                            return item.id === sub.keys[0].value
-                        })
-                    });
-                    technicalData = this.technicalDataSubmodels.find((item) => {
-                        return obj["submodels"].find((sub) => {
-                            return item.id === sub.keys[0].value
-                        })
-                    });
+        return this.#getDataFromServer(this.serverBaseAddress + addressShellList())
+            .then(response => {
+                if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
+                    throw new Error(this.serverBaseAddress + addressShellList())
                 }
+                return response.map((obj, index) => {
+                    let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
+                    let submodels
+                    if (obj["submodels"]) {
+                        submodels = obj["submodels"].map((submodel) => {
+                            return new Promise(async (resolve, reject) => {
+                                let submodelId = submodel["keys"][0]["value"]
 
-                let productImages = technicalData ? this.searchForKey(technicalData, /[pP]roductImage\d*/) : []
+                                let apiVersion = this.analyzeApiVersion(submodel)
 
-                return {
-                    "idShort": obj["idShort"],
-                    "id": id,
-                    "idEncoded": window.btoa(id),
-                    "nameplateId": nameplateData ? nameplateData.id : null,
-                    "nameplateIdEncoded": nameplateData ? nameplateData.idEncoded : null,
-                    "num": index,
-                    "productImages": productImages,
-                    "nameplate": nameplateData ? nameplateData : null
-                }
-            });
-            console.log(returnData)
-            return returnData
-        }).catch(err => {
-            console.warn(err);
-            return [];
-        });
-    }
+                                let submodelPaths
+                                if (apiVersion === 3) {
+                                    submodelPaths = submodelPathsV3(assetId, submodelId)
+                                } else {
+                                    submodelPaths = submodelPathsV1(assetId, submodelId)
+                                }
+                                let submodelData = {}
+                                let tryCount = 1
+                                for (const submodelPath of submodelPaths) {
+                                    submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath.submodel, true)
+                                        .then((result) => {
+                                            let submodelDataArray
+                                            let i = 0
+                                            if (!result) return undefined
+                                            if (Array.isArray(result)) {
+                                                submodelDataArray = result
+                                            } else {
+                                                submodelDataArray = [result]
+                                            }
+                                            let returnData = {}
+                                            do {
+                                                let submodelName = submodelDataArray[i].idShort
 
-    #findAllSubmodels(name) {
-        console.log("Submodels:")
-        console.log(this.fullSubmodelList);
-        let filteredResult = this.fullSubmodelList.filter((item) => {
-            return item.idShort ? item.idShort === name : false
-        }).map((item) => {
+                                                let extractedSubmodelData
+                                                let de = new DataExtractor(submodelDataArray[i]["submodelElements"])
+                                                if (apiVersion === 3) {
+                                                    extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath.submodelElements)
+                                                } else {
+                                                    extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath.submodelElements)
+                                                }
 
 
-            let nameplate
-            let ids
-            switch (this.apiVersion) {
-                case 1:
-                    ids = {
-                        idShort: item.idShort,
-                        id: item.identification.id,
-                        idEncoded: window.btoa(item.identification.id)
+                                                returnData = {
+                                                    ...returnData,
+                                                    [submodelName]: {
+                                                        idShort: submodelName,
+                                                        id: submodelId,
+                                                        ...extractedSubmodelData
+                                                    }
+                                                }
+                                                i++
+                                            } while (i < submodelDataArray.length)
+                                            return returnData
+                                        })
+                                    if (submodelData) {
+                                        break;
+                                    }
+                                    console.warn("Using fallback for asset ", assetId, "in try", tryCount)
+                                    tryCount++
+                                }
+                                resolve(submodelData)
+                            })
+                        })
                     }
-                    nameplate = new DataExtractor(item["submodelElements"]).extractAllDataV1(this.serverBaseAddress + imageBasePathV1(ids.idEncoded))
-                    break;
-                case 3:
-                    ids = {
-                        idShort: item.idShort,
-                        id: item.id,
-                        idEncoded: window.btoa(item.id)
+                    let assetObject = {
+                        "idShort": obj["idShort"],
+                        "id": assetId,
+                        "num": index,
+                        "productImages": []
                     }
-                    nameplate = new DataExtractor(item["submodelElements"]).extractAllDataV3(this.serverBaseAddress + imageBasePathV3(ids.idEncoded))
-                    break;
-                default:
-                    break;
-            }
-            return {
-                ...ids,
-                ...nameplate
-            }
-        })
-        console.log("Filtered Submodels:")
-        console.log(filteredResult);
-        return filteredResult;
+
+                    Promise.all(submodels).then((result) => {
+                        result.forEach((submodel) => {
+                            if (!submodel) console.log(assetId)
+                            assetObject[Object.keys(submodel)[0]] = submodel[Object.keys(submodel)[0]]
+                            if (Object.keys(submodel)[0] === "TechnicalData") {
+                                assetObject.productImages = this.searchForKey(submodel[Object.keys(submodel)[0]], /[pP]roductImage\d*/)
+                            }
+                            window.dispatchEvent(new Event("forceUpdate"))
+                        })
+                    }).catch()
+
+                    return assetObject
+                })
+            })
     }
 
     searchForKey(json, regex) {
@@ -137,39 +135,44 @@ export default class DataRefinery {
         return returnList;
     }
 
-    analyzeApiVersion() {
-        if (!this.fullSubmodelList) return;
-        let submodel = this.fullSubmodelList[0];
-        let modelType = submodel["modelType"];
-        if (modelType === "Submodel") {
-            this.apiVersion = 3
-        } else if (modelType["name"] === "Submodel") {
-            this.apiVersion = 1
+    analyzeApiVersion(submodel) {
+        let apiVersion
+        if (submodel["type"]) {
+            apiVersion = 3
         } else {
-            this.apiVersion = -1
+            apiVersion = 1
         }
-        console.log("API-Version: " + this.apiVersion)
-        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
+        this.apiVersion = apiVersion
+        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
+        return apiVersion
     }
 
 
-    async #getDataFromServer(address) {
+    async #getDataFromServer(address, silent = false) {
         console.log("Making request to " + address);
+        this.requestCount[address] ? this.requestCount[address]++ : this.requestCount[address] = 1
         return fetch(address)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("Fetch not ok")
+                    if (!silent) {
+                        console.error("Fetch not successful")
+                    }
+                    return undefined
                 }
+
                 return response.json().then(jsonResponse => {
                     return jsonResponse;
                 }).catch(err => {
-                    console.log(response, err)
+                    console.warn(response, err)
                 })
             })
             .catch(err => {
-                console.log({success: false, text: err})
-                this.apiVersion=-1
-                window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
+                if (!silent) {
+                    console.log({success: false, text: err})
+                    this.apiVersion = -1
+                    window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
+                }
+                return undefined
             });
     }
 }

@@ -133,7 +133,7 @@ export default class NameplateSupplier {
     static writeTextToSvg(data, nameplateSvg) {
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
-        const maxCharsPerLine = 63;
+        const maxCharsPerLine = 60;
         // following values are in pixels
         const fontSize = 17;
         const lineHeight = 25;
