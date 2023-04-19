@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import "./Searchbar.scss"
 import {useEffect, useRef, useState} from "react";
 
-function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value, iconClassName, searchContainerClassName, suggestionsClassName}) {
+function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClassName, contentClassName, value, clearIconClassName, searchIconClassName, searchContainerClassName, suggestionsClassName}) {
     const containerRef = useRef()
     const inputRef= useRef()
     const [isFocused, setFocused] = useState(false)
@@ -72,14 +72,14 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
                 <div className={"d-flex flex-row " + searchContainerClassName}>
                     <input id={"searchBar"}
                            ref={inputRef}
-                           className={"w-100 border-0 bg-transparent outline-none"}
+                           className={"w-100 border-0 bg-transparent outline-none ms-2"}
                            name={"searchTerm"}
                            type={"search"}
                            placeholder={hint}
                            onChange={handleChange}
                            value={textValue ? textValue.toString() : ""}
                            autoComplete={"off"}/>
-                    <Button variant={"flush"} className={"ms-auto"}
+                    <Button variant={"flush"}
                         aria-label="Clear input"
                         title="Clear input"
                         onClick={(e) => {
@@ -88,14 +88,14 @@ function Searchbar({onChange, onSubmit, onBlur, hint, suggestions, containerClas
                             inputRef.current.focus();
                         }}
                     ><svg xmlns="http://www.w3.org/2000/svg"
-                             className="bi bi-x-lg clear-input-button" viewBox="0 0 16 16">
+                             className={"bi bi-x-lg clear-input-button " + clearIconClassName} viewBox="0 0 16 16">
                             <path
                                 d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
                     </svg>
                     </Button>
-                    <Button variant={"flush"} type={"submit"} className={"ms-auto"}>
+                    <Button variant={"flush"} type={"submit"} className={"ms-auto me-2"}>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                             className={"bi search-icon " + iconClassName} viewBox="0 0 16 16">
+                             className={"bi search-icon " + searchIconClassName} viewBox="0 0 16 16">
                             <path
                                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>

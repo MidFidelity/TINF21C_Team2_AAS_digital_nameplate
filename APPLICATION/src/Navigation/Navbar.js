@@ -26,7 +26,8 @@ const Navbar = ({serverAddress, setServerAddress, serverHistory, handleServerSel
             {homePath ? null : (
                 <Searchbar suggestionsClassName={"suggestionElement"}
                            searchContainerClassName={"searchbar-container "}
-                           iconClassName={"iconSearchNav m-auto align-middle "}
+                           searchIconClassName={"iconSearchNav align-middle"}
+                           clearIconClassName={"iconClearNav align-middle"}
                            contentClassName={"nav-searchbar"}
                            containerClassName={"m-auto nav-search-container w-70"}
                            value={serverAddress}
