@@ -1,6 +1,11 @@
 import DataExtractor from "./DataExtractor.js";
 import {
-    addressShellList, imageBasePathV1, imageBasePathV3, submodelListPath,
+    addressShellList,
+    imageBasePathV1,
+    imageBasePathV3,
+    submodelListPath,
+    submodelSpecificPathV1,
+    submodelSpecificPathV3,
 } from "./API";
 
 export default class DataRefinery {
@@ -14,7 +19,7 @@ export default class DataRefinery {
         this.apiVersion = undefined;
     }
 
-    async #loadDependencies() {
+    async #loadDependencies_old() {
         if (!this.fullSubmodelList) {
             await this.#getDataFromServer(this.serverBaseAddress + submodelListPath()).then(result => this.fullSubmodelList = result)
         }
@@ -22,17 +27,17 @@ export default class DataRefinery {
             this.analyzeApiVersion()
         }
         if (!this.nameplateSubmodels) {
-            this.nameplateSubmodels = this.#findAllSubmodels("Nameplate")
+            this.nameplateSubmodels = this.#findAllSubmodels_old("Nameplate")
         }
         if (!this.technicalDataSubmodels) {
-            this.technicalDataSubmodels = this.#findAllSubmodels("TechnicalData")
+            this.technicalDataSubmodels = this.#findAllSubmodels_old("TechnicalData")
         }
     }
 
-    async getAPIVersion(){
-        return new Promise((resolve)=>{
-            if (this.apiVersion)resolve(this.apiVersion)
-            window.addEventListener("apiVersionSet", function mylistener(event){
+    async getAPIVersion() {
+        return new Promise((resolve) => {
+            if (this.apiVersion) resolve(this.apiVersion)
+            window.addEventListener("apiVersionSet", function mylistener(event) {
                 window.removeEventListener("apiVerionSet", mylistener)
                 resolve(event.detail.apiVersion)
             })
@@ -40,7 +45,77 @@ export default class DataRefinery {
     }
 
     async getFullAASList() {
-        await this.#loadDependencies();
+        return this.#getDataFromServer(this.serverBaseAddress + addressShellList())
+            .then(response => {
+                if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
+                    throw new Error(this.serverBaseAddress + addressShellList())
+                }
+                response = [response[1]]
+                let returndata = response.map((obj, index) => {
+                    let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
+                    let assetIdEncoded = window.btoa(assetId)
+                    let submodels
+                    if (obj["submodels"]) {
+                        submodels = obj["submodels"].map((submodel) => {
+                            return new Promise(async (resolve, reject) => {
+                                try {
+                                    let submodelId = submodel["keys"][0]["value"]
+                                    let submodelIdEncoded = window.btoa(submodelId)
+                                    let apiVersion = this.analyzeApiVersion(submodel)
+
+                                    let submodelPath
+                                    if (apiVersion === 3) {
+                                        submodelPath = submodelSpecificPathV3(assetIdEncoded, submodelIdEncoded)
+                                    } else {
+                                        submodelPath = submodelSpecificPathV1(assetIdEncoded, submodelIdEncoded)
+                                    }
+
+                                    let submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath)
+                                        .then((result) => {
+                                            let extractedSubmodelData
+
+                                            let de = new DataExtractor(result)
+                                            if(apiVersion===3){
+                                                extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath)
+                                            }else {
+                                                extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath)
+                                            }
+
+                                            console.table({
+                                                assetId,
+                                                submodelId,
+                                                apiVersion,
+                                            })
+
+                                            return extractedSubmodelData
+                                        })
+                                    console.log(submodelData)
+                                    resolve(submodelData)
+                                } catch (e) {
+                                    console.error(e)
+                                }
+                            })
+                        })
+                        Promise.all(submodels)
+                    }
+                    let assetObject = {
+                        "idShort": obj["idShort"],
+                        "id": assetId,
+                        "idEncoded": assetIdEncoded,
+                        "num": index,
+                        "productImages": [],
+                        "submodels":[]
+                    }
+
+                    Promise.all(submodels).then((result)=>assetObject.submodels = result)
+                    return assetObject
+                })
+                console.log(returndata)
+            })
+    }
+
+    async getFullAASList_old() {
+        await this.#loadDependencies_old();
         return this.#getDataFromServer(this.serverBaseAddress + addressShellList()).then(response => {
             if (!response || (Object.hasOwn(response, 'success/') && !response.success)) {
                 throw new Error(this.serverBaseAddress + addressShellList())
@@ -84,7 +159,7 @@ export default class DataRefinery {
         });
     }
 
-    #findAllSubmodels(name) {
+    #findAllSubmodels_old(name) {
         console.log("Submodels:")
         console.log(this.fullSubmodelList);
         let filteredResult = this.fullSubmodelList.filter((item) => {
@@ -137,7 +212,17 @@ export default class DataRefinery {
         return returnList;
     }
 
-    analyzeApiVersion() {
+    analyzeApiVersion(submodel) {
+        let apiVersion
+        if (submodel["type"]) {
+            apiVersion = 3
+        } else {
+            apiVersion = 1
+        }
+        return apiVersion
+    }
+
+    analyzeApiVersion_old() {
         if (!this.fullSubmodelList) return;
         let submodel = this.fullSubmodelList[0];
         let modelType = submodel["modelType"];
@@ -149,16 +234,30 @@ export default class DataRefinery {
             this.apiVersion = -1
         }
         console.log("API-Version: " + this.apiVersion)
-        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
+        window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
     }
 
+
+    async #getDataFromServer_new(address) {
+        console.log("Making request to " + address);
+        return fetch(address)
+            .then(result => {
+                return result.json().then((jsonData) => (jsonData))
+            })
+            .catch(err => {
+                console.log({success: false, text: err})
+                this.apiVersion = -1
+                window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
+            });
+    }
 
     async #getDataFromServer(address) {
         console.log("Making request to " + address);
         return fetch(address)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("Fetch not ok")
+                    console.error("Fetch not successful")
+                    return {}
                 }
                 return response.json().then(jsonResponse => {
                     return jsonResponse;
@@ -168,8 +267,8 @@ export default class DataRefinery {
             })
             .catch(err => {
                 console.log({success: false, text: err})
-                this.apiVersion=-1
-                window.dispatchEvent(new CustomEvent("apiVersionSet", {detail:{apiVersion:this.apiVersion}}))
+                this.apiVersion = -1
+                window.dispatchEvent(new CustomEvent("apiVersionSet", {detail: {apiVersion: this.apiVersion}}))
             });
     }
 }
