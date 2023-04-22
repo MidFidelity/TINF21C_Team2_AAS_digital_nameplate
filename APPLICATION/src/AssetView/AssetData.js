@@ -12,7 +12,6 @@ const AssetData = ({data}) => {
                     if (typeof value === "object"){
                       return <tr key={index}>
                           {/* <td><p class="categories">{key}</p></td> */}
-
                         <td>
                             <div className="accordion" id="accordionExample">
                             <div className="accordion-item">
@@ -39,7 +38,7 @@ const AssetData = ({data}) => {
                         return <tr key={index}>
                             <td>
                                 <p className="categories">{key}</p>
-                                <p className={"field-value"}>{value}</p>
+                                <p className={"field-value"}>{value ? value : '\u200B'}</p>
                                 <hr/>
                             </td>
                         </tr>

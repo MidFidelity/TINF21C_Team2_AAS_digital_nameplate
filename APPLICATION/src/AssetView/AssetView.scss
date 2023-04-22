@@ -36,6 +36,7 @@
 
 .categories {
   font-weight: bolder;
+  color: black;
 }
 
 hr {
@@ -68,4 +69,26 @@ hr {
 
 .mw-700{
   max-width: 700px;
+}
+
+.download-svg-btn{
+  background-color: #2f5779 !important;
+  border: none;
+  width: 49%;
+}
+
+.download-svg-btn:hover{
+  opacity: 0.85;
+  transition: opacity .15s ease-in-out;
+}
+
+.download-png-btn{
+  background-color: #2f5779 !important;
+  border: none;
+  width: 49%;
+}
+
+.download-png-btn:hover{
+  opacity: 0.85;
+  transition: opacity .15s ease-in-out;
 }

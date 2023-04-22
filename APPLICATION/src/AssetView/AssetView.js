@@ -33,7 +33,7 @@ const AssetView = ({assetList}) => {
             <h3 className={"AssetViewTitle"}>{idShort}</h3>
             <div className="container-fluid grid">
                 <div className={"row justify-content-center"}>
-                    <div className={"ProductImageContainer col-12 col-lg-auto d-flex justify-content-center"}>
+                    <div className={"ProductImageContainer col-12 col-lg-auto d-flex justify-content-center mb-3"}>
                         {assetData ?
                             <img src={assetData["productImages"].length > 0 ? assetData["productImages"][0] : ""}
                                  alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/> :
@@ -54,11 +54,11 @@ const AssetView = ({assetList}) => {
                                          id={"nameplateAccordionContent"}>
                                         <div className={"accordion-body"}>
                                             <div id={"nameplateDisplay"} className={""}></div>
-                                            <button onClick={NameplateGenerator.downloadSvg}
-                                                    className={"btn btn-secondary w-50"}>Download SVG
+                                            <button variant={"none"} onClick={NameplateGenerator.downloadSvg}
+                                                    className={"btn btn-secondary mt-2 download-svg-btn"}>Download SVG
                                             </button>
                                             <button onClick={NameplateGenerator.downloadPng}
-                                                    className={"btn btn-secondary w-50"}>Download PNG
+                                                    className={"btn btn-secondary mt-2 ms-2 download-png-btn"}>Download PNG
                                             </button>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@ const AssetView = ({assetList}) => {
                         : <></>}
                 </div>
                 <div className={"row"}>
-                    <div className={"ProductDesc"}>
+                    <div className={"ProductDesc col-md-11 mx-auto"}>
                         <AssetData data={assetData ? assetData["Nameplate"] : []}></AssetData>
                     </div>
                 </div>
