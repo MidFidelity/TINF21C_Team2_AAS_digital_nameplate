@@ -3,6 +3,10 @@ import {useParams} from "react-router-dom";
 import "./AssetView.scss"
 import AssetData from "./AssetData";
 import NameplateGenerator from "../NameplateGeneration/NameplateGenerator";
+import {Accordion, Row} from "react-bootstrap";
+import AccordionBody from "react-bootstrap/AccordionBody";
+import AccordionItem from "react-bootstrap/AccordionItem";
+import AccordionHeader from "react-bootstrap/AccordionHeader";
 
 const AssetView = ({assetList}) => {
     const {idShort} = useParams();
@@ -58,7 +62,8 @@ const AssetView = ({assetList}) => {
                                                     className={"btn btn-secondary mt-2 download-svg-btn"}>Download SVG
                                             </button>
                                             <button onClick={NameplateGenerator.downloadPng}
-                                                    className={"btn btn-secondary mt-2 ms-2 download-png-btn"}>Download PNG
+                                                    className={"btn btn-secondary mt-2 ms-2 download-png-btn"}>Download
+                                                PNG
                                             </button>
                                         </div>
                                     </div>
@@ -72,6 +77,24 @@ const AssetView = ({assetList}) => {
                         <AssetData data={assetData ? assetData["Nameplate"] : []}></AssetData>
                     </div>
                 </div>
+                {assetData&&Object.keys(assetData).filter((key) => typeof assetData[key] === "object" && "idShort" in assetData[key] && key !== "Nameplate").length>0&&
+                <div className={"row"}>
+                    <div className={"ProductDesc col-md-11 mx-auto"}>
+                        <Accordion alwaysOpen={true} className={""}>
+                            {Object.keys(assetData).filter((key) => typeof assetData[key] === "object" && "idShort" in assetData[key] && key !== "Nameplate").map((key, index) =>
+                                <AccordionItem eventKey={index}>
+                                    <AccordionHeader>
+                                        {key}
+                                    </AccordionHeader>
+                                    <AccordionBody>
+                                        <AssetData data={assetData[key]}/>
+                                    </AccordionBody>
+                                </AccordionItem>
+                            )
+                            }
+                        </Accordion>
+                    </div>
+                </div>}
             </div>
         </div>)
 }
