@@ -1,6 +1,11 @@
 # TINF21C_Team2_AAS_digital_nameplate
 
-The Digital Nameplate Generator is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). 
+![AAS Digital Nameplate Logo](https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/update-github-page/PROJECT/Swe_logo.png)
+
+The Digital Nameplate as product identification shall represent the Digital Product Passport (DPP) and contains the essential product identification in digital form. This information can be read using smartphones and tablets without the need for an internet connection.
+The technological basis was defined in the DIN SPEC 91406 and its international further development IEC 61406 as well as the VDE V 0170-100 as pre-standard for the international IEC 63365 standard.
+
+It is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). 
 
 A Server for testing the application can be found at [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/)
 
