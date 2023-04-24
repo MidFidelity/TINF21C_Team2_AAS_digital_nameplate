@@ -39,17 +39,17 @@ export default class DataRefinery {
                     let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
                     let submodels
                     if (obj["submodels"]) {
-                        submodels = obj["submodels"].map((submodel) => {
+                        submodels = obj["submodels"].map((submodelReference) => {
                             return new Promise(async (resolve, reject) => {
-                                let submodelId = submodel["keys"][0]["value"]
+                                let submodelReferenceId = submodelReference["keys"][0]["value"]
 
-                                let apiVersion = this.analyzeApiVersion(submodel)
+                                let apiVersion = this.analyzeApiVersion(submodelReference)
 
                                 let submodelPaths
                                 if (apiVersion === 3) {
-                                    submodelPaths = submodelPathsV3(assetId, submodelId)
+                                    submodelPaths = submodelPathsV3(assetId, submodelReferenceId)
                                 } else {
-                                    submodelPaths = submodelPathsV1(assetId, submodelId)
+                                    submodelPaths = submodelPathsV1(assetId, submodelReferenceId)
                                 }
                                 let submodelData = {}
                                 let tryCount = 1
@@ -57,7 +57,6 @@ export default class DataRefinery {
                                     submodelData = await this.#getDataFromServer(this.serverBaseAddress + submodelPath.submodel, true)
                                         .then((result) => {
                                             let submodelDataArray
-                                            let i = 0
                                             if (!result) return undefined
                                             if (Array.isArray(result)) {
                                                 submodelDataArray = result
@@ -65,28 +64,26 @@ export default class DataRefinery {
                                                 submodelDataArray = [result]
                                             }
                                             let returnData = {}
-                                            do {
-                                                let submodelName = submodelDataArray[i].idShort
-
+                                            for (const submodelDataElement of submodelDataArray) {
+                                                let submodelName = submodelDataElement.idShort
+                                                let submodelID = apiVersion === 3?submodelReferenceId:submodelDataElement.identification.id
                                                 let extractedSubmodelData
-                                                let de = new DataExtractor(submodelDataArray[i]["submodelElements"])
+                                                let de = new DataExtractor(submodelDataElement["submodelElements"])
                                                 if (apiVersion === 3) {
                                                     extractedSubmodelData = de.extractAllDataV3(this.serverBaseAddress + submodelPath.submodelElements)
                                                 } else {
                                                     extractedSubmodelData = de.extractAllDataV1(this.serverBaseAddress + submodelPath.submodelElements)
                                                 }
 
-
                                                 returnData = {
                                                     ...returnData,
                                                     [submodelName]: {
                                                         idShort: submodelName,
-                                                        id: submodelId,
+                                                        id: submodelID,
                                                         ...extractedSubmodelData
                                                     }
                                                 }
-                                                i++
-                                            } while (i < submodelDataArray.length)
+                                            }
                                             return returnData
                                         })
                                     if (submodelData) {
