@@ -38,8 +38,8 @@ const AssetView = ({assetList}) => {
             <div className="container-fluid grid">
                 <div className={"row justify-content-center"}>
                     <div className={"ProductImageContainer col-12 col-lg-auto d-flex justify-content-center mb-3"}>
-                        {assetData ?
-                            <img src={assetData["productImages"].length > 0 ? assetData["productImages"][0] : ""}
+                        {assetData&&assetData["productImages"].length > 0 ?
+                            <img src={assetData["productImages"][0]}
                                  alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/> :
                             <p>No Product Image found</p>
                         }
