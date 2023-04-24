@@ -37,10 +37,14 @@ export default class DataRefinery {
                 }
                 return response.map((obj, index) => {
                     let assetId = obj["identification"] ? obj["identification"]["id"] : obj["id"]
-                    let submodels
+                    let submodels = []
                     if (obj["submodels"]) {
                         submodels = obj["submodels"].map((submodelReference) => {
                             return new Promise(async (resolve, reject) => {
+                                console.log(assetId, submodelReference)
+                                if(submodelReference["keys"].length===0) {
+                                    return reject("No Reference");
+                                }
                                 let submodelReferenceId = submodelReference["keys"][0]["value"]
 
                                 let apiVersion = this.analyzeApiVersion(submodelReference)
@@ -103,16 +107,16 @@ export default class DataRefinery {
                         "productImages": []
                     }
 
-                    Promise.all(submodels).then((result) => {
-                        result.forEach((submodel) => {
-                            if (!submodel) console.log(assetId)
-                            assetObject[Object.keys(submodel)[0]] = submodel[Object.keys(submodel)[0]]
-                            if (Object.keys(submodel)[0] === "TechnicalData") {
-                                assetObject.productImages = this.searchForKey(submodel[Object.keys(submodel)[0]], /[pP]roductImage\d*/)
-                            }
+                    submodels.map((submodel)=>{
+                        if (!submodel)return
+                        submodel.then((res)=>Object.keys(res).map((key)=>{
+                            if(!(key in assetObject))assetObject[key]=res[key]
+                            if(key === "TechnicalData")assetObject["productImages"] = this.searchForKey(res[key], /[pP]roductImage\d*/)
                             window.dispatchEvent(new Event("forceUpdate"))
+                        })).catch(()=>{
+
                         })
-                    }).catch()
+                    })
 
                     return assetObject
                 })
