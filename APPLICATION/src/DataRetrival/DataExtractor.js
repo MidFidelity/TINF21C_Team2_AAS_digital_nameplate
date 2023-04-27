@@ -88,13 +88,18 @@ export default class DataExtractor {
             langStrings = json.langStrings
         } else if ("langString" in json) { //Not to spec but seen in some assets
             langStrings = json.langString
-        } else return ""
+        } else {
+            langStrings = json
+        }
         for (let langPref of this.langPreferences) {
             for (let langString of langStrings) {
                 if (langString.language === langPref) {
                     return langString.text
                 }
             }
+        }
+        if(langStrings.length>0){
+            return langStrings[0].text
         }
     }
 }
