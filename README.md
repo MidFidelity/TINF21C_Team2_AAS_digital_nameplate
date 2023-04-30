@@ -1,7 +1,7 @@
 # TINF21C_Team2_AAS_digital_nameplate
 
 <p align="center">
-<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/update-github-page/PROJECT/Swe_logo.png" width="250" height="250" />
+<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/Swe_logo.png" width="250" height="250" />
 </p>
 
 
@@ -11,7 +11,7 @@ The technological basis was defined in the DIN SPEC 91406 and its international 
 It is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). An example of a generated nameplate can be seen below:
 
 <p align="center">
-<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/update-github-page/PROJECT/AAS_Demo_4WRPEH6.png" width="460" height="300" />
+<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/AAS_Demo_4WRPEH6.png" width="460" height="300" />
 </p>
 
 A Server for testing the application can be found at [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/)
