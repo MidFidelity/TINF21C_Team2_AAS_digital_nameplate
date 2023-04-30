@@ -38,24 +38,44 @@ const AssetData = ({data}) => {
                                 <h1 className={"idShortHeadline mb-4"}>{value}</h1>
                             </td>
                         </tr>
+
                     }else if(key === "FilePath"){
                         return <tr key={index}>
                             <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img>
                             <p>{key}</p></td>
                         </tr>
+
                     } else{
+                        let valueContent = value ? value : '\u200B';
+                        if (key === "id" || key === "AddressOfAdditionalLink") {
+                            let link = value;
+                            if (!link.includes("http")) {
+                                link = "http://" + link;
+                            }
+                            valueContent = (
+                                <a href={link} onClick={(e) => {
+                                    e.preventDefault();
+                                    if (link.startsWith("http://") || link.startsWith("https://")) {
+                                        window.open(link, "_blank");
+                                    } else {
+                                        window.location.href = link;
+                                    }
+                                }}>
+                                    {value}
+                                </a>
+                            );
+                        }
                         return <tr  key={index}>
                                 <p className={"row"}>
                                     <div className={"col-5"}>
                                     <span className="categories">{key}</span>
                                     </div>
                                     <div className={"col-7"}>
-                                    <span className="field-value">{value ? value : '\u200B'}</span>
+                                    <span className="field-value">{valueContent}</span>
                                     </div>
                                 </p>
                             <hr/>
                         </tr>
-
                     }
                 })
                 }
