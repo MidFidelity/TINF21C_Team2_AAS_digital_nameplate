@@ -78,29 +78,45 @@ const AssetView = ({assetList}) => {
                         </div>
                         : <></>}
                 </div>
-                <div className={"row"}>
-                    <div className={"ProductDesc col-md-11 mx-auto"}>
-                        <AssetData data={assetData ? assetData["Nameplate"] : []}></AssetData>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="ProductDesc">
+                            <AssetData data={assetData ? assetData["Nameplate"] : []} />
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="ProductDesc">
+                            {assetData &&
+                                Object.keys(assetData)
+                                    .filter(
+                                        (key) =>
+                                            typeof assetData[key] === "object" &&
+                                            "idShort" in assetData[key] &&
+                                            key !== "Nameplate"
+                                    )
+                                    .length > 0 && (
+                                    <Accordion alwaysOpen={true} className="">
+                                        {Object.keys(assetData)
+                                            .filter(
+                                                (key) =>
+                                                    typeof assetData[key] === "object" &&
+                                                    "idShort" in assetData[key] &&
+                                                    key !== "Nameplate"
+                                            )
+                                            .map((key, index) => (
+                                                <AccordionItem eventKey={index}>
+                                                    <AccordionHeader>{key}</AccordionHeader>
+                                                    <AccordionBody>
+                                                        <AssetData data={assetData[key]} />
+                                                    </AccordionBody>
+                                                </AccordionItem>
+                                            ))}
+                                    </Accordion>
+                                )}
+                        </div>
                     </div>
                 </div>
-                {assetData&&Object.keys(assetData).filter((key) => typeof assetData[key] === "object" && "idShort" in assetData[key] && key !== "Nameplate").length>0&&
-                <div className={"row"}>
-                    <div className={"ProductDesc col-md-11 mx-auto"}>
-                        <Accordion alwaysOpen={true} className={""}>
-                            {Object.keys(assetData).filter((key) => typeof assetData[key] === "object" && "idShort" in assetData[key] && key !== "Nameplate").map((key, index) =>
-                                <AccordionItem eventKey={index}>
-                                    <AccordionHeader>
-                                        {key}
-                                    </AccordionHeader>
-                                    <AccordionBody>
-                                        <AssetData data={assetData[key]}/>
-                                    </AccordionBody>
-                                </AccordionItem>
-                            )
-                            }
-                        </Accordion>
-                    </div>
-                </div>}
+
             </div>
         </div>)
 }

@@ -46,10 +46,10 @@ const AssetData = ({data}) => {
                     } else{
                         return <tr  key={index}>
                                 <p className={"row"}>
-                                    <div className={"col-2"}>
+                                    <div className={"col-5"}>
                                     <span className="categories">{key}</span>
                                     </div>
-                                    <div className={"col-5"}>
+                                    <div className={"col-7"}>
                                     <span className="field-value">{value ? value : '\u200B'}</span>
                                     </div>
                                 </p>
