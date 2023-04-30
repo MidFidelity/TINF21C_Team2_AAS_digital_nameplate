@@ -38,12 +38,18 @@ const AssetView = ({assetList}) => {
             <div className="container-fluid grid">
                 <div className={"row justify-content-center"}>
                     <div className={"ProductImageContainer col-12 col-lg-auto d-flex justify-content-center mb-3"}>
-                        {assetData&&assetData["productImages"].length > 0 ?
-                            <img src={assetData["productImages"][0]}
-                                 alt={"Product Image"} className={"ProductImage"} id={"assetimg"}/> :
+                        {assetData && assetData["productImages"].length > 0 ?
+                            <>
+                                <a href={assetData["productImages"][0]} download>
+                                    <img src={assetData["productImages"][0]}
+                                         alt={"Product Image"} className={"ProductImage"} id={"assetimg"} />
+                                </a>
+                            </>
+                            :
                             <p>No Product Image found</p>
                         }
                     </div>
+
                     {assetData && assetData["Nameplate"] ?
 
                         <div className={"Nameplate col-12 col-lg-7 d-flex justify-content-center"}>
