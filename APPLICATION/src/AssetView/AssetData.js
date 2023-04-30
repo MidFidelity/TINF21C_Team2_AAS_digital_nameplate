@@ -1,3 +1,6 @@
+import React from "react";
+import "react-bootstrap";
+
 const AssetData = ({data}) => {
     if (!data || data.length === 0 || (data.constructor === Object && Object.keys(data).length === 0)) {
         return <p>No Nameplate data found</p>;
@@ -32,7 +35,7 @@ const AssetData = ({data}) => {
                     } else if(key === "idShort"){
                         return <tr key={index}>
                             <td>
-                                <h1 className={"idShortHeadline"}>{value}</h1>
+                                <h1 className={"idShortHeadline mb-4"}>{value}</h1>
                             </td>
                         </tr>
                     }else if(key === "FilePath"){
@@ -41,13 +44,18 @@ const AssetData = ({data}) => {
                             <p>{key}</p></td>
                         </tr>
                     } else{
-                        return <tr key={index}>
-                            <td>
-                                <p className="categories">{key}</p>
-                                <p className={"field-value"}>{value ? value : '\u200B'}</p>
-                                <hr/>
-                            </td>
+                        return <tr  key={index}>
+                                <p className={"row"}>
+                                    <div className={"col-2"}>
+                                    <span className="categories">{key}</span>
+                                    </div>
+                                    <div className={"col-5"}>
+                                    <span className="field-value">{value ? value : '\u200B'}</span>
+                                    </div>
+                                </p>
+                            <hr/>
                         </tr>
+
                     }
                 })
                 }
