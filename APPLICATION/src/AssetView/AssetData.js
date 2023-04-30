@@ -29,6 +29,12 @@ const AssetData = ({data}) => {
                             </div>
                         </td>
                       </tr>
+                    } else if(key === "idShort"){
+                        return <tr key={index}>
+                            <td>
+                                <h1 className={"idShortHeadline"}>{value}</h1>
+                            </td>
+                        </tr>
                     }else if(key === "FilePath"){
                         return <tr key={index}>
                             <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img>
