@@ -1,3 +1,6 @@
+import React from "react";
+import "react-bootstrap";
+
 const AssetData = ({data}) => {
     if (!data || data.length === 0 || (data.constructor === Object && Object.keys(data).length === 0)) {
         return <p>No Nameplate data found</p>;
@@ -29,18 +32,49 @@ const AssetData = ({data}) => {
                             </div>
                         </td>
                       </tr>
+                    } else if(key === "idShort"){
+                        return <tr key={index}>
+                            <td>
+                                <h1 className={"idShortHeadline mb-4"}>{value}</h1>
+                            </td>
+                        </tr>
+
                     }else if(key === "FilePath"){
                         return <tr key={index}>
                             <td><img className={"ProductImage"} id={"markings"} src={value} alt={"Marking Image"}></img>
                             <p>{key}</p></td>
                         </tr>
+
                     } else{
-                        return <tr key={index}>
-                            <td>
-                                <p className="categories">{key}</p>
-                                <p className={"field-value"}>{value ? value : '\u200B'}</p>
-                                <hr/>
-                            </td>
+                        let valueContent = value ? value : '\u200B';
+                        if (key === "id" || key === "AddressOfAdditionalLink") {
+                            let link = value;
+                            if (!link.includes("http")) {
+                                link = "http://" + link;
+                            }
+                            valueContent = (
+                                <a href={link} onClick={(e) => {
+                                    e.preventDefault();
+                                    if (link.startsWith("http://") || link.startsWith("https://")) {
+                                        window.open(link, "_blank");
+                                    } else {
+                                        window.location.href = link;
+                                    }
+                                }}>
+                                    {value}
+                                </a>
+                            );
+                        }
+                        return <tr  key={index}>
+                                <p className={"row"}>
+                                    <div className={"col-5"}>
+                                    <span className="categories">{key}</span>
+                                    </div>
+                                    <div className={"col-7"}>
+                                    <span className="field-value">{valueContent}</span>
+                                    </div>
+                                </p>
+                            <hr/>
                         </tr>
                     }
                 })
