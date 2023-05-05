@@ -3,7 +3,7 @@
 
 
 export default class DataTransformer {
-    static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File"];
+    static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File", "POBox"];
 
     static transformDataToArray(obj) {
         let markings;
@@ -13,6 +13,7 @@ export default class DataTransformer {
         ({data: obj, unwantedKeys} = this.extractUnwantedKeys(obj, this.FILTER_KEYS));
         obj = this.shortenFlattenedKeys(obj);
         obj = this.filterEmptyValues(obj);
+        obj = this.constructAddressHeader(obj);
         return {obj, markings};
     }
 
@@ -27,6 +28,47 @@ export default class DataTransformer {
         let reduced = array.filter((elem) => elem[1]);
         reduced.forEach((elem) => result[elem[0]] = elem[1]);
         return result;
+    }
+
+    static constructAddressHeader(obj) {
+        let data = structuredClone(obj);
+        let manufacturer = '';
+        let zip = '';
+        let town = '';
+        let street = '';
+        let county = '';
+        if (data['ManufacturerName']) {
+            manufacturer = data['ManufacturerName'];
+            delete data['ManufacturerName'];
+        }
+        if (data['ZipCode']) {
+            zip = data['ZipCode'];
+            delete data['ZipCode'];
+        } else if (data['Zipcode']) {
+            zip = data['Zipcode'];
+            delete data['Zipcode'];
+        }
+        if (data['Town']) {
+            town = data['Town'];
+            delete data['Town'];
+        } else if (data['CityTown']) {
+            town = data['CityTown'];
+            delete data['CityTown'];
+        }
+        if (data['Street']) {
+            street = data['Street'];
+            delete data['Street'];
+        }
+        if (data['County']) {
+            county = data['County'];
+            delete data['County'];
+        } else if (data['StateCounty']) {
+            county = data['StateCounty'];
+            delete data['StateCounty'];
+        }
+        const addressHeader = manufacturer + '$$' + zip + ' ' + town + ', ' + street + '$$' + county;
+        data['Address'] = addressHeader;
+        return data;
     }
 
     /**

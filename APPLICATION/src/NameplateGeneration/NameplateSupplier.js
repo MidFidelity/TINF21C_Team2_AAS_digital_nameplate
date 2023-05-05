@@ -147,11 +147,34 @@ export default class NameplateSupplier {
 
         const keys = Object.keys(data).filter((key) => {
             let displayText = `${key}: ${data[key]}`;
-            return (displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort'));
+            return ((displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort')) || key.includes('Address'));
         });
-        const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
+        let limit = keys.length < maxDisplay ? keys.length : maxDisplay;
         let svgNS = 'http://www.w3.org/2000/svg';
+        let preCount = 0;
+
+        if (keys.includes('Address')) {
+            const parts = data['Address'].split('$$');
+            preCount = parts.length + 1;
+            parts.forEach((part, i) => {
+                let newText = document.createElementNS(svgNS, 'text');
+                newText.setAttributeNS(null, 'x', xSpace + 'px');
+                newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
+                newText.setAttributeNS(null, 'font-size', fontSize + 'px');
+
+                let textNode = document.createTextNode(`${part}`);
+                newText.appendChild(textNode);
+                nameplateSvg.appendChild(newText);
+            });
+        }
+
         for (let i = 0; i < limit; i++) {
+            if (keys[i] === 'Address') {
+                if (keys.length > limit) {
+                    limit++;
+                }
+                continue;
+            }
             let newText = document.createElementNS(svgNS, 'text');
             newText.setAttributeNS(null, 'x', xSpace + 'px');
             newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
