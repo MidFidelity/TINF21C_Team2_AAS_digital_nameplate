@@ -49,7 +49,12 @@ export default class NameplateSupplier {
         const dataAndMarkings = Object.assign(data, markingNames);
         const entries = Object.entries(dataAndMarkings);
         let result = "";
+        const idEntry = entries.find(entry => entry[0] === 'id');
+        result += idEntry[1] + '\n';
         entries.forEach((entry) => {
+            if (entry[0] === 'id') {
+                return;
+            }
             let entryString = "";
             const lineSeparator = "\n";
             entryString = entry[0] + ': ' + entry[1] + lineSeparator;
@@ -131,7 +136,6 @@ export default class NameplateSupplier {
      * @param nameplateSvg the nameplate svg element
      */
     static writeTextToSvg(data, nameplateSvg) {
-        console.log(data);
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
         const maxCharsPerLine = 60;
