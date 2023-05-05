@@ -130,7 +130,7 @@ export default class NameplateGenerator {
         const iecText = document.createElementNS(svgns, "text");
         iecText.textContent = text;
         iecText.setAttribute('x', `${qrCodeSize / 2 - whiteWidth / 2 + margin}`);
-        iecText.setAttribute('y', `${qrCodeSize}`);
+        iecText.setAttribute('y', `${qrCodeSize + 5}`);
         iecText.setAttribute('font-size', '16');
         parent.appendChild(iecText);
         return parent;

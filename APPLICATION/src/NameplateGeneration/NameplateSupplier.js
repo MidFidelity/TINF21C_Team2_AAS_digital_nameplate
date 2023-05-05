@@ -98,11 +98,11 @@ export default class NameplateSupplier {
         const MPD_maxChars = 100;
 
         const header = {};
-        if (data['idShort'] && data['idShort'].length < idShort_maxChars) {
-            header['idShort'] = data['idShort'];
+        if (data['OrderCode'] && data['OrderCode'].length < idShort_maxChars) {
+            header['OrderCode'] = data['OrderCode'];
             // this variable is used to name the download file
-            this.CURRENT_IDSHORT = data['idShort'];
-            delete data['idShort'];
+            this.CURRENT_IDSHORT = data['OrderCode'];
+            delete data['OrderCode'];
 
             let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             newText.setAttributeNS(null, 'x', idShort_xSpace + 'px');
@@ -110,7 +110,7 @@ export default class NameplateSupplier {
             newText.setAttributeNS(null, 'font-size', idShort_fontSize + 'px');
             newText.setAttributeNS(null, 'font-weight', 'bold');
 
-            let textNode = document.createTextNode(`${header['idShort']}`);
+            let textNode = document.createTextNode(`${header['OrderCode']}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
         }
@@ -147,7 +147,7 @@ export default class NameplateSupplier {
 
         const keys = Object.keys(data).filter((key) => {
             let displayText = `${key}: ${data[key]}`;
-            return (displayText.length < maxCharsPerLine && !key.includes('Marking'));
+            return (displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort'));
         });
         const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
         let svgNS = 'http://www.w3.org/2000/svg';
