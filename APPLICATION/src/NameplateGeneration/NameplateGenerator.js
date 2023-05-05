@@ -126,7 +126,7 @@ export default class NameplateGenerator {
         whiteBlock.setAttribute('fill', 'white');
         parent.appendChild(whiteBlock);
         const text = 'IEC 63365';
-        const margin = 12;
+        const margin = 15;
         const iecText = document.createElementNS(svgns, "text");
         iecText.textContent = text;
         iecText.setAttribute('x', `${qrCodeSize / 2 - whiteWidth / 2 + margin}`);
