@@ -131,6 +131,7 @@ export default class NameplateSupplier {
      * @param nameplateSvg the nameplate svg element
      */
     static writeTextToSvg(data, nameplateSvg) {
+        console.log(data);
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
         const maxCharsPerLine = 60;
@@ -142,7 +143,7 @@ export default class NameplateSupplier {
 
         const keys = Object.keys(data).filter((key) => {
             let displayText = `${key}: ${data[key]}`;
-            return (displayText.length < maxCharsPerLine);
+            return (displayText.length < maxCharsPerLine && !key.includes('Marking'));
         });
         const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
         let svgNS = 'http://www.w3.org/2000/svg';
