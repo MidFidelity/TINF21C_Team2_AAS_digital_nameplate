@@ -149,12 +149,11 @@ export default class NameplateSupplier {
             let displayText = `${key}: ${data[key]}`;
             return ((displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort')) || key.includes('Address'));
         });
-        let limit = keys.length < maxDisplay ? keys.length : maxDisplay;
         let svgNS = 'http://www.w3.org/2000/svg';
         let preCount = 0;
 
         if (keys.includes('Address')) {
-            const parts = data['Address'].split('$$');
+            const parts = data['Address'].split('\n');
             preCount = parts.length + 1;
             parts.forEach((part, i) => {
                 let newText = document.createElementNS(svgNS, 'text');
@@ -168,21 +167,21 @@ export default class NameplateSupplier {
             });
         }
 
-        for (let i = 0; i < limit; i++) {
-            if (keys[i] === 'Address') {
-                if (keys.length > limit) {
-                    limit++;
-                }
+        // hinkriegen, dass er unter der Adresse weitermacht aber nicht zu viel anzeigt.
+
+        for (let i = 0; i < maxDisplay && preCount < maxDisplay; i++) {
+            if (keys[i] === 'Address' || !Boolean(keys[i])) {
                 continue;
             }
             let newText = document.createElementNS(svgNS, 'text');
             newText.setAttributeNS(null, 'x', xSpace + 'px');
-            newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
+            newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
             newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
             let textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
+            preCount++;
         }
     }
 
