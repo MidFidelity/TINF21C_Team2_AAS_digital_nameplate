@@ -1,5 +1,6 @@
 import DataTransformer from "./DataTransformer";
 import NameplateSupplier from "./NameplateSupplier";
+
 const QRCode = require('qrcode');
 
 export default class NameplateGenerator {
@@ -54,18 +55,22 @@ export default class NameplateGenerator {
 
         // extracts the FilePaths from the markings
         // this is where the images are stored
-//    const markingImages = extractFilePathsFromMarkings(markings);
+        // const markingImages = extractFilePathsFromMarkings(markings);
         NameplateSupplier.extractAllImagesFromMarkings(markings).then((markingImages) => {
             // displays the markings on the nameplate (svg)
             NameplateSupplier.displayMarkingImages(markingImages, nameplateSvg);
         });
+
+        //creates the border around the qr-code
+        const border = this.createBorderForQRCode();
 
         // the svg's are appended to the DOM before the qr-code is created, because the 'makeQrCode()' function needs to find
         // the svg-elements by 'document.getElementById()'
         let domElement = document.getElementById(id);
         domElement.innerHTML = '';
         NameplateSupplier.appendToDocument(id, nameplateSvg);
-        NameplateSupplier.appendToDocument('nameplateSvg', qrCodeSvg);
+        NameplateSupplier.appendToDocument(nameplateSvg.id, qrCodeSvg);
+        NameplateSupplier.appendToDocument(nameplateSvg.id, border);
 
         // makes the qr-code svg and injects it into the 'qrCodeSvg' element
         // the qr-code svg will be wrapped by the 'qrCodeSvg', which is mainly used for styling
@@ -83,7 +88,7 @@ export default class NameplateGenerator {
         const settings = {
             type: "svg",
             errorCorrectionLevel: 'M',
-            margin:1
+            margin: 6
         }
         QRCode.toString(text, settings, (error, string) => {
             if (error) {
@@ -91,6 +96,44 @@ export default class NameplateGenerator {
             }
             document.getElementById(id).innerHTML = string;
         })
+    }
+
+    static createBorderForQRCode() {
+        const qrCodeSize = 400;
+        const qrCodeOffsetX = 500;
+        const qrCodeOffsetY = 85;
+        const strokeWidth = 6;
+        const svgns = "http://www.w3.org/2000/svg"; // SVG namespace
+        const parent = document.createElementNS(svgns, "svg");
+        const rect = document.createElementNS(svgns, "rect");
+        rect.setAttribute("x", `${strokeWidth / 2}`);
+        rect.setAttribute("y", `${strokeWidth / 2}`);
+        rect.setAttribute("width", `${qrCodeSize - strokeWidth}`);
+        rect.setAttribute("height", `${qrCodeSize - strokeWidth}`);
+        rect.setAttribute("stroke", "black");
+        rect.setAttribute("stroke-width", `${strokeWidth}`);
+        rect.setAttribute("fill", "none");
+        parent.appendChild(rect);
+        parent.setAttribute("x", `${qrCodeOffsetX}`);
+        parent.setAttribute("y", `${qrCodeOffsetY}`);
+        const whiteWidth = 100;
+        const whiteHeight = 20;
+        const whiteBlock = document.createElementNS(svgns, "rect");
+        whiteBlock.setAttribute("width", `${whiteWidth}`);
+        whiteBlock.setAttribute("height", `${whiteHeight}`);
+        whiteBlock.setAttribute("x", `${qrCodeSize / 2 - whiteWidth / 2}`);
+        whiteBlock.setAttribute("y", `${qrCodeSize - whiteHeight + 1}`);
+        whiteBlock.setAttribute('fill', 'white');
+        parent.appendChild(whiteBlock);
+        const text = 'IEC 63365';
+        const margin = 12;
+        const iecText = document.createElementNS(svgns, "text");
+        iecText.textContent = text;
+        iecText.setAttribute('x', `${qrCodeSize / 2 - whiteWidth / 2 + margin}`);
+        iecText.setAttribute('y', `${qrCodeSize}`);
+        iecText.setAttribute('font-size', '16');
+        parent.appendChild(iecText);
+        return parent;
     }
 
     /**
