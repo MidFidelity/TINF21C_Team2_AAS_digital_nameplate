@@ -49,7 +49,12 @@ export default class NameplateSupplier {
         const dataAndMarkings = Object.assign(data, markingNames);
         const entries = Object.entries(dataAndMarkings);
         let result = "";
+        const idEntry = entries.find(entry => entry[0] === 'id');
+        result += idEntry[1] + '\n';
         entries.forEach((entry) => {
+            if (entry[0] === 'id') {
+                return;
+            }
             let entryString = "";
             const lineSeparator = "\n";
             entryString = entry[0] + ': ' + entry[1] + lineSeparator;
@@ -93,11 +98,11 @@ export default class NameplateSupplier {
         const MPD_maxChars = 100;
 
         const header = {};
-        if (data['idShort'] && data['idShort'].length < idShort_maxChars) {
-            header['idShort'] = data['idShort'];
+        if (data['OrderCode'] && data['OrderCode'].length < idShort_maxChars) {
+            header['OrderCode'] = data['OrderCode'];
             // this variable is used to name the download file
-            this.CURRENT_IDSHORT = data['idShort'];
-            delete data['idShort'];
+            this.CURRENT_IDSHORT = data['OrderCode'];
+            delete data['OrderCode'];
 
             let newText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             newText.setAttributeNS(null, 'x', idShort_xSpace + 'px');
@@ -105,7 +110,7 @@ export default class NameplateSupplier {
             newText.setAttributeNS(null, 'font-size', idShort_fontSize + 'px');
             newText.setAttributeNS(null, 'font-weight', 'bold');
 
-            let textNode = document.createTextNode(`${header['idShort']}`);
+            let textNode = document.createTextNode(`${header['OrderCode']}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
         }
@@ -142,19 +147,41 @@ export default class NameplateSupplier {
 
         const keys = Object.keys(data).filter((key) => {
             let displayText = `${key}: ${data[key]}`;
-            return (displayText.length < maxCharsPerLine);
+            return ((displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort')) || key.includes('Address'));
         });
-        const limit = keys.length < maxDisplay ? keys.length : maxDisplay;
         let svgNS = 'http://www.w3.org/2000/svg';
-        for (let i = 0; i < limit; i++) {
+        let preCount = 0;
+
+        if (keys.includes('Address')) {
+            const parts = data['Address'].split('\n');
+            preCount = parts.length + 1;
+            parts.forEach((part, i) => {
+                let newText = document.createElementNS(svgNS, 'text');
+                newText.setAttributeNS(null, 'x', xSpace + 'px');
+                newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
+                newText.setAttributeNS(null, 'font-size', fontSize + 'px');
+
+                let textNode = document.createTextNode(`${part}`);
+                newText.appendChild(textNode);
+                nameplateSvg.appendChild(newText);
+            });
+        }
+
+        // hinkriegen, dass er unter der Adresse weitermacht aber nicht zu viel anzeigt.
+
+        for (let i = 0; i < maxDisplay && preCount < maxDisplay; i++) {
+            if (keys[i] === 'Address' || !Boolean(keys[i])) {
+                continue;
+            }
             let newText = document.createElementNS(svgNS, 'text');
             newText.setAttributeNS(null, 'x', xSpace + 'px');
-            newText.setAttributeNS(null, 'y', ySpace + lineHeight * i + 'px');
+            newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
             newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
             let textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
+            preCount++;
         }
     }
 
