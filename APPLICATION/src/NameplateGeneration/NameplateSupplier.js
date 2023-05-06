@@ -132,10 +132,11 @@ export default class NameplateSupplier {
 
     /**
      * Writes key-value pairs onto the nameplateSvg. Can be configured through constants in function.
-     * @param data data according to README.md specification
+     * @param input data according to README.md specification
      * @param nameplateSvg the nameplate svg element
      */
-    static writeTextToSvg(data, nameplateSvg) {
+    static writeTextToSvg(input, nameplateSvg) {
+        const data = structuredClone(input);
         const maxDisplay = 16;
         // TODO: richtige maximale anzahl an chars per line finden für Darstellung
         const maxCharsPerLine = 60;
@@ -145,6 +146,9 @@ export default class NameplateSupplier {
         const xSpace = 20;
         const ySpace = 105;
 
+        const priorityDisplay = ['TelephoneNumber', 'EmailAddress', 'AddressOfAdditionalLink'];
+        const displayWithoutIdentifier = ['id'];
+
         const keys = Object.keys(data).filter((key) => {
             let displayText = `${key}: ${data[key]}`;
             return ((displayText.length < maxCharsPerLine && !key.includes('Marking') && !key.includes('idShort')) || key.includes('Address'));
@@ -152,9 +156,10 @@ export default class NameplateSupplier {
         let svgNS = 'http://www.w3.org/2000/svg';
         let preCount = 0;
 
+        // display address on top
         if (keys.includes('Address')) {
             const parts = data['Address'].split('\n');
-            preCount = parts.length + 1;
+            preCount = parts.length;
             parts.forEach((part, i) => {
                 let newText = document.createElementNS(svgNS, 'text');
                 newText.setAttributeNS(null, 'x', xSpace + 'px');
@@ -165,12 +170,31 @@ export default class NameplateSupplier {
                 newText.appendChild(textNode);
                 nameplateSvg.appendChild(newText);
             });
+            delete data['Address'];
         }
 
-        // hinkriegen, dass er unter der Adresse weitermacht aber nicht zu viel anzeigt.
+        // display priority display
+        priorityDisplay.forEach(display => {
+            if (!data[display]) {
+                return;
+            }
+            let newText = document.createElementNS(svgNS, 'text');
+            newText.setAttributeNS(null, 'x', xSpace + 'px');
+            newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
+            newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
+            let textNode = document.createTextNode(`${data[display]}`);
+            delete data[display];
+            newText.appendChild(textNode);
+            nameplateSvg.appendChild(newText);
+            preCount++;
+        })
+
+        preCount++;
+
+        // display everything else
         for (let i = 0; i < maxDisplay && preCount < maxDisplay; i++) {
-            if (keys[i] === 'Address' || !Boolean(keys[i])) {
+            if (!Boolean(keys[i]) || !Boolean(data[keys[i]])) {
                 continue;
             }
             let newText = document.createElementNS(svgNS, 'text');
@@ -178,7 +202,13 @@ export default class NameplateSupplier {
             newText.setAttributeNS(null, 'y', ySpace + lineHeight * preCount + 'px');
             newText.setAttributeNS(null, 'font-size', fontSize + 'px');
 
-            let textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
+            let textNode;
+
+            if (displayWithoutIdentifier.includes(keys[i])) {
+                textNode = document.createTextNode(`${data[keys[i]]}`);
+            } else {
+                textNode = document.createTextNode(`${keys[i]}: ${data[keys[i]]}`);
+            }
             newText.appendChild(textNode);
             nameplateSvg.appendChild(newText);
             preCount++;
