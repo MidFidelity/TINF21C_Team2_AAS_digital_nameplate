@@ -46,21 +46,11 @@ const AssetData = ({data}) => {
                         </tr>
 
                     } else{
-                        let valueContent = value ? value : '\u200B';
-                        if (key === "id" || key === "AddressOfAdditionalLink") {
-                            let link = value;
-                            if (!link.includes("http")) {
-                                link = "http://" + link;
-                            }
+                        let valueContent = value;
+                        let match = value?value.match(/^(?:(?:http|https):\/\/)?(?:(?:[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6})|localhost)\b[-a-zA-Z0-9()@:%_+.~#?&/=]*\s*$/g):undefined
+                        if (match&&match[0]) {
                             valueContent = (
-                                <a href={link} onClick={(e) => {
-                                    e.preventDefault();
-                                    if (link.startsWith("http://") || link.startsWith("https://")) {
-                                        window.open(link, "_blank");
-                                    } else {
-                                        window.location.href = link;
-                                    }
-                                }}>
+                                <a href={match} target={"_blank"}>
                                     {value}
                                 </a>
                             );
