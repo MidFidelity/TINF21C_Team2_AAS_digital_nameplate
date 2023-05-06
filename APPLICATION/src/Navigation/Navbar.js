@@ -3,9 +3,8 @@ import {Nav, NavDropdown} from 'react-bootstrap';
 import ServerAddress from "../ServerAddress";
 import "./Navbar.scss";
 import Searchbar from "../Searchbar";
-import { LinkContainer } from 'react-router-bootstrap';
 import { List } from 'react-bootstrap-icons';
-import { useLocation } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 
 const Navbar = ({serverAddress, setServerAddress, serverHistory, handleServerSelection} ) => {
 
@@ -39,12 +38,11 @@ const Navbar = ({serverAddress, setServerAddress, serverHistory, handleServerSel
 
             <Nav>
                 <NavDropdown title={<List className={"hamburgerMenuIcon"}/>} id="navDropdown">
-                    <LinkContainer to="/home">
-                            <NavDropdown.Item className=" nav-link nav-item me-3">Home</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/about">
-                        <NavDropdown.Item className=" nav-link nav-item me-3">About</NavDropdown.Item>
-                    </LinkContainer>
+                    <NavDropdown.Item className="m-0 p-0"><Link className={"nav-link nav-item text-black text-decoration-none"} to={"/"}>Home</Link></NavDropdown.Item>
+
+
+                    <NavDropdown.Item className="m-0 p-0"><Link className={"nav-link nav-item text-black text-decoration-none"} to={"/about"}>About</Link></NavDropdown.Item>
+
                     <NavDropdown.Item className=" nav-link nav-item me-3" href="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate">GitHub</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
