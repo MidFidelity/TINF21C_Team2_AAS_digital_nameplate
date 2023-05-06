@@ -3,7 +3,7 @@
 
 
 export default class DataTransformer {
-    static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File", "POBox", "Department", "AvailableTime"];
+    static FILTER_KEYS = ["nameplateId", "num", "Nameplate.idShort", "Nameplate.id", "productImages", "idEncoded", "TypeOf", "Present", "Logo", "File", "POBox", "Department", "AvailableTime", "FaxNumber", "PublicKey"];
 
     static transformDataToArray(obj) {
         let markings;
@@ -41,6 +41,9 @@ export default class DataTransformer {
         if (data['ManufacturerName']) {
             manufacturer = data['ManufacturerName'];
             delete data['ManufacturerName'];
+            if (data['Company']) {
+                delete data['Company'];
+            }
         }
         // different writings of attributes is due to differences in V1 and V3 API. The first is always the V3 writing, the second is the V1.
         if (data['ZipCode']) {
@@ -72,7 +75,7 @@ export default class DataTransformer {
             nationalCode = data['NationalCode'];
             delete data['NationalCode'];
         }
-        const addressHeader = manufacturer + '\n' + zip + ' ' + town + ', ' + street + '\n' + county + ', ' + nationalCode;
+        const addressHeader = manufacturer + '\n' + zip + ' ' + town + (street? (', ' + street) : '') + '\n' + county + (nationalCode? (', ' + nationalCode): '');
         data['Address'] = addressHeader;
         return data;
     }
