@@ -24,7 +24,7 @@ export function HomeView({serverHistory}) {
                        buttonText={"Open"}
                        suggestions={serverHistory}
                        onSubmit={handleServerSelection}></Searchbar>
-            <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" className="rounded mx-auto d-block" width="55%"></img>
+            <img src="SWELogo.png" alt="Nameplate Logo" id="nameplateLogo" className="rounded mx-auto d-block" width="55%"></img>
         </div>
         </div>
     );

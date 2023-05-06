@@ -15,7 +15,7 @@ const Navbar = ({serverAddress, setServerAddress, serverHistory, handleServerSel
     return (
         <nav className="navbar navbar-expand-lg design-nav d-flex justify-content-between">
             <a className="navbar-brand ms-3" href="/home">
-                <img src="https://www.linkpicture.com/q/SWELogo.png" alt="Nameplate Logo" id="nameplateLogoNav" className="rounded" ></img>
+                <img src="SWELogo.png" alt="Nameplate Logo" id="nameplateLogoNav" className="rounded" ></img>
                 Nameplate Generator
             </a>
 
