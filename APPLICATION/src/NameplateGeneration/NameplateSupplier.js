@@ -146,7 +146,7 @@ export default class NameplateSupplier {
         const xSpace = 20;
         const ySpace = 105;
 
-        const priorityDisplay = ['TelephoneNumber', 'EmailAddress', 'AddressOfAdditionalLink'];
+        const priorityDisplay = ['TelephoneNumber', 'EmailAddress', 'AddressOfAdditionalLink', 'AssetRef'];
         const displayWithoutIdentifier = ['id'];
 
         const keys = Object.keys(data).filter((key) => {
