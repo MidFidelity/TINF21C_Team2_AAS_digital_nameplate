@@ -82,12 +82,12 @@ const AssetView = ({assetList}) => {
                         </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="ProductDesc">
+                    <div className="col-lg-6 ">
+                        <div className="ProductDesc ">
                             <AssetData data={assetData ? assetData["Nameplate"] : []} />
                         </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-lg-6">
                         <div className="ProductDesc">
                             {assetData &&
                                 Object.keys(assetData)
