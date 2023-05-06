@@ -103,7 +103,7 @@ const AssetView = ({assetList}) => {
                             <Accordion alwaysOpen={true} className="">
                                 {Object.keys(assetData)
                                     .filter((key) => typeof assetData[key] === "object" && "idShort" in assetData[key] && key !== "Nameplate")
-                                    .map((key, index) => (<AccordionItem eventKey={index}>
+                                    .map((key, index) => (<AccordionItem eventKey={index} key={index}>
                                         <AccordionHeader>{key}</AccordionHeader>
                                         <AccordionBody>
                                             <AssetData data={assetData[key]}/>
