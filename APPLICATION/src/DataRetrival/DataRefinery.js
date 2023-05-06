@@ -106,6 +106,10 @@ export default class DataRefinery {
                         "num": index,
                         "productImages": []
                     }
+                    let assetRef = this.loadAssetRef(obj)
+                    if (assetRef) {
+                        assetObject.AssetRef = assetRef
+                    }
 
                     submodels.map((submodel)=>{
                         if (!submodel)return
@@ -116,13 +120,19 @@ export default class DataRefinery {
                         })).catch(()=>{
 
                         })
-                    })
+                    });
 
                     return assetObject
                 })
             })
     }
 
+    /**
+     * Recursively searches the json for any keys that match the regex and gets all files in that location
+     * @param json Object that shall be searched
+     * @param regex Regex to search for keys
+     * @returns {*[]} Array of all the file paths
+     */
     searchForKey(json, regex) {
         let returnList = []
         if (typeof json === "object") {
@@ -136,6 +146,12 @@ export default class DataRefinery {
         return returnList;
     }
 
+    /**
+     * Check which API-Version was likely used for this submodel
+     * May break with future API updates
+     * @param submodel The submodel
+     * @returns {1|3} The version of the API likely used for this submodel
+     */
     analyzeApiVersion(submodel) {
         let apiVersion
         if (submodel["type"]) {
@@ -148,7 +164,28 @@ export default class DataRefinery {
         return apiVersion
     }
 
+    /**
+     * Get the assetRef parameter if it exists
+     * @param asset The Asset
+     * @returns {undefined|string} The value of the assetRef or undefined if not found
+     */
+    loadAssetRef(asset){
+        if (asset&&asset["assetRef"]&&asset["assetRef"]["keys"]&&asset["assetRef"]["keys"][0]){
+            return asset["assetRef"]["keys"][0]["value"]
+        }
+        // Get A rev for V3 Servers (Not really AssetRef)
+        /*else if(asset&&asset["assetInformation"]&&asset["assetInformation"]["globalAssetId"]&&asset["assetInformation"]["globalAssetId"]["keys"]&&asset["assetInformation"]["globalAssetId"]["keys"][0]){
+            return asset["assetInformation"]["globalAssetId"]["keys"][0]["value"]
+        }*/
+        return undefined
+    }
 
+    /**
+     * Perform a GET request to a server try to convert the result to JSON and handle errors
+     * @param address Address of the server
+     * @param silent Failing is expected, do not throw errors
+     * @returns {Promise<object>|undefined} The response as JSON-Object
+     */
     async #getDataFromServer(address, silent = false) {
         console.log("Making request to " + address);
         this.requestCount[address] ? this.requestCount[address]++ : this.requestCount[address] = 1
