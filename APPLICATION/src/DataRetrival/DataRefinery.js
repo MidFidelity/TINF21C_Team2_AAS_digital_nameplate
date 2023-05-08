@@ -84,6 +84,7 @@ export default class DataRefinery {
                                                     [submodelName]: {
                                                         idShort: submodelName,
                                                         id: submodelID,
+                                                        semanticId:this.loadSemanticID(submodelDataElement),
                                                         ...extractedSubmodelData
                                                     }
                                                 }
@@ -110,6 +111,7 @@ export default class DataRefinery {
                     if (assetRef) {
                         assetObject.AssetRef = assetRef
                     }
+
 
                     submodels.map((submodel)=>{
                         if (!submodel)return
@@ -178,6 +180,10 @@ export default class DataRefinery {
             return asset["assetInformation"]["globalAssetId"]["keys"][0]["value"]
         }*/
         return undefined
+    }
+
+    loadSemanticID(submodel){
+        return submodel&&submodel.semanticId&&submodel.semanticId.keys&&submodel.semanticId.keys[0]&&submodel.semanticId.keys[0].value
     }
 
     /**
