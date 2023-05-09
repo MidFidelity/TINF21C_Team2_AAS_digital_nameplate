@@ -38,7 +38,7 @@ const AssetData = ({data}) => {
                         } else if (key === "idShort") {
                             return <tr key={index}>
                                 <td colSpan={2}>
-                                    <h3 className={"idShortHeadline mb-4"}>{value}</h3>
+
                                 </td>
                             </tr>
 
