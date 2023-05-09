@@ -35,13 +35,6 @@ const AssetData = ({data}) => {
                                     </div>
                                 </td>
                             </tr>
-                        } else if (key === "idShort") {
-                            return <tr key={index}>
-                                <td colSpan={2}>
-
-                                </td>
-                            </tr>
-
                         } else if (key === "FilePath") {
                             return <tr key={index}>
                                 <td colSpan={2}><img className={"ProductImage"} id={"markings"} src={value}
@@ -59,16 +52,21 @@ const AssetData = ({data}) => {
                                     </a>
                                 );
                             }
-                            return <><tr key={index}>
-                                <td className={"col-5"}>
-                                    <span className="categories">{key}</span>
-                                </td>
-                                <td className={"col-7"}>
-                                    <span className="field-value">{valueContent}</span>
-                                </td>
+                            return <>
+                                <tr key={index}>
+                                    <td className={"col-5"}>
+                                        <span className="categories">{key}</span>
+                                    </td>
+                                    <td className={"col-7"}>
+                                        <span className="field-value">{valueContent}</span>
+                                    </td>
 
-                            </tr>
-                            <tr><td colSpan={2}><hr/></td></tr>
+                                </tr>
+                                <tr>
+                                    <td colSpan={2}>
+                                        <hr/>
+                                    </td>
+                                </tr>
                             </>
 
                         }
