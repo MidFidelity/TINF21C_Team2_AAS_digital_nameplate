@@ -24,6 +24,7 @@ Furthermore, a user-friendly front-end application, set up on the host system, s
 
 * Team Lead: Adrian Khairi
 * Test Manager: Janin Ahlemeyer
-* System Architect: Mika Kuge
+* System Architect & Software Developer: Mika Kuge
 * Technical Documentation: Maris Koch
-* Software Developer: Erika Zhang
+* Product Manager: Erika Zhang
+
