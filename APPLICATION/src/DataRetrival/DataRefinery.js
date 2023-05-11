@@ -16,7 +16,6 @@ export default class DataRefinery {
             this.serverBaseAddress = serverBaseAddress + "/";
         }
         this.apiVersion = undefined;
-        console.log(this.requestCount)
     }
 
     async getAPIVersion() {
@@ -41,7 +40,6 @@ export default class DataRefinery {
                     if (obj["submodels"]) {
                         submodels = obj["submodels"].map((submodelReference) => {
                             return new Promise(async (resolve, reject) => {
-                                console.log(assetId, submodelReference)
                                 if(submodelReference["keys"].length===0) {
                                     return reject("No Reference");
                                 }
@@ -193,7 +191,7 @@ export default class DataRefinery {
      * @returns {Promise<object>|undefined} The response as JSON-Object
      */
     async #getDataFromServer(address, silent = false) {
-        console.log("Making request to " + address);
+        // console.log("Making request to " + address);
         this.requestCount[address] ? this.requestCount[address]++ : this.requestCount[address] = 1
         return fetch(address)
             .then(response => {
