@@ -1,18 +1,11 @@
 # TINF21C_Team2_AAS_digital_nameplate
 
-<p align="center">
-<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/Swe_logo.png" width="250" height="250" />
-</p>
-
+![B84G-4GK-AP3-RME](https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/assets/96543571/3891a76b-a111-4231-b7fb-fb5489ceb1cf)
 
 The Digital Nameplate as product identification shall represent the Digital Product Passport (DPP) and contains the essential product identification in digital form. This information can be read using smartphones and tablets without the need for an internet connection.
 The technological basis was defined in the DIN SPEC 91406 and its international further development IEC 61406 as well as the VDE V 0170-100 as pre-standard for the international IEC 63365 standard.
 
-It is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). An example of a generated nameplate can be seen below:
-
-<p align="center">
-<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/AAS_Demo_4WRPEH6.png" width="460" height="300" />
-</p>
+It is a project created in the scope of the course "Software Engineering" at Baden-Wuerttemberg Cooperative State University (DHBW) Stuttgart. The Goal of this project is to create a nameplate generator for an Asset Administration Shell (AAS). The application can be found under following link, [Digital Nameplate Generator](https://mk28.github.io/TINF21C_Team2_AAS_digital_nameplate/#/home). An example of a generated nameplate can be seen above:
 
 A Server for testing the application can be found at [https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/](https://ccae4836-001e-48c2-a4f9-235554f9400b.ma.bw-cloud-instance.org/)
 
@@ -28,3 +21,6 @@ Furthermore, a user-friendly front-end application, set up on the host system, s
 * Technical Documentation: Maris Koch
 * Product Manager: Erika Zhang
 
+<p align="center">
+<img src="https://github.com/mk28/TINF21C_Team2_AAS_digital_nameplate/blob/6e434676f0f8ec56bd9363a70fcf87058b3255a9/PROJECT/Swe_logo.png" width="250" height="250" />
+</p>
