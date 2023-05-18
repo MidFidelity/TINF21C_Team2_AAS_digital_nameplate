@@ -1,0 +1,25 @@
+{
+  "short_name": "Nameplate Generator",
+  "name": "AAS Nameplate Generator",
+  "icons": [
+    {
+      "src": "SWELogo.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "SWELogo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "SWELogo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2f5779",
+  "background_color": "#ffffff"
+}
